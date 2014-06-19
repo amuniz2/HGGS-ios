@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[HGGSUPCServiceConsumer productNamesFromJSONResult:]:HGGSUPCServiceConsumer.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSStoreList save]:HGGSStoreList.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[listInFile isEqualToString:serializedList]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSStoreItems copyOfList]:HGGSStoreItems.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self list]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController tableView:cellForRowAtIndexPath:]:HGGSSelectGrocerySectionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController grocerySectionAt:]:HGGSSelectGrocerySectionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[indexPath row]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSFindGrocerySectionsTests testFindSingleGrocerySectionBySectionId]:HGGSFindGrocerySectionsTests.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController adjustSizeOfTextView:]:HGGSEditGroceryItemViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[textView contentSize]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSStoreList copyOfList]:HGGSStoreList.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditShoppingListViewController setItemPropertiesPerCellChanges:]:HGGSEditShoppingListViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryStore getCurrentList]:HGGSGroceryStore.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryStore findGrocerySectionBySectionId:]:HGGSGroceryStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "locationOfString.location">
+            </PersistentString>
+            <PersistentString
+               value = "NSNotFound">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryStore createShoppingList]:HGGSGroceryStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[grocerySection groceryItems] == nil">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSDbGroceryFilesStore copyFileToDropbox:DBFilePath:]:HGGSDbGroceryFilesStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSFileManager defaultManager] fileExistsAtPath:localFilePath]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGrocerySectionsViewController doneEditing:]:HGGSGrocerySectionsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_ipBeingEdited.row">
+            </PersistentString>
+            <PersistentString
+               value = "!newSectionName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
