@@ -11,6 +11,15 @@
 		A70E86EE183327F100222EFF /* HGGSLoadGrocerySectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70E86ED183327F100222EFF /* HGGSLoadGrocerySectionTests.m */; };
 		A714858B1837B1280026BE5E /* HGGSGrocerySectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A714858A1837B1280026BE5E /* HGGSGrocerySectionsViewController.m */; };
 		A7244E3318B5A623007A3D12 /* HGGSStoreListManagementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7244E3218B5A623007A3D12 /* HGGSStoreListManagementTests.m */; };
+		A72F78F6195364DB0061E917 /* HGGSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78E5195364DB0061E917 /* HGGSDate.m */; };
+		A72F78F7195364DB0061E917 /* HGGSGroceryAisle.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78E7195364DB0061E917 /* HGGSGroceryAisle.m */; };
+		A72F78F8195364DB0061E917 /* HGGSGroceryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78E9195364DB0061E917 /* HGGSGroceryItem.m */; };
+		A72F78F9195364DB0061E917 /* HGGSGrocerySection.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78EB195364DB0061E917 /* HGGSGrocerySection.m */; };
+		A72F78FA195364DB0061E917 /* HGGSGroceryStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78ED195364DB0061E917 /* HGGSGroceryStore.m */; };
+		A72F78FB195364DB0061E917 /* HGGSGroceryStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78EF195364DB0061E917 /* HGGSGroceryStoreManager.m */; };
+		A72F78FC195364DB0061E917 /* HGGSStoreAisles.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78F1195364DB0061E917 /* HGGSStoreAisles.m */; };
+		A72F78FD195364DB0061E917 /* HGGSStoreItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78F3195364DB0061E917 /* HGGSStoreItems.m */; };
+		A72F78FE195364DB0061E917 /* HGGSStoreList.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78F5195364DB0061E917 /* HGGSStoreList.m */; };
 		A733B951187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A733B950187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m */; };
 		A76809B418836E4C00B7E2F0 /* WebServiceErrorResponse.html in Resources */ = {isa = PBXBuildFile; fileRef = A76809B318836E4C00B7E2F0 /* WebServiceErrorResponse.html */; };
 		A76809B7188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = A76809B6188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m */; };
@@ -18,8 +27,6 @@
 		A79A1E261856A5E3006E8557 /* HGGSLoadStoreListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A1E231856A5E3006E8557 /* HGGSLoadStoreListTests.m */; };
 		A79A1E271856A5E3006E8557 /* HGGSSaveStoreListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A1E251856A5E3006E8557 /* HGGSSaveStoreListTests.m */; };
 		A79CAC69188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79CAC68188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m */; };
-		A7AAE60818B30AD70033DAD9 /* HGGSStoreAisles.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AAE60518B30AD70033DAD9 /* HGGSStoreAisles.m */; };
-		A7AAE60918B30AD70033DAD9 /* HGGSStoreItems.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AAE60718B30AD70033DAD9 /* HGGSStoreItems.m */; };
 		A7AD910018581F4000785342 /* HGGSShoppingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AD90FF18581F4000785342 /* HGGSShoppingItemCell.m */; };
 		A7AD91031858211100785342 /* HGGSShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AD91021858211100785342 /* HGGSShoppingListViewController.m */; };
 		A7B808D818935CC500404B39 /* checkbox-checked.png in Resources */ = {isa = PBXBuildFile; fileRef = A7B808D718935CC500404B39 /* checkbox-checked.png */; };
@@ -42,12 +49,6 @@
 		A7C580DC182EE68B00866FAB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C580BE182EE68A00866FAB /* UIKit.framework */; };
 		A7C580E4182EE68B00866FAB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7C580E2182EE68B00866FAB /* InfoPlist.strings */; };
 		A7C580E6182EE68B00866FAB /* HoneyGoGroceryShoppingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580E5182EE68B00866FAB /* HoneyGoGroceryShoppingTests.m */; };
-		A7C580FC182EE73900866FAB /* HGGSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580F1182EE73900866FAB /* HGGSDate.m */; };
-		A7C580FD182EE73900866FAB /* HGGSGroceryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580F3182EE73900866FAB /* HGGSGroceryItem.m */; };
-		A7C580FE182EE73900866FAB /* HGGSGrocerySection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580F5182EE73900866FAB /* HGGSGrocerySection.m */; };
-		A7C580FF182EE73900866FAB /* HGGSGroceryStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580F7182EE73900866FAB /* HGGSGroceryStore.m */; };
-		A7C58100182EE73900866FAB /* HGGSGroceryStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580F9182EE73900866FAB /* HGGSGroceryStoreManager.m */; };
-		A7C58101182EE73900866FAB /* HGGSStoreList.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580FB182EE73900866FAB /* HGGSStoreList.m */; };
 		A7C58105182EE74D00866FAB /* HGGSDbGroceryFilesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C58104182EE74D00866FAB /* HGGSDbGroceryFilesStore.m */; };
 		A7C58107182EE76800866FAB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C58106182EE76800866FAB /* QuartzCore.framework */; };
 		A7C58109182EE77100866FAB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C58108182EE77100866FAB /* SystemConfiguration.framework */; };
@@ -66,7 +67,6 @@
 		A7C58155182F31E800866FAB /* HGGSMasterListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C58154182F31E800866FAB /* HGGSMasterListViewController.m */; };
 		A7D1D3751933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1D3741933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m */; };
 		A7D7AD1A1835BF99005C41F9 /* HGGSMasterItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7AD181835BF99005C41F9 /* HGGSMasterItemCellView.m */; };
-		A7D8B6D6183B12C2005BEF43 /* HGGSGroceryAisle.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8B6D5183B12C2005BEF43 /* HGGSGroceryAisle.m */; };
 		A7DE6F72183F03C20098AE17 /* HGGSFindGrocerySectionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DE6F71183F03C20098AE17 /* HGGSFindGrocerySectionsTests.m */; };
 		A7DF0A331830531E00E1277A /* HGGSEditGroceryItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DF0A321830531E00E1277A /* HGGSEditGroceryItemViewController.m */; };
 		A7DF0A361830876200E1277A /* HGGSSynchronizeDropboxFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DF0A351830876200E1277A /* HGGSSynchronizeDropboxFilesViewController.m */; };
@@ -95,6 +95,24 @@
 		A714858A1837B1280026BE5E /* HGGSGrocerySectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGrocerySectionsViewController.m; sourceTree = "<group>"; };
 		A7244E3118B5A623007A3D12 /* HGGSStoreListManagementTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreListManagementTests.h; sourceTree = "<group>"; };
 		A7244E3218B5A623007A3D12 /* HGGSStoreListManagementTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreListManagementTests.m; sourceTree = "<group>"; };
+		A72F78E4195364DB0061E917 /* HGGSDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSDate.h; sourceTree = "<group>"; };
+		A72F78E5195364DB0061E917 /* HGGSDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSDate.m; sourceTree = "<group>"; };
+		A72F78E6195364DB0061E917 /* HGGSGroceryAisle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryAisle.h; sourceTree = "<group>"; };
+		A72F78E7195364DB0061E917 /* HGGSGroceryAisle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryAisle.m; sourceTree = "<group>"; };
+		A72F78E8195364DB0061E917 /* HGGSGroceryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryItem.h; sourceTree = "<group>"; };
+		A72F78E9195364DB0061E917 /* HGGSGroceryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryItem.m; sourceTree = "<group>"; };
+		A72F78EA195364DB0061E917 /* HGGSGrocerySection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGrocerySection.h; sourceTree = "<group>"; };
+		A72F78EB195364DB0061E917 /* HGGSGrocerySection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGrocerySection.m; sourceTree = "<group>"; };
+		A72F78EC195364DB0061E917 /* HGGSGroceryStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryStore.h; sourceTree = "<group>"; };
+		A72F78ED195364DB0061E917 /* HGGSGroceryStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryStore.m; sourceTree = "<group>"; };
+		A72F78EE195364DB0061E917 /* HGGSGroceryStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryStoreManager.h; sourceTree = "<group>"; };
+		A72F78EF195364DB0061E917 /* HGGSGroceryStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryStoreManager.m; sourceTree = "<group>"; };
+		A72F78F0195364DB0061E917 /* HGGSStoreAisles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreAisles.h; sourceTree = "<group>"; };
+		A72F78F1195364DB0061E917 /* HGGSStoreAisles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreAisles.m; sourceTree = "<group>"; };
+		A72F78F2195364DB0061E917 /* HGGSStoreItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreItems.h; sourceTree = "<group>"; };
+		A72F78F3195364DB0061E917 /* HGGSStoreItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreItems.m; sourceTree = "<group>"; };
+		A72F78F4195364DB0061E917 /* HGGSStoreList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreList.h; sourceTree = "<group>"; };
+		A72F78F5195364DB0061E917 /* HGGSStoreList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreList.m; sourceTree = "<group>"; };
 		A733B94F187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSBarCodeScannerViewController.h; sourceTree = "<group>"; };
 		A733B950187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSBarCodeScannerViewController.m; sourceTree = "<group>"; };
 		A76809B318836E4C00B7E2F0 /* WebServiceErrorResponse.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = WebServiceErrorResponse.html; sourceTree = "<group>"; };
@@ -108,10 +126,6 @@
 		A79A1E251856A5E3006E8557 /* HGGSSaveStoreListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSSaveStoreListTests.m; sourceTree = "<group>"; };
 		A79CAC67188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSSelectGrocerySectionViewController.h; sourceTree = "<group>"; };
 		A79CAC68188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSSelectGrocerySectionViewController.m; sourceTree = "<group>"; };
-		A7AAE60418B30AD70033DAD9 /* HGGSStoreAisles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreAisles.h; sourceTree = "<group>"; };
-		A7AAE60518B30AD70033DAD9 /* HGGSStoreAisles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreAisles.m; sourceTree = "<group>"; };
-		A7AAE60618B30AD70033DAD9 /* HGGSStoreItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreItems.h; sourceTree = "<group>"; };
-		A7AAE60718B30AD70033DAD9 /* HGGSStoreItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreItems.m; sourceTree = "<group>"; };
 		A7AD90FE18581F4000785342 /* HGGSShoppingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSShoppingItemCell.h; sourceTree = "<group>"; };
 		A7AD90FF18581F4000785342 /* HGGSShoppingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSShoppingItemCell.m; sourceTree = "<group>"; };
 		A7AD91011858211100785342 /* HGGSShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSShoppingListViewController.h; sourceTree = "<group>"; };
@@ -141,18 +155,6 @@
 		A7C580E1182EE68B00866FAB /* HoneyGoGroceryShoppingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HoneyGoGroceryShoppingTests-Info.plist"; sourceTree = "<group>"; };
 		A7C580E3182EE68B00866FAB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7C580E5182EE68B00866FAB /* HoneyGoGroceryShoppingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoneyGoGroceryShoppingTests.m; sourceTree = "<group>"; };
-		A7C580F0182EE73900866FAB /* HGGSDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSDate.h; sourceTree = "<group>"; };
-		A7C580F1182EE73900866FAB /* HGGSDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSDate.m; sourceTree = "<group>"; };
-		A7C580F2182EE73900866FAB /* HGGSGroceryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryItem.h; sourceTree = "<group>"; };
-		A7C580F3182EE73900866FAB /* HGGSGroceryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryItem.m; sourceTree = "<group>"; };
-		A7C580F4182EE73900866FAB /* HGGSGrocerySection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGrocerySection.h; sourceTree = "<group>"; };
-		A7C580F5182EE73900866FAB /* HGGSGrocerySection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGrocerySection.m; sourceTree = "<group>"; };
-		A7C580F6182EE73900866FAB /* HGGSGroceryStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryStore.h; sourceTree = "<group>"; };
-		A7C580F7182EE73900866FAB /* HGGSGroceryStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryStore.m; sourceTree = "<group>"; };
-		A7C580F8182EE73900866FAB /* HGGSGroceryStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryStoreManager.h; sourceTree = "<group>"; };
-		A7C580F9182EE73900866FAB /* HGGSGroceryStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryStoreManager.m; sourceTree = "<group>"; };
-		A7C580FA182EE73900866FAB /* HGGSStoreList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreList.h; sourceTree = "<group>"; };
-		A7C580FB182EE73900866FAB /* HGGSStoreList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreList.m; sourceTree = "<group>"; };
 		A7C58103182EE74D00866FAB /* HGGSDbGroceryFilesStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSDbGroceryFilesStore.h; sourceTree = "<group>"; };
 		A7C58104182EE74D00866FAB /* HGGSDbGroceryFilesStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSDbGroceryFilesStore.m; sourceTree = "<group>"; };
 		A7C58106182EE76800866FAB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -183,8 +185,6 @@
 		A7D1D3741933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSAlertSharedStoreFileUpdated.m; sourceTree = "<group>"; };
 		A7D7AD171835BF99005C41F9 /* HGGSMasterItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSMasterItemCellView.h; sourceTree = "<group>"; };
 		A7D7AD181835BF99005C41F9 /* HGGSMasterItemCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSMasterItemCellView.m; sourceTree = "<group>"; };
-		A7D8B6D4183B12C2005BEF43 /* HGGSGroceryAisle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryAisle.h; sourceTree = "<group>"; };
-		A7D8B6D5183B12C2005BEF43 /* HGGSGroceryAisle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryAisle.m; sourceTree = "<group>"; };
 		A7DE6F70183F03C20098AE17 /* HGGSFindGrocerySectionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSFindGrocerySectionsTests.h; sourceTree = "<group>"; };
 		A7DE6F71183F03C20098AE17 /* HGGSFindGrocerySectionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSFindGrocerySectionsTests.m; sourceTree = "<group>"; };
 		A7DF0A311830531E00E1277A /* HGGSEditGroceryItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSEditGroceryItemViewController.h; sourceTree = "<group>"; };
@@ -231,6 +231,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A72F78E3195364DB0061E917 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A72F78E4195364DB0061E917 /* HGGSDate.h */,
+				A72F78E5195364DB0061E917 /* HGGSDate.m */,
+				A72F78E6195364DB0061E917 /* HGGSGroceryAisle.h */,
+				A72F78E7195364DB0061E917 /* HGGSGroceryAisle.m */,
+				A72F78E8195364DB0061E917 /* HGGSGroceryItem.h */,
+				A72F78E9195364DB0061E917 /* HGGSGroceryItem.m */,
+				A72F78EA195364DB0061E917 /* HGGSGrocerySection.h */,
+				A72F78EB195364DB0061E917 /* HGGSGrocerySection.m */,
+				A72F78EC195364DB0061E917 /* HGGSGroceryStore.h */,
+				A72F78ED195364DB0061E917 /* HGGSGroceryStore.m */,
+				A72F78EE195364DB0061E917 /* HGGSGroceryStoreManager.h */,
+				A72F78EF195364DB0061E917 /* HGGSGroceryStoreManager.m */,
+				A72F78F0195364DB0061E917 /* HGGSStoreAisles.h */,
+				A72F78F1195364DB0061E917 /* HGGSStoreAisles.m */,
+				A72F78F2195364DB0061E917 /* HGGSStoreItems.h */,
+				A72F78F3195364DB0061E917 /* HGGSStoreItems.m */,
+				A72F78F4195364DB0061E917 /* HGGSStoreList.h */,
+				A72F78F5195364DB0061E917 /* HGGSStoreList.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A79A1E211856A5E3006E8557 /* HGGSStoreListTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,12 +323,12 @@
 		A7C580C0182EE68A00866FAB /* HoneyGoGroceryShopping */ = {
 			isa = PBXGroup;
 			children = (
+				A72F78E3195364DB0061E917 /* Model */,
 				A7AD90F718581B6500785342 /* Resources */,
 				A7B5A4E31836F1B4006E5822 /* HGGSCommon.h */,
 				A7D7AD141835BF99005C41F9 /* Views */,
 				A7C5814C182F196100866FAB /* Controllers */,
 				A7C58102182EE74D00866FAB /* Store */,
-				A7C580EF182EE73900866FAB /* Model */,
 				A7C580C9182EE68A00866FAB /* HGGSAppDelegate.h */,
 				A7C580CA182EE68B00866FAB /* HGGSAppDelegate.m */,
 				A7C580D2182EE68B00866FAB /* Images.xcassets */,
@@ -341,32 +366,6 @@
 				A7C580E2182EE68B00866FAB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A7C580EF182EE73900866FAB /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				A7AAE60418B30AD70033DAD9 /* HGGSStoreAisles.h */,
-				A7AAE60518B30AD70033DAD9 /* HGGSStoreAisles.m */,
-				A7AAE60618B30AD70033DAD9 /* HGGSStoreItems.h */,
-				A7AAE60718B30AD70033DAD9 /* HGGSStoreItems.m */,
-				A7C580F0182EE73900866FAB /* HGGSDate.h */,
-				A7C580F1182EE73900866FAB /* HGGSDate.m */,
-				A7C580F2182EE73900866FAB /* HGGSGroceryItem.h */,
-				A7C580F3182EE73900866FAB /* HGGSGroceryItem.m */,
-				A7C580F4182EE73900866FAB /* HGGSGrocerySection.h */,
-				A7C580F5182EE73900866FAB /* HGGSGrocerySection.m */,
-				A7C580F6182EE73900866FAB /* HGGSGroceryStore.h */,
-				A7C580F7182EE73900866FAB /* HGGSGroceryStore.m */,
-				A7C580F8182EE73900866FAB /* HGGSGroceryStoreManager.h */,
-				A7C580F9182EE73900866FAB /* HGGSGroceryStoreManager.m */,
-				A7C580FA182EE73900866FAB /* HGGSStoreList.h */,
-				A7C580FB182EE73900866FAB /* HGGSStoreList.m */,
-				A7D8B6D4183B12C2005BEF43 /* HGGSGroceryAisle.h */,
-				A7D8B6D5183B12C2005BEF43 /* HGGSGroceryAisle.m */,
-			);
-			name = Model;
-			path = ../../temp_HoneyGoGroceryShopping/HoneyGoGroceryShopping/Model;
 			sourceTree = "<group>";
 		};
 		A7C58102182EE74D00866FAB /* Store */ = {
@@ -601,34 +600,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7DF0A331830531E00E1277A /* HGGSEditGroceryItemViewController.m in Sources */,
-				A7D8B6D6183B12C2005BEF43 /* HGGSGroceryAisle.m in Sources */,
+				A72F78F7195364DB0061E917 /* HGGSGroceryAisle.m in Sources */,
 				A7D1D3751933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m in Sources */,
 				A7C58105182EE74D00866FAB /* HGGSDbGroceryFilesStore.m in Sources */,
 				A7C58155182F31E800866FAB /* HGGSMasterListViewController.m in Sources */,
 				A714858B1837B1280026BE5E /* HGGSGrocerySectionsViewController.m in Sources */,
 				A7C58152182F1F1300866FAB /* HGGSEditStoreViewController.m in Sources */,
-				A7C58101182EE73900866FAB /* HGGSStoreList.m in Sources */,
 				A7E2454B18C38D9700B4C5B9 /* HGGSAisleHeaderCellView.m in Sources */,
-				A7AAE60918B30AD70033DAD9 /* HGGSStoreItems.m in Sources */,
 				A7AD910018581F4000785342 /* HGGSShoppingItemCell.m in Sources */,
 				A7EB1D43184D761700198EC6 /* HGGSEditShoppingListViewController.m in Sources */,
+				A72F78F8195364DB0061E917 /* HGGSGroceryItem.m in Sources */,
 				A76809B7188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m in Sources */,
-				A7C58100182EE73900866FAB /* HGGSGroceryStoreManager.m in Sources */,
 				A7DF0A361830876200E1277A /* HGGSSynchronizeDropboxFilesViewController.m in Sources */,
+				A72F78F6195364DB0061E917 /* HGGSDate.m in Sources */,
+				A72F78FB195364DB0061E917 /* HGGSGroceryStoreManager.m in Sources */,
 				A733B951187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m in Sources */,
 				A7C5814F182F196100866FAB /* HGGSMainViewController.m in Sources */,
-				A7C580FC182EE73900866FAB /* HGGSDate.m in Sources */,
-				A7C580FF182EE73900866FAB /* HGGSGroceryStore.m in Sources */,
-				A7C580FD182EE73900866FAB /* HGGSGroceryItem.m in Sources */,
+				A72F78F9195364DB0061E917 /* HGGSGrocerySection.m in Sources */,
+				A72F78FC195364DB0061E917 /* HGGSStoreAisles.m in Sources */,
 				A7C580C7182EE68A00866FAB /* main.m in Sources */,
 				A7E2454818C38A9A00B4C5B9 /* HGGSNewGrocerySectionViewController.m in Sources */,
+				A72F78FE195364DB0061E917 /* HGGSStoreList.m in Sources */,
+				A72F78FA195364DB0061E917 /* HGGSGroceryStore.m in Sources */,
 				A7C580CB182EE68B00866FAB /* HGGSAppDelegate.m in Sources */,
 				A7EB1D46184D839300198EC6 /* HGGSShoppingItemCellView.m in Sources */,
 				A79CAC69188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m in Sources */,
 				A7D7AD1A1835BF99005C41F9 /* HGGSMasterItemCellView.m in Sources */,
-				A7AAE60818B30AD70033DAD9 /* HGGSStoreAisles.m in Sources */,
 				A7AD91031858211100785342 /* HGGSShoppingListViewController.m in Sources */,
-				A7C580FE182EE73900866FAB /* HGGSGrocerySection.m in Sources */,
+				A72F78FD195364DB0061E917 /* HGGSStoreItems.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

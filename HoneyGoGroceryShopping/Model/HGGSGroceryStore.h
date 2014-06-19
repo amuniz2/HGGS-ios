@@ -7,55 +7,66 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HGGSGrocerySection.h"
 #import "HGGSGroceryItem.h"
+#import "HGGSStoreItems.h"
+#import "HGGSStoreAisles.h"
 
+@class HGGSGroceryAisle;
 
 typedef enum storeFileType
 {
     STORE,
-    MASTER_LIST
+    MASTER_LIST,
+    CURRENT_LIST,
+    SHOPPING_LIST,
+    AISLE_CONFIG
     
 } storeFileType;
 
 @protocol HGGSGroceryStoreDelegate <NSObject>
-
--(void)didSaveList:(storeFileType)listType storeName:(NSString*)storeName ;
-
+@optional
+-(void)didHaveAisleChange:(HGGSGrocerySection*)section fromAisle:(HGGSGroceryAisle*)fromAisle toAisle:(HGGSGroceryAisle*)toAisle;
+-(void)didRemoveGroceryAisle:(HGGSGroceryAisle*)aisle;
 @end
 
 
-@interface HGGSGroceryStore : NSObject
+@interface HGGSGroceryStore : NSObject <HGGSGrocerySectionDelegate, HGGSStoreListDelegate>
 {
-    //NSMutableArray *_groceryItemsInMasterList;
-    NSDictionary *_storeLists;
 }
-@property (retain) id <HGGSGroceryStoreDelegate> delegate;
-
+@property (weak) id <HGGSGroceryStoreDelegate> delegate;
+@property (nonatomic, assign, readonly) NSArray* grocerySections;
+@property (nonatomic, readonly) NSDictionary* storeLists;
 +(HGGSGroceryStore *)createStore:(NSString*)storeName;
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete;
 +(NSString*)getFileNameComponent:(storeFileType)fileType;
-+(NSString *)getGroceryStorePath:(NSString *) storeName;
-@property(nonatomic, copy)NSString *Name;
+@property(nonatomic, copy)NSString *name;
 @property Boolean ShareLists;
-@property(nonatomic, copy)NSDate* lastSyncDate;
+@property(readonly, copy)NSDate* lastModificationDate;
 
 -(id)initWithStoreName:(NSString *)storeName;
-
 -(bool)anyListsLoaded;
--(HGGSGroceryItem *) createGroceryItemWithDetailsInList:(storeFileType)listType name:(NSString*) name quantity:(int)quantity unit:(NSString *)unit section:(NSString *) section notes:(NSString *)notes ;
--(HGGSGroceryItem *) createGroceryItemWithDetailsInList:(storeFileType)listType name:(NSString*) name quantity:(int)quantity unit:(NSString *)unit section:(NSString *) section notes:(NSString *)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;
--(NSString*)getFileName:(storeFileType)storeFileType;
+-(void)createCurrentList;
+-(void)createShoppingList;
+-(HGGSGrocerySection*)findGrocerySection:(NSString*)sectionName inAisles:(NSArray*)aisles;
+-(HGGSGrocerySection *)findGrocerySectionBySectionId:(NSString *)sectionId ;
+-(NSArray*)findGrocerySections:(NSString*)stringToSearchFor inAisles:(bool)inAisles;
+-(NSString *)getLocalFolder;
 -(NSArray *) getSharedFileNameComponents;
--(NSString *)getGroceryListArchivePath;
--(NSArray*)getGroceryListsFileNames:(NSString *) storeName;
--(NSMutableArray*)itemsInList:(storeFileType)listType;
--(NSMutableArray *)loadList:(storeFileType)listType;
+-(NSArray*)getGroceryListsFileNames;
+//-(HGGSGrocerySection*) insertNewGrocerySection:(NSString*)name inAisle:(NSInteger)aisleNumber atSectionIndex:(NSInteger)sectionIndex;
+-(HGGSStoreItems*) getCurrentList;
+-(HGGSStoreAisles *) getGroceryAisles;
+-(HGGSStoreItems*) getMasterList;
+-(HGGSStoreAisles*)getShoppingList;
 -(void)reloadLists;
--(void)removeItem:(HGGSGroceryItem*)item fromList:(storeFileType)listType;
--(void)save;
--(BOOL)saveList:(storeFileType)listType;
+-(void)removeGrocerySection:(HGGSGrocerySection*)grocerySection fromAisle:(HGGSGroceryAisle *)aisle;
+-(bool)saveCurrentList;
+-(bool)saveGroceryAisles;
+-(bool)saveMasterList;
+-(bool)saveShoppingList;
 -(void) saveStoreInfo;
+-(bool) shoppingListIsMoreRecentThanCurrentList;
 -(void)unloadLists;
--(NSArray*)findItems:(NSString*)stringToSearchFor inList:(storeFileType)listType;
 
 @end

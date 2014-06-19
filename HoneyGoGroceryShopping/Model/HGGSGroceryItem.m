@@ -14,7 +14,7 @@
 #pragma mark Initialization Methods
 -(id)initFromDictionary:(NSDictionary*)itemAttributes
 {
-    NSInteger quantity =[[itemAttributes objectForKey:@"quantity" ] intValue];
+    int quantity =(unsigned int)[[itemAttributes objectForKey:@"quantity" ] intValue];
     
     self = [self initWithOldDetails:[itemAttributes objectForKey:@"name"]
                         quantity:quantity
@@ -29,23 +29,25 @@
     return self;
 }
 
--(id)initWithOldDetails:(NSString*)name quantity:(int)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId
+-(id)initWithOldDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId
 {
     self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate];
     if (self)
     {
         [self setSectionId:sectionId];
+    
     }
     return self;
 }
--(id)initWithDetails:(NSString*)name quantity:(int)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate
+
+-(id)initWithDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate
 {
     
     self = [super init];
     if (self)
     {
         [self setLastPurchasedDate:lastPurchasedDate];
-        [self setName:name];
+        _name = name;
         [self setNotes:notes];
         [self setQuantity:amount];
         [self setUnit:unitDescription];
@@ -59,7 +61,7 @@
 -(id)init
 {
     NSString* emptyString = @"";
-    self = [self initWithDetails:emptyString quantity:0 unit:emptyString section:emptyString notes:emptyString select:NO lastPurchasedOn:nil];
+    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil];
     if (self)
     {
         [self setSectionId:emptyString];
@@ -72,30 +74,17 @@
 {
     _asDictionary =[[NSDictionary alloc] initWithObjectsAndKeys:
                     _name,@"name",
-                    [NSNumber numberWithInt:_quantity],@"quantity",
-                    _unit, @"unit",
-                    _notes, @"notes",
+                    [NSNumber numberWithInteger:_quantity],@"quantity",
+                    (_unit == nil) ? @"" : _unit, @"unit",
+                    (_notes == nil) ? @"" : _notes, @"notes",
                     [HGGSBool boolAsString:_selected], @"selected",
-                    _sectionId, @"category",
-                    _section, @"section",
+                    /*(_sectionId == nil) ? @"" : _sectionId, @"category",*/
+                    (_section == nil) ? @"" : _section, @"section",
                     [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
                     nil];
     return _asDictionary;
 }
--(NSString *)ToJson
-{
-   
-    bool validJsonObject = [NSJSONSerialization isValidJSONObject:self];
-    
-    if (validJsonObject)
-    {
-        return _name;
-//        return [NSJSONSerialization dataWithJSONObject:self  options:
-        //<#(NSJSONWritingOptions)#> error:<#(NSError *__autoreleasing *)#>]
-    }
-    return _name;
 
-}
 #pragma mark NSObject Overrides
 -(NSString *)description
 {
@@ -105,5 +94,33 @@
 {
     return [[self name] isEqual:[someItem name]];
 }
+
+#pragma mark NSCopying 
+-(id)copyWithZone:(NSZone *)zone
+{
+    HGGSGroceryItem *copy = [[HGGSGroceryItem alloc] initWithDetails:[self name]
+                                                            quantity:[self quantity]
+                                                                unit:[self unit]
+                                                             section:[self section]
+                                                               notes:[self notes]
+                                                              select:[self selected]
+                                                     lastPurchasedOn:[self lastPurchasedDate]];
+    
+    [copy setSectionId:[self sectionId]];
+    
+    return copy;
+}
+
+#pragma mark Private
+- (NSComparisonResult) compareWithAnotherItem:(HGGSGroceryItem*) anotherItem
+{
+    NSComparisonResult sectionResult = [[self section] compare:[anotherItem section] options:NSCaseInsensitiveSearch];
+    if (sectionResult != NSOrderedSame)
+        return sectionResult;
+    
+    //return [[self name] caseInsensitiveCompare:[anotherItem name]];
+    return [[self name] compare:[anotherItem name] options:NSCaseInsensitiveSearch];
+}
+
 @end
 

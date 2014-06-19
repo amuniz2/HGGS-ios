@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HGGSGroceryItem : NSObject
+@interface HGGSGroceryItem : NSObject <NSCopying>
 {
     //NSDictionary *someInstanceVariable;
 }
 
-@property int quantity;
+@property NSInteger quantity;
 @property bool selected;
 @property (nonatomic, copy) NSString *sectionId;
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, copy)NSString *unit;
 @property (nonatomic, copy)NSString *section;
 @property (nonatomic, copy) NSString *notes;
@@ -25,10 +25,11 @@
 -(id)initFromDictionary:(NSDictionary *)itemAttributes;
 @property(nonatomic,strong)NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name quantity:(int)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;
+-(id)initWithDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;
 
--(id)initWithOldDetails:(NSString*)name quantity:(int)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId;
+-(id)initWithOldDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId;
 
+- (NSComparisonResult) compareWithAnotherItem:(HGGSGroceryItem*) anotherItem;
 
 
 

@@ -8,18 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HGGSGrocerySection : NSObject
+@protocol HGGSGrocerySectionDelegate <NSObject>
+
+-(void)didChangeAisle:(id)section fromAisleNumber:(NSInteger)fromAisleNumber toAisleNumber:(NSInteger)toAisleNumber;
+
+@end
+
+@interface HGGSGrocerySection : NSObject <NSCopying>
 {}
-@property int aisle;
-@property int order;
+@property (retain) id <HGGSGrocerySectionDelegate> delegate;
+
+@property (nonatomic) NSInteger aisle;
+@property (nonatomic) NSInteger order;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *sectionId;
+@property (nonatomic, strong) NSMutableArray* groceryItems;
 
 -(id)initFromDictionary:(NSDictionary *)itemAttributes;
 @property(nonatomic,strong)NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name aisle:(int)aisle order:(int)order;
+-(id)initWithDetails:(NSString*)name aisle:(NSInteger)aisle order:(NSInteger)order  groceryItemsInSection:(NSMutableArray*)groceryItems;
 
--(id)initWithOldDetails:(NSString*)name aisle:(int)aisle order:(int)order sectionId:(NSString*)sectionId;
+-(id)initWithOldDetails:(NSString*)name aisle:(int)aisle order:(int)order sectionId:(NSString*)sectionId  groceryItemsInSection:(NSMutableArray*)groceryItems;
 
 @end

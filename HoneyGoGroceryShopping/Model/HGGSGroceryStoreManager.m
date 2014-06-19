@@ -25,6 +25,8 @@
     if(!sharedStoreManager)
     {
         sharedStoreManager = [[super allocWithZone:nil] init];
+        if ([[sharedStoreManager allStores] count] == 0 )
+            [sharedStoreManager createDefaultStore];
     }
     return sharedStoreManager;
 }
@@ -64,9 +66,12 @@
     return _allStores;
 }
 
+
 #pragma mark Public Methods
 -(void)deleteStore:(NSString *)storeName
 {
+    NSLog(@"store manager deleteStore called");
+
     HGGSGroceryStore *storeToDelete = [_allStores objectForKey:storeName];
     if (storeToDelete)
     {
@@ -83,6 +88,11 @@
     
     return newStore;
 }
+-(HGGSGroceryStore *)createDefaultStore
+{
+    return [self addStore:@"My Grocery Store"];
+}
+
 -(HGGSGroceryStore *)store:(NSString*)name
 {
     return [_allStores objectForKey:name];
@@ -96,8 +106,29 @@
         [self saveStore:store];
     }
 }
+-(void)saveMasterList:(HGGSGroceryStore*)store
+{
+    [store saveMasterList];
+    [self synchWithDb:store storeList:[store getMasterList]];
+}
+-(void)saveCurrentList:(HGGSGroceryStore*)store
+{
+    [store saveCurrentList];
+    [self synchWithDb:store storeList:[store getCurrentList]];
+}
+-(void)saveShoppingList:(HGGSGroceryStore*)store
+{
+    [store saveShoppingList];
+}
 
--(void)saveStoreList:(HGGSGroceryStore*)store listType:(storeFileType)listType
+-(void)saveGroceryAisles:(HGGSGroceryStore*)store
+{
+    [store saveGroceryAisles];
+    [self synchWithDb:store storeList:[store getGroceryAisles]];
+}
+
+/*
+ -(void)saveStoreList:(HGGSGroceryStore*)store listType:(storeFileType)listType
 {
     if (([store saveList:listType ]) && ([store ShareLists]))
     {
@@ -108,7 +139,7 @@
     }
     
 }
-
+*/
 
 #pragma mark private methods
 -(void)loadData
@@ -127,10 +158,10 @@
     
     if ([storeToLoad ShareLists])
     {
-        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
         // copy any files that have been updated in dropbox
-        [dbStore syncWithDropbox:storeToLoad];
-        
+        [self fetchAnyNewDbFilesForStore:storeToLoad];
+        [[HGGSDbGroceryFilesStore sharedDbStore] notifyOfChangesToStore:storeToLoad];
+
     }
     return storeToLoad;
 }
@@ -157,6 +188,30 @@
 
 }
 
+-(void)fetchAnyNewDbFilesForStore:(HGGSGroceryStore*) store
+{
+    [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:AISLE_CONFIG]]];
+    [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:MASTER_LIST]]];
+    [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:CURRENT_LIST]]];
+    
+}
+-(void)fetchNewDbStoreList:(HGGSStoreList*) storeList
+{
+    [storeList unload];
+//    [[HGGSDbGroceryFilesStore sharedDbStore] copyToDropbox:storeList  notifyCopyCompleted:nil];
+    [[HGGSDbGroceryFilesStore sharedDbStore] copyFromDropbox:storeList  notifyCopyCompleted:nil];
+}
+
+-(void)synchWithDb:(HGGSGroceryStore*) store storeList:(HGGSStoreList*)storeList
+{
+    if ([store ShareLists])
+    {
+        [storeList unload];
+        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
+        [dbStore copyToDropbox:storeList  notifyCopyCompleted:nil];
+    }
+}
+
 -(NSString *)getGroceryStoresFolder
 {
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -166,13 +221,13 @@
 }
 
 #pragma mark HGGSGroceryStoreDelegate Methods
--(void)groceryStore:(NSString *)storeName didSaveList:(storeFileType)listType
+-(void)groceryStore:(HGGSStoreList*) list
 {
-    HGGSGroceryStore *groceryStore = [self store:storeName];
+    HGGSGroceryStore *groceryStore = [list store];
     if ([groceryStore ShareLists])
     {
         HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-        [dbStore copyToDropbox:groceryStore  notifyCopyCompleted:nil];
+        [dbStore copyToDropbox:list  notifyCopyCompleted:nil];
     }
 }
 

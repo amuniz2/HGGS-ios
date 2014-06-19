@@ -17,11 +17,18 @@
 
 }
 @property (readonly, nonatomic, strong) NSDictionary *allStores;
+
 +(HGGSGroceryStoreManager *)sharedStoreManager;
 
 -(void)deleteStore:(NSString *)storeName;
 -(HGGSGroceryStore *)addStore:(NSString*)storeName;
+-(HGGSGroceryStore *)createDefaultStore;
 -(void)saveChanges;
--(void)saveStoreList:(HGGSGroceryStore*)store listType:(storeFileType)listType;
+//-(void)saveStoreList:(HGGSGroceryStore*)store listType:(storeFileType)listType;
+-(void)saveCurrentList:(HGGSGroceryStore*)store;
+-(void)saveGroceryAisles:(HGGSGroceryStore*)store;
+-(void)saveMasterList:(HGGSGroceryStore*)store;
+-(void)saveShoppingList:(HGGSGroceryStore*)store;
 -(HGGSGroceryStore *)store:(NSString *)name;
+
 @end
