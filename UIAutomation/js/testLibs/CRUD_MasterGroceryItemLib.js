@@ -1,8 +1,6 @@
 #import "tuneupJs/tuneup.js"
 #import "commonWindowFunctions.js"
-//#import "windowDefinitions.js"
 #import "windowTests.js"
-//#import "utils.js"
 
 var masterListTestHasBeenSetup = false;
 var testStoreName = "UI Automation Test Store";

@@ -1,34 +1,6 @@
-#import "tuneupJs/tuneup.js"
-#import "commonWindowFunctions.js"
-//#import "windowDefinitions.js"
-#import "windowTests.js"
-#import "utils.js"
-
 var prepareShoppingListTestHasBeenSetup = false;
 var testStoreName = "UI Automation Test Store";
 
-/*
-var expectedAlertMessage = "";
-
-
-
-UIATarget.onAlert = function onAlert(alert) {
-
-    var title = alert.name();
-	
-    if (title == expectedAlertMessage) {
-
-        //alert.buttons()["Yes"].tap();
-		expectedAlertMessage = "";
-        return true;  //alert handled, so bypass the default handler
-
-    }
-	else
-		UIALogger.logWarning("Alert with title '" + title + "' encountered.");
-	
-    return false;
-}
-*/
 function createOrSelectTestStoreForPrepareShoppingList(target, app, storeName)
 {
 	var mainWindow = new MainWindow(target, app);
@@ -137,7 +109,6 @@ function testCancelEditShoppingItem(target, app)
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem1] );	
 }
 
-
 function testEditShoppingItem(target, app)
 {
 	setupPrepareShoppingListTest(target, app)
@@ -238,27 +209,28 @@ function testAddItemThatIsNotSavedToMasterList(target, app)
 	editWithShoppingItemValues(app, editItemWindow, data.shoppingListItem5_NotAddedToMaster);
 
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4, data.shoppingListItem5_NotAddedToMaster] );
+
+	exitPrepareShoppingListTest(target, app);	 
 }
 
 function testSaveAndLoadPreparedShoppingList(target, app)
 {
 	var data = new testCurrentListData();
-	exitPrepareShoppingListTest(target, app);	 
 
  	setupPrepareShoppingListTest(target, app)
 	
 	var prepareShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4, data.shoppingListItem5_NotAddedToMaster] );
+
+	// exiting the PrepareShoppingList window will save the list
+	exitPrepareShoppingListTest(target, app);	 
 	
 }
 
 function testVerifyMasterListIncludesItemsAdded(target, app)
 {
 	var data = new testMasterListData();
-	 
-	// exiting the PrepareShoppingList window will save the list
-	exitPrepareShoppingListTest(target, app);	 
-	 
+	 	 
 	var mainWindow = new MainWindow(target, app);
 	 
 	mainWindow.StorePicker().wheels()[0].selectValue(testStoreName);	
@@ -279,4 +251,3 @@ function testVerifyMasterListIncludesItemsAdded(target, app)
 	editStoreWindow.BackButton().waitForInvalid();
 	
 }
-

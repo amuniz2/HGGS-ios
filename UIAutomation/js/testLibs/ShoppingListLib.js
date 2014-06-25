@@ -1,9 +1,3 @@
-#import "tuneupJs/tuneup.js"
-#import "commonWindowFunctions.js"
-//#import "windowDefinitions.js"
-#import "windowTests.js"
-#import "utils.js"
-
 var shoppingListTestHasBeenSetup = false;
 var testStoreName = "UI Automation Test Store";
 
@@ -25,12 +19,13 @@ function createOrSelectTestStoreForShoppingListTest(target, app, storeName)
 		editStoreWindow.BackButton().waitForInvalid();
 	 	mainWindow.StorePicker().wheels()[0].selectValue(storeName);
 		prepareShoppingList(target, app, storeName, 
-			[currentListData.shoppingListItem2_updated, currentListData.shoppingListItem3, currentListData.shoppingListItem1, currentListData.shoppingListItem4],
+			[currentListData.shoppingListItem2_updated, 
+			/*currentListData.shoppingListItem3*/ currentListData.groceryItemInProduceSection, 
+			currentListData.shoppingListItem1, 
+			currentListData.shoppingListItem4],
 			[currentListData.shoppingListItem5_NotAddedToMaster] );
-		UIALogger.logDebug("Returned from prepareShoppingList");
 	}
  	mainWindow.StorePicker().wheels()[0].selectValue(storeName);
-	UIALogger.logDebug("Selected store");
 	return mainWindow;
 }
 
@@ -68,18 +63,21 @@ function testVerifyShoppingListCreated(target, app)
 	var data = new ShoppingListData();
 	 
 	var shoppingListWindow = new ShoppingListWindow(target, app, testStoreName);
-	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4,  data.shoppingListItem5] );
+	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem0, data.shoppingListItem1, data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4] );
+	exitShoppingListTest (target, app);
 }
 
 function testCheckItemOff(target, app)
 {
+	UIALogger.logWarning("Not Implemented, due to inability to tap an invisible button.")
+	
+	/*
 	var data = new ShoppingListData();
 	var shoppingListWindow = new ShoppingListWindow(target, app, testStoreName);
 	var itemCell = shoppingListWindow.GroceryItemCell(data.shoppingListItem2).tap();
-	//  
-	 UIALogger.logWarning("Not Implemented - valdate that tapping a shopping item checks it off - or makes it disappear?");
+	  
  	exitShoppingListTest (target, app);
-	
+	*/
 }
 
 function testVerifyNewListCreatedAfterShopping(target, app)
@@ -89,10 +87,13 @@ function testVerifyNewListCreatedAfterShopping(target, app)
 	var mainWindow = new MainWindow(target, app);
 	mainWindow.PrepareGroceryListButton().tap();
 	mainWindow.PrepareGroceryListButton().waitForInvalid(); 
-	 
+		 
 	var prepareShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
-	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4] );
-	 
+	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, 
+		[	data.shoppingListItem2_updated, 
+			data.groceryItemInProduceSection, 
+			data.shoppingListItem1, 
+			data.shoppingListItem4] );
 	exitShoppingListTest (target, app);
 }
 

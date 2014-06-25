@@ -84,7 +84,6 @@
 }
 -(NSDate *)lastModificationDate
 {
-    NSDate* date = nil;
     NSString* localFilePath = [self filePath];
     NSDictionary *attrs = nil;
     

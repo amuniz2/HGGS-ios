@@ -1,8 +1,3 @@
-#import "TuneupJs/tuneup.js"
-#import "windowDefinitions.js"
-#import "commonWindowFunctions.js"
-#import "windowTests.js"
-
 var testStoreHasBeenSetup = false;
 var testStoreName = "UI Automation Test Store";
 var initialTestStoreName = "My Grocery Store"

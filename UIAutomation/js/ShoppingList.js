@@ -1,8 +1,10 @@
 #import "testLibs/tuneupJs/tuneup.js"
 #import "testLibs/windowDefinitions.js"
 #import "testLibs/commonWindowFunctions.js"
-#import "testLibs/ShoppingListLib.js"
+#import "testLibs/windowTests.js"
+#import "testLibs/utils.js"
 
+#import "testLibs/ShoppingListLib.js"
 
 test("ShoppingList_VerifyShoppingListCreated", function(target, app)
 {	

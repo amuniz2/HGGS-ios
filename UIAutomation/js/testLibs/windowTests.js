@@ -167,11 +167,11 @@ function testShoppingListWindowValidity(window, expectedItems)
 	assertEquals(window.StoreName + " Shopping List", window.Name(), "Prepare Shopping List window has wrong title (not at prepare shopping list window?)");
  	assertTrue(window.ShoppingListView().isValid(), "Table View in Prepare Shopping List Window is not valid");
 	assertEquals(expectedItems.length, window.ShoppingListView().cells().length, "Unexpected number of items found in shopping list");
-
  	for (var j = 0; j < expectedItems.length; j++)
 	{
 		var item = expectedItems[j];
 		var expectedCellName = item.ShoppingListCellName();
+		UIALogger.logDebug("Looking for: '" + expectedCellName + "' cell");
 		assertNotNull(window.ShoppingListView().cells()[expectedCellName], "'" + expectedCellName + "'" + "not a valid cell name in shopping list"); 	
 		cell = new ShoppingListCell(window.ShoppingListView().cells()[expectedCellName]);
 		assertTrue(cell.isValid());

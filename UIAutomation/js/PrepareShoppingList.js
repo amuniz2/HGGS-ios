@@ -1,8 +1,8 @@
-//#import "testLibs/Tuneupjs/test.js"
-#import "testLibs/tuneupJs/tuneup.js"
-#import "testLibs/windowDefinitions.js"
+#import "testLibs/Tuneupjs/test.js"
 #import "testLibs/commonWindowFunctions.js"
+#import "testLibs/windowTests.js"
 #import "testLibs/PrepareShoppingListLib.js"
+
 
 test("PrepareShoppingList_AddItem", function(target, app)
 {		
@@ -34,22 +34,21 @@ test("PrepareShoppingList_CannotSaveItemWithDuplicateName", function(target, app
 	testCannotSaveShoppingItemWithDuplicateName(target, app);
 });
 
-
 test("PrepareShoppingList_AddItemThatIsNotSavedToMasterList", function(target, app)
 {
 	testAddItemThatIsNotSavedToMasterList(target, app);
-});
-
-
-test("PrepareShoppingList_SaveAndLoad", function(target, app)
-{
-	 testSaveAndLoadPreparedShoppingList(target, app);
 });
 
 test("PrepareShoppingList_VerifyMasterListIncludesItemsAdded", function(target, app)
 {
 	testVerifyMasterListIncludesItemsAdded(target, app);
 });
+
+test("PrepareShoppingList_SaveAndLoad", function(target, app)
+{
+	 testSaveAndLoadPreparedShoppingList(target, app);
+});
+
 
 test("PrepareShoppingList_VerifyNewListCreatedAfterShopping", function(target, app)
 {

@@ -242,8 +242,9 @@ function prepareShoppingList(target, app, storeName, masterItemsToInclude, items
 	for (var i = 0; i < masterItemsToInclude.length; i++)
 	{
 		var expectedCellName = masterItemsToInclude[i].PrepareShoppingListCellName();
+		UIALogger.logDebug("Processing: " + expectedCellName);
 		var itemCell = new PrepareShoppingListCell(editShoppingListWindow.ShoppingListView().cells()[expectedCellName]);
-		if (itemCell.IncludeSwitch().value() != masterItemsToInclude[i].Selected)
+		if (!itemCell.IncludeSwitch().value())
 			itemCell.IncludeSwitch().tap() ;		
 	}
 	
@@ -253,6 +254,7 @@ function prepareShoppingList(target, app, storeName, masterItemsToInclude, items
 		editShoppingListWindow.AddItemButton().waitForInvalid();
 	 
 		var editItemWindow = new EditGroceryItemWindow(target, app);
+		UIALogger.logDebug("Adding item: " + itemsToAdd[j].Name);
 		editItemWindow.NameTextView().setValue(itemsToAdd[j].Name );
 		editWithShoppingItemValues(app, editItemWindow, itemsToAdd[j]);		
 		
@@ -293,17 +295,23 @@ function testCurrentListData()
 	this.shoppingListItem2_updated = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true, false);	
 	this.shoppingListItem4 = new CurrentGroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true, true);	
 	
-	this.shoppingListItem5_NotAddedToMaster = new CurrentGroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);	
+	this.shoppingListItem5_NotAddedToMaster = new CurrentGroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);	
 }
 
 function ShoppingListData()
 {
-	//this.shoppingListItem1 = new GroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false);	
+	this.shoppingListItem0 = new GroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false);	
+	this.shoppingListItem1 = new GroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', false);
 	this.shoppingListItem2 = new GroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', false);	
 	this.shoppingListItem3 = new GroceryItem('Item 3', '10', 'oz', 'Should be in produce section', 'produce', '1', false);	
 	this.shoppingListItem4 = new GroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', false);
-	this.shoppingListItem5 = new GroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', false);	
+//	this.shoppingListItem5 = new GroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', false);	
 }
 
-
-
+/*
+[currentListData.shoppingListItem2_updated, 
+currentListData.groceryItemInProduceSection, 
+currentListData.shoppingListItem1, 
+currentListData.shoppingListItem4],
+[currentListData.shoppingListItem5_NotAddedToMaster] );
+*/
