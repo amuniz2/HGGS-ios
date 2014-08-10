@@ -25,7 +25,6 @@ typedef void (^dismissBlock)(DbFileSynchOption);
     __weak IBOutlet UIButton *actionButton;
     __weak IBOutlet UIPickerView *synchOptionSelector;
  }
-@property (nonatomic,copy) NSString *storeName;
 @property DbFileSynchOption synchOptionSelected;
 @property (strong,nonatomic) HGGSGroceryStore * groceryStore;
 @property (nonatomic, copy) void(^dismissBlock)(void);

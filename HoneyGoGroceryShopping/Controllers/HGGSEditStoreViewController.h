@@ -17,6 +17,7 @@
     
     UIActivityIndicatorView *_activityIndicator;
     BOOL _isLinked;
+    UIAlertView *_unlinkAlertView;
     __weak IBOutlet UIToolbar *_editToolbar;
     bool _inEditMode;
 }

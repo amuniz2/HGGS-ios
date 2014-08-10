@@ -517,7 +517,7 @@
     }
     
     [copyOfSelf setName:[self name]];
-    [copyOfSelf setShareLists:[self ShareLists]];
+    [copyOfSelf setShareLists:[self shareLists]];
     
     return copyOfSelf;
 }
@@ -657,7 +657,7 @@
 {
     NSError* error;
     
-    NSMutableDictionary * storeProperties = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[self name],@"Name",[NSNumber numberWithBool:[self ShareLists]],@"ShareLists",
+    NSMutableDictionary * storeProperties = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[self name],@"Name",[NSNumber numberWithBool:[self shareLists]],@"ShareLists",
                 [HGGSDate dateAsString:[[self getMasterList] lastSyncDate]], @"LastSyncDate_MasterList",
                 [HGGSDate dateAsString:[[self getGroceryAisles] lastSyncDate]], @"LastSyncDate_GroceryAisles",
                 [HGGSDate dateAsString:[[self getCurrentList] lastSyncDate]], @"LastSyncDate_CurrentList"

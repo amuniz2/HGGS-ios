@@ -11,5 +11,5 @@
 @interface HGGSAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (weak, nonatomic) UIViewController *dropboxViewController;
 @end

@@ -41,7 +41,7 @@ typedef enum storeFileType
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete;
 +(NSString*)getFileNameComponent:(storeFileType)fileType;
 @property(nonatomic, copy)NSString *name;
-@property Boolean ShareLists;
+@property Boolean shareLists;
 @property(readonly, copy)NSDate* lastModificationDate;
 
 -(id)initWithStoreName:(NSString *)storeName;

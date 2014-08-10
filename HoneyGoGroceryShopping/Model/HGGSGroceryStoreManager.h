@@ -17,6 +17,7 @@
 
 }
 @property (readonly, nonatomic, strong) NSDictionary *allStores;
+@property (readonly, nonatomic) BOOL groceryListsAreBeingShared;
 
 +(HGGSGroceryStoreManager *)sharedStoreManager;
 
@@ -30,5 +31,4 @@
 -(void)saveMasterList:(HGGSGroceryStore*)store;
 -(void)saveShoppingList:(HGGSGroceryStore*)store;
 -(HGGSGroceryStore *)store:(NSString *)name;
-
 @end

@@ -47,6 +47,22 @@
          contextName = "-[HGGSStoreList copyOfList]:HGGSStoreList.m">
       </ContextState>
       <ContextState
+         contextName = "-[HGGSEditStoreViewController onSharingStatusUpdate]:HGGSEditStoreViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[DBAccountManager sharedManager] isLinked]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSAppDelegate application:openURL:sourceApplication:annotation:]:HGGSAppDelegate.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[[[self window] rootViewController] navigationController] visibleViewController]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSEditShoppingListViewController setItemPropertiesPerCellChanges:]:HGGSEditShoppingListViewController.m">
       </ContextState>
       <ContextState
@@ -56,10 +72,10 @@
          contextName = "-[HGGSGroceryStore findGrocerySectionBySectionId:]:HGGSGroceryStore.m">
          <PersistentStrings>
             <PersistentString
-               value = "locationOfString.location">
+               value = "NSNotFound">
             </PersistentString>
             <PersistentString
-               value = "NSNotFound">
+               value = "locationOfString.location">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -83,10 +99,18 @@
          contextName = "-[HGGSGrocerySectionsViewController doneEditing:]:HGGSGrocerySectionsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "_ipBeingEdited.row">
+               value = "!newSectionName">
             </PersistentString>
             <PersistentString
-               value = "!newSectionName">
+               value = "_ipBeingEdited.row">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditStoreViewController linkWithDropbox]:HGGSEditStoreViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[DBAccountManager sharedManager]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

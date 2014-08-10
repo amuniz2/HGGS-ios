@@ -65,14 +65,18 @@
     if (account && account.linked) {
         
         alertView = [[UIAlertView alloc] initWithTitle:@"Successfully Linked with Dropbox."
-                                               message:@"You can now share your pantry and grocery lists across devices."
-                                              delegate:[[[[self window] rootViewController] navigationController] visibleViewController] cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                                               message:@"You can now share your grocery lists across devices."
+                                              //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
+                                              delegate:[self dropboxViewController]
+                                                cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
     }
     else
     {
         alertView = [[UIAlertView alloc] initWithTitle:@"Failed to linked with Dropbox."
                                                message:@"Please verify that you have access to the internet."
-                                              delegate:[[[[self window] rootViewController] navigationController] visibleViewController] cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+                                              //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
+                                              delegate: [self dropboxViewController]
+                                                cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         returnValue = NO;
     }

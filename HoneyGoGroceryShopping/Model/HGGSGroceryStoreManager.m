@@ -66,7 +66,18 @@
     return _allStores;
 }
 
-
+-(BOOL) groceryListsAreBeingShared
+{
+    HGGSGroceryStore * store;
+    NSEnumerator * enumerator = [_allStores objectEnumerator];
+    while(store = [enumerator nextObject])
+    {
+        if ([store shareLists])
+            return true;
+    }
+    return false;
+    
+}
 #pragma mark Public Methods
 -(void)deleteStore:(NSString *)storeName
 {
@@ -156,7 +167,7 @@
     HGGSGroceryStore *storeToLoad = [[HGGSGroceryStore alloc] initWithStoreName:storeName];
     [_allStores setObject:storeToLoad forKey:storeName];
     
-    if ([storeToLoad ShareLists])
+    if ([storeToLoad shareLists])
     {
         // copy any files that have been updated in dropbox
         [self fetchAnyNewDbFilesForStore:storeToLoad];
@@ -204,7 +215,7 @@
 
 -(void)synchWithDb:(HGGSGroceryStore*) store storeList:(HGGSStoreList*)storeList
 {
-    if ([store ShareLists])
+    if ([store shareLists])
     {
         [storeList unload];
         HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
@@ -224,7 +235,7 @@
 -(void)groceryStore:(HGGSStoreList*) list
 {
     HGGSGroceryStore *groceryStore = [list store];
-    if ([groceryStore ShareLists])
+    if ([groceryStore shareLists])
     {
         HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
         [dbStore copyToDropbox:list  notifyCopyCompleted:nil];

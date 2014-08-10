@@ -51,7 +51,7 @@
     [synchOptionSelector setDataSource:self];
     
 	// Do any additional setup after loading the view.
-    [synchInstructionsLabel setText:[NSString stringWithFormat:@"There are existing files for %@.  Select what you would like to do:", _storeName]];
+    [synchInstructionsLabel setText:[NSString stringWithFormat:@"There are existing files for %@.  Select what you would like to do:", [_groceryStore name]]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,7 +131,7 @@
     static NSArray* optionDescriptions = nil;
     if(!optionDescriptions)
     {
-        optionDescriptions = [[NSArray alloc] initWithObjects:@"Copy files from dropbox",@"Copy local files to dropbox folder to share across devices",@"Cancel - do not want to share files for this store",nil];
+        optionDescriptions = [[NSArray alloc] initWithObjects:@"Copy files from dropbox",@"Copy local files to dropbox",@"Cancel",nil];
     }
     return optionDescriptions;
 }
