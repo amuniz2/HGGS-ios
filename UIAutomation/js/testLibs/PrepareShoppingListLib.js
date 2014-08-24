@@ -40,7 +40,7 @@ function exitPrepareShoppingListTest(target, app)
 	var editShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
 	editShoppingListWindow.BackButton().tap();
 	editShoppingListWindow.BackButton().waitForInvalid();
-	
+	target.delay(2); // give to time for the io operation to complete
 	prepareShoppingListTestHasBeenSetup = false;	
 }
 
@@ -210,30 +210,32 @@ function testAddItemThatIsNotSavedToMasterList(target, app)
 
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4, data.shoppingListItem5_NotAddedToMaster] );
 
-	exitPrepareShoppingListTest(target, app);	 
+		 
 }
 
 function testSaveAndLoadPreparedShoppingList(target, app)
 {
 	var data = new testCurrentListData();
 
- 	setupPrepareShoppingListTest(target, app)
+	exitPrepareShoppingListTest(target, app); // saves ...
+ 	setupPrepareShoppingListTest(target, app) // loads...
 	
 	var prepareShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4, data.shoppingListItem5_NotAddedToMaster] );
 
-	// exiting the PrepareShoppingList window will save the list
-	exitPrepareShoppingListTest(target, app);	 
 	
 }
 
 function testVerifyMasterListIncludesItemsAdded(target, app)
 {
 	var data = new testMasterListData();
+
+	// return to main view
+	exitPrepareShoppingListTest(target, app);	 
 	 	 
 	var mainWindow = new MainWindow(target, app);
 	 
-	mainWindow.StorePicker().wheels()[0].selectValue(testStoreName);	
+	mainWindow.StorePicker().wheels()[0].selectValue(testStoreName)
 	mainWindow.EditStoreButton().tap();
 	mainWindow.EditStoreButton().waitForInvalid();
 	

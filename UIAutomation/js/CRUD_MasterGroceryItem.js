@@ -75,6 +75,6 @@ test("MasterList_CannotAddSectionWithDupplicateNameWhenAssigningSection", functi
 
 test("MasterList_SaveAndLoad", function(target, app)
 {
-	testSaveAndLoad(target, app);
+	testSaveAndLoadMasterList(target, app);
 });
 

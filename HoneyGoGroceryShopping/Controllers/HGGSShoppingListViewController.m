@@ -173,8 +173,8 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     HGGSGroceryItem *itemInRow = [self groceryItemAt:indexPath inTableView:tableView];
-    
-    return [self heightNeededForText:[itemInRow name] font:[UIFont systemFontOfSize:15] ] +
+ 
+    return [self heightNeededForText:[itemInRow name] font:[UIFont boldSystemFontOfSize:15] ] +
     [self heightNeededForText:[itemInRow notes] font:[UIFont italicSystemFontOfSize:13] ] + 6;
     
 }

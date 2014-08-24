@@ -108,6 +108,11 @@ function setCommonItemValuesInEditWindow(app, editWindow, item)
 	editWindow.QuantityTextField().setValue(item.Quantity);
 	editWindow.QuantityUnitTextField().setValue(item.Unit);
 
+	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
+	{ 
+		app.keyboard().buttons()["Return"].tap();
+		app.keyboard().buttons()["Return"].waitForInvalid();
+	}
 	// note: select has 3 different meanings:
 	// (1) from master list, it means the item should be selected by default when preparing a shopping list
 	// (2) from current list, it means the change(s) should be applied to the corresponding item
@@ -281,7 +286,6 @@ function testMasterListData()
 	this.shoppingListItem4 = new MasterGroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true);	
 	
 }
-
 function testCurrentListData()
 {
 	this.defaultGroceryItem = new CurrentGroceryItem('', '1', 'Units', '', 'Grocery Section', '0', true, true);	
@@ -302,8 +306,8 @@ function ShoppingListData()
 {
 	this.shoppingListItem0 = new GroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false);	
 	this.shoppingListItem1 = new GroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', false);
-	this.shoppingListItem2 = new GroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', false);	
-	this.shoppingListItem3 = new GroceryItem('Item 3', '10', 'oz', 'Should be in produce section', 'produce', '1', false);	
+	this.shoppingListItem2 = new GroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', false);	
+	this.shoppingListItem3 = new GroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
 	this.shoppingListItem4 = new GroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', false);
 //	this.shoppingListItem5 = new GroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', false);	
 }

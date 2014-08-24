@@ -16,7 +16,6 @@
 }
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *notesLabel;
-@property (nonatomic, weak) IBOutlet UILabel *quantityLabel;
 @property (nonatomic) HGGSGroceryItem *groceryItem;
 
 @end

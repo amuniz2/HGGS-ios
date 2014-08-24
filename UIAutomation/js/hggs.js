@@ -8,9 +8,8 @@
 #import "testLibs/ShoppingListLib.js"
 
 
-#import "CRUD_Store.js"
-#import "CRUD_GrocerySection.js"
-#import "CRUD_MasterGroceryItem.js"
+//#import "CRUD_Store.js"
+//#import "CRUD_GrocerySection.js"
+//#import "CRUD_MasterGroceryItem.js"
 #import "PrepareShoppingList.js"
 #import "ShoppingList.js"
-

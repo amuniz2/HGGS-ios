@@ -114,8 +114,8 @@ function testCannotAddItemWithNoNameToMasterList(target, app)
 	var editItemWindow = new EditGroceryItemWindow(target, app);
 	setMasterItemValuesInEditWindow(app, editItemWindow, data.groceryItem2);
 	 
-	app.keyboard().buttons()["Return"].tap();
-	app.keyboard().buttons()["Return"].waitForInvalid();
+	//app.keyboard().buttons()["Return"].tap();
+	//app.keyboard().buttons()["Return"].waitForInvalid();
 	
 	expectedAlertMessage = "Name Required"
 	editItemWindow.DoneButton().tap();
@@ -150,8 +150,8 @@ function testCannotAddItemWithSameNameToMasterList(target, app)
 	editItemWindow.NameTextView().setValue(data.itemWithSameNameAsItem2.Name ); 
 	setMasterItemValuesInEditWindow(app, editItemWindow, data.itemWithSameNameAsItem2);
 	 
-	app.keyboard().buttons()["Return"].tap();
-	app.keyboard().buttons()["Return"].waitForInvalid();
+	//app.keyboard().buttons()["Return"].tap();
+	//app.keyboard().buttons()["Return"].waitForInvalid();
 	
 	expectedAlertMessage = "Duplicate Item";
 	editItemWindow.DoneButton().tap();
@@ -233,7 +233,7 @@ function testAssignExistingGrocerySectionToGroceryItemInMasterList(target, app)
 	testMasterListWindowValidity(editMasterListWindow, [data.groceryItem2InNewSection, data.groceryItemInProduceSection]);
 }
 
-function testSaveAndLoad(target, app)
+function testSaveAndLoadMasterList(target, app)
 {
 	exitMasterListTest(target, app);	// this saves upon exiting 
 	setupMasterListTest(target, app);	

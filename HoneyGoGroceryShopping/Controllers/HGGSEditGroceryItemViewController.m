@@ -49,7 +49,7 @@
     
     [_additionalNotes setText:[[self groceryItem] notes]];
     [units setText:[[self groceryItem] unit]];
-    [quantity setText:[NSString stringWithFormat:@"%ld",(long)[[self groceryItem] quantity]]];
+    [quantity setText:[NSString stringWithFormat:@"%g",[[self groceryItem] quantity]]];
     [select setOn:((_itemType == pantryItem) ? [[self groceryItem] selected]:  YES)];
     [grocerySection setText:[[self groceryItem] section]];
     [selectionLabel setText:[self selectionLabelText]];
@@ -297,7 +297,7 @@
     {
         // new grocery item must be created, as an existing one cannot have its name changed
         _groceryItem = [[HGGSGroceryItem alloc] initWithDetails:[name text]
-                                                        quantity:[[quantity text] intValue]
+                                                        quantity:[[quantity text] doubleValue]
                                                         unit:[units text]
                                                         section:[grocerySection text]
                                                         notes:[_additionalNotes text]
@@ -314,7 +314,7 @@
         if (_itemType != shoppingItem)
         {
             [_groceryItem setSelected:[select isOn]];
-            [_groceryItem setQuantity:[[quantity text] intValue] ];
+            [_groceryItem setQuantity:[[quantity text] doubleValue] ];
             
         }
         else

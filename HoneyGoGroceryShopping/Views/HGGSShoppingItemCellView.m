@@ -11,7 +11,7 @@
 
 @implementation HGGSShoppingItemCellView
 {
-    NSInteger _initialQuantity;
+    double _initialQuantity;
     bool _initiallySelected;
 }
 -(void) setGroceryItem:(HGGSGroceryItem *)groceryItem
@@ -22,7 +22,7 @@
     _initialQuantity = [groceryItem quantity];
     [_nameLabel setText:[groceryItem name]];
     
-    [_quantityLabel setText:[NSString stringWithFormat:@"%li %@", (long)[groceryItem quantity], [groceryItem unit]]];
+    [_quantityLabel setText:[NSString stringWithFormat:@"%g %@", [groceryItem quantity], [groceryItem unit]]];
     [_quantityStepper setValue:_initialQuantity];
     _unitText = [groceryItem unit];
     [_itemSelected  setOn:_initiallySelected];
@@ -32,12 +32,12 @@
 - (IBAction)setQuantity:(id)sender
 {
  
-    [_quantityLabel setText:[NSString stringWithFormat:@"%i %@", (int)[_quantityStepper value], _unitText]];
+    [_quantityLabel setText:[NSString stringWithFormat:@"%g %@", [_quantityStepper value], _unitText]];
 
 }
 -(bool) saveValuesEnteredByUser
 {
-    NSInteger quantitySetByUser = [_quantityStepper value];
+    double quantitySetByUser = [_quantityStepper value];
     if (quantitySetByUser != [_groceryItem quantity])
     {
         [_groceryItem setQuantity:quantitySetByUser];

@@ -63,8 +63,8 @@ function testVerifyShoppingListCreated(target, app)
 	var data = new ShoppingListData();
 	 
 	var shoppingListWindow = new ShoppingListWindow(target, app, testStoreName);
-	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem0, data.shoppingListItem1, data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4] );
-	exitShoppingListTest (target, app);
+	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4, data.shoppingListItem1] );
+
 }
 
 function testCheckItemOff(target, app)
@@ -83,6 +83,8 @@ function testCheckItemOff(target, app)
 function testVerifyNewListCreatedAfterShopping(target, app)
 {
 	var data = new testCurrentListData();
+
+	exitShoppingListTest (target, app);
 	 
 	var mainWindow = new MainWindow(target, app);
 	mainWindow.PrepareGroceryListButton().tap();

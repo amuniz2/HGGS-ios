@@ -13,7 +13,7 @@
     //NSDictionary *someInstanceVariable;
 }
 
-@property NSInteger quantity;
+@property double quantity;
 @property bool selected;
 @property (nonatomic, copy) NSString *sectionId;
 @property (nonatomic, readonly, copy) NSString *name;
@@ -25,9 +25,9 @@
 -(id)initFromDictionary:(NSDictionary *)itemAttributes;
 @property(nonatomic,strong)NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;
 
--(id)initWithOldDetails:(NSString*)name quantity:(NSInteger)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId;
+-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId;
 
 - (NSComparisonResult) compareWithAnotherItem:(HGGSGroceryItem*) anotherItem;
 

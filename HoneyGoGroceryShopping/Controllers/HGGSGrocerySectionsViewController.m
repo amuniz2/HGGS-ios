@@ -100,7 +100,7 @@
 {
     UIStepper *stepper = (UIStepper*)[_cellBeingEdited viewWithTag:3];
     UITextField* aisleField = (UITextField*)[_cellBeingEdited viewWithTag:2];
-    [aisleField setText:[NSString stringWithFormat:@"%f",[stepper value]]];
+    [aisleField setText:[NSString stringWithFormat:@"%i",(int)[stepper value]]];
     //[_currentGrocerySection setAisle:[stepper value]];
     [aisleField setNeedsDisplay];
 }

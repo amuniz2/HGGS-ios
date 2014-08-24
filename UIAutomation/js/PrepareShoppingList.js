@@ -39,16 +39,16 @@ test("PrepareShoppingList_AddItemThatIsNotSavedToMasterList", function(target, a
 	testAddItemThatIsNotSavedToMasterList(target, app);
 });
 
-test("PrepareShoppingList_VerifyMasterListIncludesItemsAdded", function(target, app)
-{
-	testVerifyMasterListIncludesItemsAdded(target, app);
-});
 
 test("PrepareShoppingList_SaveAndLoad", function(target, app)
 {
 	 testSaveAndLoadPreparedShoppingList(target, app);
 });
 
+test("PrepareShoppingList_VerifyMasterListIncludesItemsAdded", function(target, app)
+{
+	testVerifyMasterListIncludesItemsAdded(target, app);
+});
 
 test("PrepareShoppingList_VerifyNewListCreatedAfterShopping", function(target, app)
 {

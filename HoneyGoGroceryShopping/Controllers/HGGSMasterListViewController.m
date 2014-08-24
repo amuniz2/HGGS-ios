@@ -168,8 +168,8 @@
 {
     HGGSGroceryItem *itemInRow = [self groceryItemAt:indexPath tableView:tableView];
     
-    return [self heightNeededForText:[itemInRow name] font:[UIFont systemFontOfSize:15] widthOfTextField:206 ] +
-    [self heightNeededForText:[itemInRow notes] font:[UIFont italicSystemFontOfSize:12] widthOfTextField:277 ] + 6;
+    return [self heightNeededForText:[itemInRow name] font:[UIFont boldSystemFontOfSize:15] widthOfTextField:283 ] +
+    [self heightNeededForText:[itemInRow notes] font:[UIFont italicSystemFontOfSize:12] widthOfTextField:283 ] + 8;
     
 }
 
@@ -211,8 +211,8 @@
 
 -(void) handleReturnFromEditItemController:(HGGSEditGroceryItemViewController*) editController
 {
-    
-    _changesToSave = _changesToSave || editController.actionTaken == saveChanges || editController.actionTaken == deleteItem || editController.actionTaken == replaceItem;
+    bool itemHasChanged = (editController.actionTaken == saveChanges) || (editController.actionTaken == deleteItem) || (editController.actionTaken == replaceItem);
+    _changesToSave = _changesToSave || itemHasChanged;
     
     if (editController.actionTaken == deleteItem)
     {
@@ -230,7 +230,7 @@
         }
                                     
     }
-    if (_changesToSave)
+    if (itemHasChanged)
     {
         UITableView* activeTableView;
         

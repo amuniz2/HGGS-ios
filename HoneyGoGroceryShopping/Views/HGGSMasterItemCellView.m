@@ -14,14 +14,11 @@
 -(void) setGroceryItem:(HGGSGroceryItem *)groceryItem
 {
     [_nameLabel setAdjustsFontSizeToFitWidth:YES];
-    [_quantityLabel setAdjustsFontSizeToFitWidth:YES];
     [_notesLabel setAdjustsFontSizeToFitWidth:YES];
     
     [_nameLabel setText:[groceryItem name]];
     [_notesLabel setText:[groceryItem notes]];
     
-    [_quantityLabel setText:[NSString stringWithFormat:@"%li %@", (long)[groceryItem quantity], [groceryItem unit]]];
-
     _groceryItem = groceryItem;
     
 }

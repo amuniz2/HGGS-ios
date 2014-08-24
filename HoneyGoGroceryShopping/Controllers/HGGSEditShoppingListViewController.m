@@ -185,7 +185,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 83;
+    // 2 + ? + 2 + 29 + 4 = 37 + ?
+    // minimum = 2 + 31 + 2 + 29 + 2 = 68
+    
+    HGGSGroceryItem *itemInRow = [self groceryItemAtIndexPath:indexPath];
+    
+    return MAX([self heightNeededForText:[itemInRow name] font:[UIFont boldSystemFontOfSize:15] ], 31) +
+    37;
+    
 }
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -221,8 +228,9 @@
 #pragma mark Private
 -(void) handleReturnFromEditItemController:(HGGSEditGroceryItemViewController*) editController
 {
+    bool itemHasChanged = (editController.actionTaken == saveChanges) || (editController.actionTaken == deleteItem) || (editController.actionTaken == replaceItem);
+    _changesToSave = _changesToSave || itemHasChanged;
     
-    _changesToSave = _changesToSave || editController.actionTaken == saveChanges || editController.actionTaken == deleteItem || editController.actionTaken == replaceItem;
     if (editController.actionTaken == deleteItem)
     {
         [_currentGroceryList remove:[[editController groceryItem] name] ];
@@ -238,7 +246,7 @@
         }
 
     }
-    if (_changesToSave)
+    if (itemHasChanged)
     {
         UITableView* activeTableView;
         
@@ -254,7 +262,7 @@
 -(void) handleReturnFromAddItemController:(HGGSEditGroceryItemViewController*) editController
 {
     
-    _changesToSave = _changesToSave || editController.actionTaken == saveChanges ;
+    _changesToSave = _changesToSave || (editController.actionTaken == saveChanges );
     if (editController.actionTaken == saveChanges)
     {
         UITableView* activeTableView;
@@ -283,6 +291,7 @@
             [masterList addItem:[editController groceryItem]];
             [[HGGSGroceryStoreManager sharedStoreManager] saveMasterList:[self store]];
         }
+        _changesToSave = YES;
     }
     
 }
@@ -301,5 +310,19 @@
     return (_searchResults == nil) ? [self tableView] : [[self searchDisplayController] searchResultsTableView];
 }
 
+-(int)heightNeededForText:(NSString*)text font:(UIFont *)font
+{
+    NSAttributedString * attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                          attributes:[[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName, nil]];
+    CGSize maximumSize = CGSizeMake(210, CGFLOAT_MAX);
+    return [attributedText boundingRectWithSize:maximumSize options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+    
+}
+
+-(HGGSGroceryItem*) groceryItemAtIndexPath:(NSIndexPath*) indexPath
+{
+    return [_currentGroceryList itemAt:[indexPath row]];
+    
+}
 
 @end

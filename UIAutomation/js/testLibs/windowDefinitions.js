@@ -132,7 +132,7 @@ function GroceryItem(name, quantity, unit, notes, section, aisle, selected)
 	this.Section = section;
 	this.Selected = selected;
 	this.Aisle = aisle;
-	this.MasterItemCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit + ', ' + this.Notes ; };
+	this.MasterItemCellName = function() { return this.Name + ', ' + this.Notes ; };
 	this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
 	this.ShoppingListCellName = function() { return this.Name + ', ' + this.Notes  + ', ' + this.Quantity + ' ' + this.Unit; };
 	
