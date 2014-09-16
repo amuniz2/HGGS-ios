@@ -9,6 +9,11 @@ test("PrepareShoppingList_AddItem", function(target, app)
 	 testAddShoppingItem(target, app);
 });
 
+test("PrepareShoppingList_AddItemInNewSection", function(target, app)
+{
+	 testAddShoppingItemAndAssignToNewGrocerySection(target, app);
+});
+
 test("PrepareShoppingList_SelectItemsAndSetQuantities", function(target, app)
 {	
 	testSelectItemsAndSetQuantities(target, app);

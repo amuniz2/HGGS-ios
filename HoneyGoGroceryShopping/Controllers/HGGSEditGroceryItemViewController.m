@@ -329,6 +329,7 @@
 -(void) handleReturnFromSelectSectionController:(HGGSSelectGrocerySectionViewController*) selectController
 {
     [grocerySection setText:[selectController selectedSectionName]];
+     
 }
 
 -(BOOL) automaticallyAdjustsScrollViewInsets

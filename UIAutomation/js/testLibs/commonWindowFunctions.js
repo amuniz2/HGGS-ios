@@ -33,10 +33,24 @@ function createStore(target, app, storeName)
 	assertTrue(editStoreWindow.StoreNameTextField().isEnabled(), "Edit field is not enabled after clicking Compose button");
 	target.popTimeout();	
 
-	editStoreWindow.StoreNameTextField().setValue(testStoreName);
+	editStoreWindow.StoreNameTextField().setValue(storeName);
 	editStoreWindow.DoneEditingStoreNameButton().tap();
+	editStoreWindow.DoneEditingStoreNameButton().waitForInvalid();
 	
 	return editStoreWindow;	
+}
+
+function createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
+{
+	var storeName = "StoreWithUnknownGrocerySections";
+	var mainWindow = new MainWindow(target, app);
+	
+	if (!storeExists(mainWindow.StorePicker().wheels()[0].values(), storeName) )
+	{
+		createStore(target, app, storeName);		
+	}
+	return storeName;
+	
 }
 
 function enterEditMode(editAislesWindow)
@@ -272,9 +286,9 @@ function prepareShoppingList(target, app, storeName, masterItemsToInclude, items
 function testMasterListData()
 {
 	this.defaultGroceryItem = new MasterGroceryItem('', '1', 'Units', '', 'Grocery Section', '0', true);	
-	this.groceryItem1 = new MasterGroceryItem('M Item 1', '3', 'boxes', 'M Item 1 Notes', 'Grocery Section', '0', true);	
-	this.updatedGroceryItem1 = new MasterGroceryItem('M Item 1', '2', 'bags', 'M Item 1 Notes after update', 'Grocery Section', '0', false); 
-	this.item1WithChangedName = new MasterGroceryItem('M New Item 1', '2', 'bags', 'M Item 1 Notes after update', 'Grocery Section', '0', false);  
+	this.groceryItem1 = new MasterGroceryItem('M Item 1', '3.5', 'lbs', 'M Item 1 Notes', 'Grocery Section', '0', true);	
+	this.updatedGroceryItem1 = new MasterGroceryItem('M Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false); 
+	this.item1WithChangedName = new MasterGroceryItem('M New Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false);  
 
 	this.groceryItem2 = new MasterGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'Grocery Section', '0', true);	
 
@@ -285,31 +299,59 @@ function testMasterListData()
 	this.shoppingListItem1 = new MasterGroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false);	
 	this.shoppingListItem4 = new MasterGroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true);	
 	
+	this.shoppingListItem6 = new MasterGroceryItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', true);
+
+	this.shoppingListItem2_updated = new MasterGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true);	
+	this.groceryItemInProduceSection_updated = new MasterGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
+
 }
 function testCurrentListData()
 {
 	this.defaultGroceryItem = new CurrentGroceryItem('', '1', 'Units', '', 'Grocery Section', '0', true, true);	
 	this.groceryItem2InNewSection = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', true, true);	
 	this.groceryItemInProduceSection = new CurrentGroceryItem('Item 3', '10', 'oz', 'Should be in produce section', 'produce', '1', false, false);	
-	this.shoppingGroceryItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '1', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
+	this.shoppingGroceryItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '1.25', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
 
-	this.shoppingListItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
+	this.shoppingListItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '1.5', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
 	this.shoppingListItem2 = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', true, true);	
 	this.shoppingListItem3 = new CurrentGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', true, true);	
 	this.shoppingListItem2_updated = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true, false);	
 	this.shoppingListItem4 = new CurrentGroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true, true);	
 	
 	this.shoppingListItem5_NotAddedToMaster = new CurrentGroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);	
+	
+	this.shoppingListItem6 = new CurrentGroceryItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', true, true);
+	this.groceryItemInProduceSection_updated = new CurrentGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
+	this.shoppingListItem7 = new CurrentGroceryItem('Item 7', '1', 'package', 'Located in  non-existing section that should be added', 'New Section Added When Shopping List Was Created', '0', false);
 }
 
 function ShoppingListData()
 {
-	this.shoppingListItem0 = new GroceryItem('Shopping Item Not Originally In Master List', '2', 'lb', 'Temp Item Notes', 'Grocery Section', '0', false);	
+	this.shoppingListItem0 = new GroceryItem('Shopping Item Not Originally In Master List', '1.5', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false);	
 	this.shoppingListItem1 = new GroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', false);
 	this.shoppingListItem2 = new GroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', false);	
 	this.shoppingListItem3 = new GroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
 	this.shoppingListItem4 = new GroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', false);
 //	this.shoppingListItem5 = new GroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', false);	
+	this.shoppingListItem6 = new GroceryItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', false);
+	this.shoppingListItem7 = new GroceryItem('Item 7', '1', 'package', 'Located in  non-existing section that should be added', 'New Section Added When Shopping List Was Created', '0', false);
+
+}
+
+function testMasterListForGroceryStoreWithUnknownGrocerySections()
+{
+	this.groceryItem1 = new MasterGroceryItem('Item in list with unknown section', '1', 'package', 'Section is not known', 'Initially Unknown Grocery Section 1', '0', true);	
+}	
+function testCurrentListForGroceryStoreWithUnknownGrocerySections()
+{
+	this.groceryItem1 = new CurrentGroceryItem('Item in list with unknown section', '1', 'package', 'Section is not known', 'Initially Unknown Grocery Section 1', '0', true);	
+}	
+
+
+function testShoppingListDataWithUnknownGrocerySection()
+{
+	this.shoppingItem1 = new GroceryItem('Item in list with unknown section', '1', 'package', 'Section is not known', 'Initially Unknown Grocery Section 1', '0', false);	
+	
 }
 
 /*

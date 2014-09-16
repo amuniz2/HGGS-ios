@@ -164,8 +164,8 @@ function testPrepareShoppingListWindowValidity(window, expectedItems)
 
 function testShoppingListWindowValidity(window, expectedItems)
 {
-	assertEquals(window.StoreName + " Shopping List", window.Name(), "Prepare Shopping List window has wrong title (not at prepare shopping list window?)");
- 	assertTrue(window.ShoppingListView().isValid(), "Table View in Prepare Shopping List Window is not valid");
+	assertEquals(window.StoreName + " Shopping List", window.Name(), "Shopping List window has wrong title (not at prepare shopping list window?)");
+ 	assertTrue(window.ShoppingListView().isValid(), "Table View in Shopping List Window is not valid");
 	assertEquals(expectedItems.length, window.ShoppingListView().cells().length, "Unexpected number of items found in shopping list");
  	for (var j = 0; j < expectedItems.length; j++)
 	{

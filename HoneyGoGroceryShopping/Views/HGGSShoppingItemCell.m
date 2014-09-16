@@ -32,7 +32,7 @@
     _groceryItem = groceryItem;
     
     [_name setText:[groceryItem name]];
-    [_quantity setText:[NSString stringWithFormat:@"%li %@", (long)[groceryItem quantity], [groceryItem unit]]];
+    [_quantity setText:[NSString stringWithFormat:@"%g %@", [groceryItem quantity], [groceryItem unit]]];
     [_notes setText:[groceryItem notes]];
     [_completed setSelected:[groceryItem selected]];
     

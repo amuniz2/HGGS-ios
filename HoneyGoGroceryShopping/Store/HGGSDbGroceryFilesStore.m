@@ -127,7 +127,7 @@
     [_fs addObserver:self forPath:[dbFolderPath childPath:[storeList fileName]] block:^{
         if (![storeList exists])
             [weakSelfRef doCopyFromDropbox:storeList notifyCopyCompleted:nil];
-        else
+        /*else
         {
             //if files are loaded, determine if the changes are those made by the loaded store itself
             if ([weakSelfRef newDbFile:storeList ])
@@ -138,7 +138,7 @@
                 });
             }
         }
-        
+        */
             
     }];
     

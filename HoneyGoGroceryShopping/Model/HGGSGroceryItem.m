@@ -14,7 +14,7 @@
 #pragma mark Initialization Methods
 -(id)initFromDictionary:(NSDictionary*)itemAttributes
 {
-    int quantity =(unsigned int)[[itemAttributes objectForKey:@"quantity" ] intValue];
+    double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
     
     self = [self initWithOldDetails:[itemAttributes objectForKey:@"name"]
                         quantity:quantity
@@ -74,7 +74,7 @@
 {
     _asDictionary =[[NSDictionary alloc] initWithObjectsAndKeys:
                     _name,@"name",
-                    [NSNumber numberWithInteger:_quantity],@"quantity",
+                    [NSNumber numberWithDouble:_quantity],@"quantity",
                     (_unit == nil) ? @"" : _unit, @"unit",
                     (_notes == nil) ? @"" : _notes, @"notes",
                     [HGGSBool boolAsString:_selected], @"selected",

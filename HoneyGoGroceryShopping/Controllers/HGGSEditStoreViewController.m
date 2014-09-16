@@ -70,6 +70,18 @@
     [self showEditStoreButtons:(_groceryStore != nil)];
    
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    if (_inEditMode)
+    {
+       [self renameStore];
+    }
+    [super viewWillDisappear:animated];
+    
+}
+
 -(void)dealloc
 {
     _confirmDeleteStoreAlertView = nil;
@@ -218,6 +230,42 @@
      }];
 }
 #pragma mark Actions
+-(void)renameStore
+{
+    NSString *newStoreName = [[self groceryStoreName] text];
+    
+    // verify that the store name does not already exist
+    if ([[HGGSGroceryStoreManager sharedStoreManager] store:newStoreName] != nil)
+    {
+        UIAlertView *errorAlert = [[UIAlertView alloc]
+                                   initWithTitle:@"Duplicate Store" message:@"A store with this name already exists.  Please specify a unique name for this store." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+        
+        [errorAlert show];
+        
+        return;
+    }
+    
+    // set name and return to read-only mode
+    if ([self groceryStore] == nil)
+        [self createStore:newStoreName];
+    else
+        [[self groceryStore] setName:newStoreName];
+    
+}
+-(IBAction)enterOrExitEditMode:(id)sender
+{
+    if(_inEditMode)
+    {
+        [self renameStore];
+        [self toggleEditMode:NO];
+    }
+    else
+    {
+        // enter editing mode
+        [self toggleEditMode:YES];
+    }
+}
+
 - (void)linkToDropbox:(id)sender
 {
     //determine what needs to happen:
@@ -267,24 +315,6 @@
     [_dropboxButton setNeedsDisplay];
 }
 #pragma mark Manage Edit Mode
--(IBAction)enterOrExitEditMode:(id)sender
-{
-    if(_inEditMode)
-    {
-        NSString *newStoreName = [[self groceryStoreName] text];
-        // set name and return to read-only mode
-        if ([self groceryStore] == nil)
-            [self createStore:newStoreName];
-        else
-            [[self groceryStore] setName:newStoreName];
-        [self toggleEditMode:NO];
-    }
-    else
-    {
-        // enter editing mode
-        [self toggleEditMode:YES];
-    }
-}
 
 -(void) toggleEditMode:(bool)enable
 {

@@ -74,6 +74,16 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self saveChangedCellsStillDisplayed:[self activeTableView]];
+
+    /*if (_changesToSave)
+    {
+        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+        [storeManager saveCurrentList:[self store]];
+        
+        _changesToSave = NO;
+        
+    }*/
+
 }
 
 
@@ -277,9 +287,9 @@
         }
         
         activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRow inSection:0];
+        /*NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRow inSection:0];
         
-        [activeTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ip ] withRowAnimation:UITableViewRowAnimationTop];
+        [activeTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ip ] withRowAnimation:UITableViewRowAnimationTop];*/
         [activeTableView reloadData ];
     
         if (addToMaster)

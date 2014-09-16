@@ -59,6 +59,11 @@ test("MasterList_CreateAndAssignGrocerySectionToGroceryItem", function(target, a
 	testCreateAndAssignGrocerySectionToGroceryItemInMasterList(target, app);
 });
 
+test("MasterList_NewGrocerySectionAddedToAisleConfig", function(target, app)
+{
+	testNewGrocerySectionAddedToAisleConfig(target, app);
+});
+
 test("MasterList_AssignExistingGrocerySectionToGroceryItem", function(target, app)
 {
 	testAssignExistingGrocerySectionToGroceryItemInMasterList(target, app);
@@ -78,3 +83,7 @@ test("MasterList_SaveAndLoad", function(target, app)
 	testSaveAndLoadMasterList(target, app);
 });
 
+test("MasterList_AutoAddOfAssignedUnknownGrocerySection", function(target, app)
+{
+	testAutoAddOfAssignedUnknownGrocerySection(target, app)
+});

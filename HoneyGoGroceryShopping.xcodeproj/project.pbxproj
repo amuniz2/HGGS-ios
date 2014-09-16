@@ -24,6 +24,8 @@
 		A76809B418836E4C00B7E2F0 /* WebServiceErrorResponse.html in Resources */ = {isa = PBXBuildFile; fileRef = A76809B318836E4C00B7E2F0 /* WebServiceErrorResponse.html */; };
 		A76809B7188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = A76809B6188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m */; };
 		A76809BA1883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76809B91883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.m */; };
+		A793709119AAC1C500D93F9B /* HGGSCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A793709019AAC1C500D93F9B /* HGGSCommon.m */; };
+		A793709A19AACA9600D93F9B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A793709919AACA9600D93F9B /* Images.xcassets */; };
 		A79A1E261856A5E3006E8557 /* HGGSLoadStoreListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A1E231856A5E3006E8557 /* HGGSLoadStoreListTests.m */; };
 		A79A1E271856A5E3006E8557 /* HGGSSaveStoreListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A1E251856A5E3006E8557 /* HGGSSaveStoreListTests.m */; };
 		A79CAC69188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79CAC68188C841200CB3A88 /* HGGSSelectGrocerySectionViewController.m */; };
@@ -43,7 +45,6 @@
 		A7C580C7182EE68A00866FAB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580C6182EE68A00866FAB /* main.m */; };
 		A7C580CB182EE68B00866FAB /* HGGSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C580CA182EE68B00866FAB /* HGGSAppDelegate.m */; };
 		A7C580CE182EE68B00866FAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7C580CC182EE68B00866FAB /* Main.storyboard */; };
-		A7C580D3182EE68B00866FAB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7C580D2182EE68B00866FAB /* Images.xcassets */; };
 		A7C580DA182EE68B00866FAB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C580D9182EE68B00866FAB /* XCTest.framework */; };
 		A7C580DB182EE68B00866FAB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C580BA182EE68A00866FAB /* Foundation.framework */; };
 		A7C580DC182EE68B00866FAB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C580BE182EE68A00866FAB /* UIKit.framework */; };
@@ -120,6 +121,8 @@
 		A76809B6188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSUPCServiceConsumer.m; sourceTree = "<group>"; };
 		A76809B81883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSUPCServiceConsumerTests.h; sourceTree = "<group>"; };
 		A76809B91883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSUPCServiceConsumerTests.m; sourceTree = "<group>"; };
+		A793709019AAC1C500D93F9B /* HGGSCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSCommon.m; sourceTree = "<group>"; };
+		A793709919AACA9600D93F9B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A79A1E221856A5E3006E8557 /* HGGSLoadStoreListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSLoadStoreListTests.h; sourceTree = "<group>"; };
 		A79A1E231856A5E3006E8557 /* HGGSLoadStoreListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSLoadStoreListTests.m; sourceTree = "<group>"; };
 		A79A1E241856A5E3006E8557 /* HGGSSaveStoreListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSSaveStoreListTests.h; sourceTree = "<group>"; };
@@ -149,7 +152,6 @@
 		A7C580C9182EE68A00866FAB /* HGGSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HGGSAppDelegate.h; sourceTree = "<group>"; };
 		A7C580CA182EE68B00866FAB /* HGGSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HGGSAppDelegate.m; sourceTree = "<group>"; };
 		A7C580CD182EE68B00866FAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A7C580D2182EE68B00866FAB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A7C580D8182EE68B00866FAB /* HoneyGoGroceryShoppingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HoneyGoGroceryShoppingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C580D9182EE68B00866FAB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A7C580E1182EE68B00866FAB /* HoneyGoGroceryShoppingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HoneyGoGroceryShoppingTests-Info.plist"; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 		A7C580C0182EE68A00866FAB /* HoneyGoGroceryShopping */ = {
 			isa = PBXGroup;
 			children = (
+				A793709919AACA9600D93F9B /* Images.xcassets */,
 				A72F78E3195364DB0061E917 /* Model */,
 				A7AD90F718581B6500785342 /* Resources */,
 				A7B5A4E31836F1B4006E5822 /* HGGSCommon.h */,
@@ -331,8 +334,8 @@
 				A7C58102182EE74D00866FAB /* Store */,
 				A7C580C9182EE68A00866FAB /* HGGSAppDelegate.h */,
 				A7C580CA182EE68B00866FAB /* HGGSAppDelegate.m */,
-				A7C580D2182EE68B00866FAB /* Images.xcassets */,
 				A7C580C1182EE68A00866FAB /* Supporting Files */,
+				A793709019AAC1C500D93F9B /* HGGSCommon.m */,
 			);
 			path = HoneyGoGroceryShopping;
 			sourceTree = "<group>";
@@ -574,8 +577,8 @@
 				A7B808D818935CC500404B39 /* checkbox-checked.png in Resources */,
 				A7B808E418935D3700404B39 /* ic_grocery_list.png in Resources */,
 				A76809B418836E4C00B7E2F0 /* WebServiceErrorResponse.html in Resources */,
+				A793709A19AACA9600D93F9B /* Images.xcassets in Resources */,
 				A7B808E218935D2800404B39 /* edit aisles.png in Resources */,
-				A7C580D3182EE68B00866FAB /* Images.xcassets in Resources */,
 				A7C580C5182EE68A00866FAB /* InfoPlist.strings in Resources */,
 				A7B808E018935D1600404B39 /* dropbox.png in Resources */,
 				A7B808DC18935CF900404B39 /* checkbox-pressed.png in Resources */,
@@ -621,6 +624,7 @@
 				A7C580C7182EE68A00866FAB /* main.m in Sources */,
 				A7E2454818C38A9A00B4C5B9 /* HGGSNewGrocerySectionViewController.m in Sources */,
 				A72F78FE195364DB0061E917 /* HGGSStoreList.m in Sources */,
+				A793709119AAC1C500D93F9B /* HGGSCommon.m in Sources */,
 				A72F78FA195364DB0061E917 /* HGGSGroceryStore.m in Sources */,
 				A7C580CB182EE68B00866FAB /* HGGSAppDelegate.m in Sources */,
 				A7EB1D46184D839300198EC6 /* HGGSShoppingItemCellView.m in Sources */,

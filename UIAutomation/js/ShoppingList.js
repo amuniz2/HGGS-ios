@@ -11,6 +11,11 @@ test("ShoppingList_VerifyShoppingListCreated", function(target, app)
 	testVerifyShoppingListCreated(target, app);
 });
 
+test("ShoppingList_VerifyShoppingListCreated_WhenGrocerySectionsDoNotExist", function(target, app)
+{	
+	testVerifyShoppingListCreated_WhenGrocerySectionsDoNotExist(target, app);
+});
+
 test("ShoppingList_CheckItemOff", function(target, app)
 {
 	 testCheckItemOff(target, app);
@@ -21,3 +26,4 @@ test("ShoppingList_VerifyNewListCreatedAfterShopping", function(target, app)
 {
 	testVerifyNewListCreatedAfterShopping(target, app);
 });
+

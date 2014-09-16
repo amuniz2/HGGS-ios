@@ -1,6 +1,6 @@
 var shoppingListTestHasBeenSetup = false;
 var testStoreName = "UI Automation Test Store";
-
+var testStoreWithNonExistingGrocerySections = "";
 
 function createOrSelectTestStoreForShoppingListTest(target, app, storeName)
 {
@@ -13,30 +13,74 @@ function createOrSelectTestStoreForShoppingListTest(target, app, storeName)
 		var editStoreWindow = createStore(target, app, storeName);		
 
 		createGrocerySections(target, app, storeName, new Hash(1, ['produce','new grocery section in new aisle'], 5, ['first item in aisle 5']));		
-		createMasterListItems(target, app, storeName, [masterListData.groceryItem2InNewSection, masterListData.groceryItemInProduceSection, masterListData.shoppingListItem1, masterListData.shoppingListItem4]);
+		createMasterListItems(target, app, storeName, [masterListData.shoppingListItem2_updated, masterListData.groceryItemInProduceSection_updated, masterListData.shoppingListItem4, masterListData.shoppingListItem6]);
 		
 		editStoreWindow.BackButton().tap();
 		editStoreWindow.BackButton().waitForInvalid();
 	 	mainWindow.StorePicker().wheels()[0].selectValue(storeName);
 		prepareShoppingList(target, app, storeName, 
 			[currentListData.shoppingListItem2_updated, 
-			/*currentListData.shoppingListItem3*/ currentListData.groceryItemInProduceSection, 
-			currentListData.shoppingListItem1, 
-			currentListData.shoppingListItem4],
+			/*currentListData.shoppingListItem3*/ currentListData.groceryItemInProduceSection_updated, 
+			currentListData.shoppingListItem4, 
+			currentListData.shoppingListItem6],
 			[currentListData.shoppingListItem5_NotAddedToMaster] );
 	}
  	mainWindow.StorePicker().wheels()[0].selectValue(storeName);
 	return mainWindow;
 }
 
+function createMasterListWithItemWhoseSectionIsNotDefined(target, app)
+{
+	testStoreWithNonExistingGrocerySections = createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
+	var data = new testMasterListForGroceryStoreWithUnknownGrocerySections();
+
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.EditMasterListButton().tap();
+	editStoreWindow.EditMasterListButton().waitForInvalid();
+
+	var editMasterListWindow = new MasterListWindow(target, app, testStoreWithNonExistingGrocerySections);
+
+	editMasterListWindow.AddItemButton().tap();
+	editMasterListWindow.AddItemButton().waitForInvalid();
+ 
+	var editItemWindow = new EditGroceryItemWindow(target, app);
+	editItemWindow.NameTextView().setValue(data.groceryItem1.Name );
+	editItemWindow.NotesTextView().setValue(data.groceryItem1.Notes);
+	editItemWindow.QuantityTextField().setValue(data.groceryItem1.Quantity);
+	editItemWindow.QuantityUnitTextField().setValue(data.groceryItem1.Unit);
+	
+	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
+	{ 
+		app.keyboard().buttons()["Return"].tap();
+		app.keyboard().buttons()["Return"].waitForInvalid();
+	}
+
+	editItemWindow.ItemGrocerySection().setValue(data.groceryItem1.Section);
+	editItemWindow.DoneButton().tap();
+	editItemWindow.DoneButton().waitForInvalid();
+	
+	editMasterListWindow.BackButton().tap();
+	editMasterListWindow.BackButton().waitForInvalid();
+	
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();			
+	
+}
 function setupShoppingListTest(target, app)
 {
 	if (shoppingListTestHasBeenSetup)
 		return;
 
-	var mainWindow = createOrSelectTestStoreForShoppingListTest(target, app, testStoreName);
+	createMasterListWithItemWhoseSectionIsNotDefined(target, app);
+
+	var mainWindow = new MainWindow(target, app);
+ 	mainWindow.StorePicker().wheels()[0].selectValue(testStoreWithNonExistingGrocerySections);
 	
-	UIALogger.logDebug("Clicking on 'Go Shopping'");
+	var data = new testCurrentListForGroceryStoreWithUnknownGrocerySections();
+	prepareShoppingList(target, app, testStoreWithNonExistingGrocerySections, [data.groceryItem1],
+		[] );
+
+	var mainWindow = createOrSelectTestStoreForShoppingListTest(target, app, testStoreName);		
 	
 	mainWindow.GoShoppingButton().tap();
 	mainWindow.GoShoppingButton().waitForInvalid();
@@ -63,9 +107,11 @@ function testVerifyShoppingListCreated(target, app)
 	var data = new ShoppingListData();
 	 
 	var shoppingListWindow = new ShoppingListWindow(target, app, testStoreName);
-	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4, data.shoppingListItem1] );
+	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem4, data.shoppingListItem1, data.shoppingListItem6] );
 
+	exitShoppingListTest (target, app);
 }
+
 
 function testCheckItemOff(target, app)
 {
@@ -87,6 +133,7 @@ function testVerifyNewListCreatedAfterShopping(target, app)
 	exitShoppingListTest (target, app);
 	 
 	var mainWindow = new MainWindow(target, app);
+ 	mainWindow.StorePicker().wheels()[0].selectValue(testStoreName);
 	mainWindow.PrepareGroceryListButton().tap();
 	mainWindow.PrepareGroceryListButton().waitForInvalid(); 
 		 
@@ -95,8 +142,26 @@ function testVerifyNewListCreatedAfterShopping(target, app)
 		[	data.shoppingListItem2_updated, 
 			data.groceryItemInProduceSection, 
 			data.shoppingListItem1, 
-			data.shoppingListItem4] );
-	exitShoppingListTest (target, app);
+			data.shoppingListItem4, 
+			data.shoppingListItem6] );
 }
 
+function testVerifyShoppingListCreated_WhenGrocerySectionsDoNotExist(target, app)
+{
+
+	var data = new testShoppingListDataWithUnknownGrocerySection();
+	var storeName = testStoreWithNonExistingGrocerySections;
+
+	var mainWindow = new MainWindow(target, app);
+ 	mainWindow.StorePicker().wheels()[0].selectValue(storeName);
+	mainWindow.GoShoppingButton().tap();
+	mainWindow.GoShoppingButton().waitForInvalid();
+	 
+	var shoppingListWindow = new ShoppingListWindow(target, app, storeName);
+	testShoppingListWindowValidity(shoppingListWindow, [data.shoppingItem1] );
+
+	shoppingListWindow.BackButton().tap();
+	shoppingListWindow.BackButton().waitForInvalid();	
+
+}
 

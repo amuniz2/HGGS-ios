@@ -13,6 +13,7 @@
 {
     double _initialQuantity;
     bool _initiallySelected;
+    
 }
 -(void) setGroceryItem:(HGGSGroceryItem *)groceryItem
 {
@@ -28,6 +29,8 @@
     [_itemSelected  setOn:_initiallySelected];
     _groceryItem = groceryItem;
 
+    double mod = fmod(_initialQuantity, 1.0);
+    [_quantityStepper setStepValue:(mod == 0.0) ? 1 : mod];
 }
 - (IBAction)setQuantity:(id)sender
 {

@@ -17,7 +17,6 @@ function setupMasterListTest(target, app)
 	{
 		createStore(target, app, testStoreName);		
 		createGrocerySections(target, app, testStoreName, new Hash(1, ['new grocery section in new aisle'], 5, ['first item in aisle 5']));
-		createMasterGroceryItems();
 	}
 	else
 	{
@@ -214,11 +213,36 @@ function testCreateAndAssignGrocerySectionToGroceryItemInMasterList(target, app)
 	 editItemWindow.DoneButton().waitForInvalid();
 	 
 	 testMasterListWindowValidity(editMasterListWindow, [data.groceryItem2InNewSection]);
+  	 exitMasterListTest(target, app)
 }
+function testNewGrocerySectionAddedToAisleConfig(target, app)
+{
+	var mainWindow = new MainWindow(target, app);
 	
+	mainWindow.StorePicker().wheels()[0].selectValue(testStoreName);	
+	mainWindow.EditStoreButton().tap();
+	mainWindow.EditStoreButton().waitForInvalid();
+
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.EditAislesButtton().tap();
+	editStoreWindow.EditAislesButtton().waitForInvalid();
+
+	editAislesWindow = new EditAislesWindow(target, app, testStoreName);
+	//data.groceryItem2InNewSection.Section = 'produce'
+	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown'], 'Aisle 1', ['new grocery section in new aisle', 'produce'], 'Aisle 5', ['first item in aisle 5']) );
+
+	editAislesWindow.BackButton().tap();
+	editAislesWindow.BackButton().waitForInvalid();
+	
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();
+	
+}	
 function testAssignExistingGrocerySectionToGroceryItemInMasterList(target, app)
 {
 	
+	setupMasterListTest(target, app)
 	var data = new testMasterListData();
 
 	var editMasterListWindow = new MasterListWindow(target, app, testStoreName);	
@@ -231,6 +255,15 @@ function testAssignExistingGrocerySectionToGroceryItemInMasterList(target, app)
 	editWithMasterItemValues(app, editItemWindow, data.groceryItemInProduceSection);
 	 
 	testMasterListWindowValidity(editMasterListWindow, [data.groceryItem2InNewSection, data.groceryItemInProduceSection]);
+	
+	//editAislesWindow = new EditAislesWindow(target, app, testStoreName);
+	editMasterListWindow.BackButton().tap();
+	editMasterListWindow.BackButton().waitForInvalid();
+	
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();
+	
 }
 
 function testSaveAndLoadMasterList(target, app)
@@ -254,4 +287,70 @@ function testSaveAndLoadMasterList(target, app)
 	testMasterListWindowValidity(editMasterListWindow, [data.groceryItem2InNewSection, data.groceryItemInProduceSection]);
 	 
 	exitMasterListTest(target, app);	 
+}
+
+function testAutoAddOfAssignedUnknownGrocerySection(target, app)
+{
+	var storeName = createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
+	var data = new testMasterListForGroceryStoreWithUnknownGrocerySections();
+	
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.EditMasterListButton().tap();
+	editStoreWindow.EditMasterListButton().waitForInvalid();
+
+	var editMasterListWindow = new MasterListWindow(target, app, storeName);
+
+	editMasterListWindow.AddItemButton().tap();
+	editMasterListWindow.AddItemButton().waitForInvalid();
+ 
+	var editItemWindow = new EditGroceryItemWindow(target, app);
+	editItemWindow.NameTextView().setValue(data.groceryItem1.Name );
+	editItemWindow.NotesTextView().setValue(data.groceryItem1.Notes);
+	editItemWindow.QuantityTextField().setValue(data.groceryItem1.Quantity);
+	editItemWindow.QuantityUnitTextField().setValue(data.groceryItem1.Unit);
+	
+	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
+	{ 
+		app.keyboard().buttons()["Return"].tap();
+		app.keyboard().buttons()["Return"].waitForInvalid();
+	}
+
+	editItemWindow.ItemGrocerySection().setValue(data.groceryItem1.Section);
+	editItemWindow.SelectGrocerySectionButton().tap();
+	editItemWindow.SelectGrocerySectionButton().waitForInvalid();	
+	 								
+	var selectGrocerySectionWindow = new 	SelectGrocerySectionWindow(target, app);	 
+	testSelectGrocerySectionWindowValidity(selectGrocerySectionWindow, new Hash('Aisle 0', ['unknown', data.groceryItem1.Section])); 
+	selectGrocerySectionWindow.SectionsTableView().cells()[data.groceryItem1.Section].tap();
+	selectGrocerySectionWindow.SectionsTableView().waitForInvalid();
+	
+	editItemWindow.CancelButton().tap();
+	editItemWindow.CancelButton().waitForInvalid();
+	
+	editMasterListWindow.BackButton().tap();
+	editMasterListWindow.BackButton().waitForInvalid();
+	
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();
+	
+	var mainWindow = new MainWindow(target, app);
+	
+	mainWindow.StorePicker().wheels()[0].selectValue(storeName);	
+	mainWindow.EditStoreButton().tap();
+	mainWindow.EditStoreButton().waitForInvalid();
+
+	editStoreWindow.EditAislesButtton().tap();
+	editStoreWindow.EditAislesButtton().waitForInvalid();
+
+	editAislesWindow = new EditAislesWindow(target, app, storeName);
+	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown', data.groceryItem1]) );
+
+	editAislesWindow.BackButton().tap();
+	editAislesWindow.BackButton().waitForInvalid();
+	
+	var editStoreWindow = new EditStoreWindow(target, app);
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();
+	
+	
 }

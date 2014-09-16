@@ -217,7 +217,7 @@
 {
     if ([store shareLists])
     {
-        [storeList unload];
+        //[storeList unload];
         HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
         [dbStore copyToDropbox:storeList  notifyCopyCompleted:nil];
     }
@@ -231,15 +231,5 @@
     return  [documentDirectories objectAtIndex:0];
 }
 
-#pragma mark HGGSGroceryStoreDelegate Methods
--(void)groceryStore:(HGGSStoreList*) list
-{
-    HGGSGroceryStore *groceryStore = [list store];
-    if ([groceryStore shareLists])
-    {
-        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-        [dbStore copyToDropbox:list  notifyCopyCompleted:nil];
-    }
-}
 
 @end

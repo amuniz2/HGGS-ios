@@ -50,11 +50,66 @@ function testAddNewStore(target, app)
 	editStoreWindow.BackButton().waitForInvalid();  
 
 }  
+function testAddNewStoreWithSameName(target, app)
+{
+	var mainWindow = new MainWindow(target, app);
+	
+	mainWindow.AddStoreButton().tap();
+ 	mainWindow.EditStoreButton().waitForInvalid();
+ 
+ 	var editStoreWindow = new EditStoreWindow(target, app);
+ 	testEditStoreWindowValidity(editStoreWindow, "");
+ 	
+ 	editStoreWindow.EditStoreNameButton().tap();
+ 	target.pushTimeout(1);
+ 	assertTrue(editStoreWindow.StoreNameTextField().isEnabled(), "Edit field is not enabled after clicking Compose button");
+ 	target.popTimeout();	
+ 	editStoreWindow.StoreNameTextField().setValue("My New Grocery Store");
+	
+	
+	expectedAlertMessage = "Duplicate Store";
+ 	editStoreWindow.DoneEditingStoreNameButton().tap();
+	 
+	var okayButton = app.alert().buttons()["Okay"];
+	okayButton.tap(); 
+	okayButton.waitForInvalid(); 
+
+	editStoreWindow.BackButton().tap();
+	editStoreWindow.BackButton().waitForInvalid();  
+
+}  
+
+function testEditRenameStoreWithoutClickingDoneButton(target, app)
+{
+	 var mainWindow = new MainWindow(target, app);
+	 var storeNameToEdit = "My New Grocery Store"
+	 testMainWindowValidity(mainWindow, initialTestStoreName, storeNameToEdit);
+	 
+	 mainWindow.StorePicker().wheels()[0].selectValue(storeNameToEdit);
+	 mainWindow.EditStoreButton().tap();
+	 mainWindow.EditStoreButton().waitForInvalid();
+	 
+	 var editStoreWindow = new EditStoreWindow(target, app);
+	 testEditStoreWindowValidity(editStoreWindow, storeNameToEdit);
+
+	 editStoreWindow.EditStoreNameButton().tap();
+	 target.pushTimeout(1);
+	 assertTrue(editStoreWindow.StoreNameTextField().isEnabled(), "Edit field is not enabled after clicking Compose button");
+	 target.popTimeout();
+	 
+	 editStoreWindow.StoreNameTextField().setValue("My New Grocery Store Name");
+	 
+	 editStoreWindow.BackButton().tap();
+	 editStoreWindow.BackButton().waitForInvalid();
+ 
+	 testMainWindowValidity(mainWindow, initialTestStoreName, "My New Grocery Store Name");
+	
+}
 
 function testEditRenameMyNewStore(target, app)
 {
 	 var mainWindow = new MainWindow(target, app);
-	 var storeNameToEdit = "My New Grocery Store"
+	 var storeNameToEdit = "My New Grocery Store Name"
 	 testMainWindowValidity(mainWindow, initialTestStoreName, storeNameToEdit);
 	 
 	 mainWindow.StorePicker().wheels()[0].selectValue(storeNameToEdit);

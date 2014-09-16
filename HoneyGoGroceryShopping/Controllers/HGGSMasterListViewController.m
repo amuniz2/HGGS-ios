@@ -64,6 +64,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     
+    if (_changesToSave)
+    {
+        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+        [storeManager saveMasterList:[self store]];
+        _changesToSave =NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -8,7 +8,7 @@
 
 #import "HGGSGrocerySectionsViewController.h"
 #import "HGGSGroceryStore.h"
-//#import "HGGSGrocerySectionCellView.h"
+#import "HGGSCommon.h"
 #import "HGGSGroceryAisle.h"
 #import "HGGSGrocerySection.h"
 #import "HGGSGroceryStoreManager.h"
@@ -343,9 +343,13 @@
     if ((tableView == [[self searchDisplayController] searchResultsTableView]) ||
         ([tableView isEditing]))
     {
-        [self editGrocerySectionAt:indexPath inTableView:tableView];
-        [self reloadDataAtIndexPaths:[NSArray arrayWithObject:indexPath ] forTableView:tableView];
-    
+        HGGSGrocerySection * section = [self grocerySectionAt:indexPath inTableView:tableView];
+        
+        if  (![[section name] isEqualToString:DEFAULT_GROCERY_SECTION_NAME] )
+        {
+            [self editGrocerySectionAt:indexPath inTableView:tableView];
+            [self reloadDataAtIndexPaths:[NSArray arrayWithObject:indexPath ] forTableView:tableView];
+        }
     }
         
 }
@@ -503,7 +507,7 @@ shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
     {
         HGGSGroceryAisle* aisle = [self aisleAt:indexPath inTableView:tableView];
         return [[aisle grocerySections]  objectAtIndex:indexPath.row];
-        
+        //DEFAULT_GROCERY_SECTION_NAME
     }
     @catch (NSException *e)
     {

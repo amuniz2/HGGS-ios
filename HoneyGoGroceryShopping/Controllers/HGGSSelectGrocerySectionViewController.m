@@ -53,10 +53,8 @@
 {
     [super viewDidAppear:animated];
     [_tableView reloadData];
-    //NSInteger indexOfSelectedItem = [_sectionsDisplayed  indexOfObject:[self selectedSection]];
     
     [_tableView scrollToRowAtIndexPath:[self indexPathOfGrocerySection:[self selectedSection]] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    //[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexOfSelectedItem inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
 }
 #pragma mark Navigation
@@ -90,31 +88,31 @@
 }
 -(void)setSelectedSectionName:(NSString*) selectedSectionName
 {
+    if ((selectedSectionName == nil) || ([selectedSectionName length] == 0))
+    {
+        [self setSelectedSectionName:DEFAULT_GROCERY_SECTION_NAME];
+        return;
+    }
+    
     HGGSGrocerySection *section = [_groceryAisles  findGrocerySection:selectedSectionName];
-/*    NSUInteger sectionIndex = [_groceryAisles indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        if ([[(HGGSGrocerySection *)obj name] isEqualToString:selectedSectionName])
-        {
-            *stop = YES;
-            return YES;
-        }
-        return NO;
-    }];
-    [self setSelectedSection:[_sectionsDisplayed objectAtIndex:(sectionIndex == NSNotFound ? 0 : sectionIndex)]];
-*/
+
+    
     if (section == nil)
     {
-        [self setSelectedSectionName:@"unknown"];
+        // creae the grocery section in unknown aisle
+        section = [[HGGSGrocerySection alloc] init];
+        [section setName:selectedSectionName];
+        [section setAisle:0];
+        HGGSGroceryAisle * unknownAisle = [[self groceryAisles] itemAt:0];
+        [[unknownAisle grocerySections] addObject:section];
+        [_groceryAisles save];
     }
-    else
-        [self setSelectedSection:section];
-}
-/*-(void)setGrocerySections:(NSArray*) sections
-{
-    _grocerySections = sections;
     
-    _sectionsDisplayed = [NSMutableArray arrayWithArray:_grocerySections];
+    [self setSelectedSection:section];
+    
+
+
 }
-*/
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -294,7 +292,11 @@
     {        
         HGGSGrocerySection * newSection = [_groceryAisles insertNewGrocerySection:[addSectionController sectionName] inAisle:[addSectionController aisleNumber] atSectionIndex:0];
         [self setSelectedSection:newSection];
+        
+        //need to save aisles information, since a new section has been added
+        [_groceryAisles save];
         [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
+        
     }
 }
 

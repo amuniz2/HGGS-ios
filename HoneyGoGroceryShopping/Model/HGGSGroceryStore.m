@@ -7,6 +7,7 @@
 //
 
 #import "HGGSDate.h"
+#import "HGGSCommon.h"
 #import "HGGSGroceryAisle.h"
 #import "HGGSGroceryItem.h"
 #import "HGGSGrocerySection.h"
@@ -161,7 +162,6 @@
 -(void)createShoppingList
 {
     HGGSGrocerySection* grocerySection = nil;
-    bool isSectionAssigned ;
     HGGSGroceryItem *shoppingItem;
     NSMutableArray *shoppingList = [[self getGroceryAisles] copyOfList];
     HGGSStoreAisles * shoppingStoreList = [[self storeLists] objectForKey:[NSNumber numberWithInt:SHOPPING_LIST]];
@@ -177,8 +177,20 @@
         if ([item selected])
         {
             HGGSGroceryAisle* unknownSectionAisle = [shoppingStoreList itemAt:0 ];
-            isSectionAssigned = [self isPopulated:[item section]] ;
-            grocerySection = isSectionAssigned ? [self findGrocerySection:[item section] inAisles:shoppingList] : [[unknownSectionAisle grocerySections] objectAtIndex:0];
+            if  ([self isPopulated:[item section]])
+            {
+                grocerySection = [self findGrocerySection:[item section] inAisles:shoppingList];
+                if (grocerySection == nil)
+                {
+                    //add the section to the unknown aisle
+                    grocerySection = [[HGGSGrocerySection alloc] init];
+                    [grocerySection setName:[item section]];
+                    [grocerySection setAisle:[unknownSectionAisle number]];
+                    [[unknownSectionAisle grocerySections] addObject:grocerySection];
+                }
+            }
+            else
+                grocerySection = [[unknownSectionAisle grocerySections] objectAtIndex:0];
             
             shoppingItem =[item copy];
             [shoppingItem setSelected:NO];
@@ -338,7 +350,7 @@
         {
             // add the uknown section in aisle 0
             HGGSGrocerySection * unknownGrocerySection = [[HGGSGrocerySection alloc] init];
-            [unknownGrocerySection setName:@"unknown"];
+            [unknownGrocerySection setName:DEFAULT_GROCERY_SECTION_NAME];
             HGGSGroceryAisle* defaultAisle = [HGGSGroceryAisle createWithGrocerySection:unknownGrocerySection];
             // todo: for compatibility with android version, set the id as well
             [storeAisles addItem:defaultAisle];

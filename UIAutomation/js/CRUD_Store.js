@@ -15,7 +15,18 @@ test ("StoreList_AddNewStore", function(target, app)
 	  testAddNewStore(target, app);
 });
 
+test ("StoreList_AddNewStoreWithSameName", function(target, app)
+{
+	  testAddNewStoreWithSameName(target, app);
+});
+
+test ("StoreList_RenameStoreWithoutClickingDoneButton", function(target, app)
+{
+	  testEditRenameStoreWithoutClickingDoneButton(target, app);
+});
+
 test("StoreList_RenameStore", function(target, app) {
+	
 	 testEditRenameMyNewStore(target, app);
 });
 
