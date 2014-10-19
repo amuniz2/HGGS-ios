@@ -76,6 +76,7 @@
 		A7E2454B18C38D9700B4C5B9 /* HGGSAisleHeaderCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2454A18C38D9700B4C5B9 /* HGGSAisleHeaderCellView.m */; };
 		A7EB1D43184D761700198EC6 /* HGGSEditShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB1D42184D761700198EC6 /* HGGSEditShoppingListViewController.m */; };
 		A7EB1D46184D839300198EC6 /* HGGSShoppingItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB1D45184D839300198EC6 /* HGGSShoppingItemCellView.m */; };
+		A7ECD86B19F4131100623723 /* UIImage+UIImageResizable.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECD86A19F4131100623723 /* UIImage+UIImageResizable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +205,8 @@
 		A7EB1D42184D761700198EC6 /* HGGSEditShoppingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSEditShoppingListViewController.m; sourceTree = "<group>"; };
 		A7EB1D44184D839300198EC6 /* HGGSShoppingItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSShoppingItemCellView.h; sourceTree = "<group>"; };
 		A7EB1D45184D839300198EC6 /* HGGSShoppingItemCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSShoppingItemCellView.m; sourceTree = "<group>"; };
+		A7ECD86919F4131100623723 /* UIImage+UIImageResizable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+UIImageResizable.h"; path = "Utils/UIImage+UIImageResizable.h"; sourceTree = "<group>"; };
+		A7ECD86A19F4131100623723 /* UIImage+UIImageResizable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+UIImageResizable.m"; path = "Utils/UIImage+UIImageResizable.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +331,7 @@
 		A7C580C0182EE68A00866FAB /* HoneyGoGroceryShopping */ = {
 			isa = PBXGroup;
 			children = (
+				A7ECD86D19F4137D00623723 /* Utils */,
 				A793709919AACA9600D93F9B /* Images.xcassets */,
 				A72F78E3195364DB0061E917 /* Model */,
 				A7AD90F718581B6500785342 /* Resources */,
@@ -501,6 +505,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		A7ECD86D19F4137D00623723 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A7ECD86A19F4131100623723 /* UIImage+UIImageResizable.m */,
+				A7ECD86919F4131100623723 /* UIImage+UIImageResizable.h */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -613,6 +626,7 @@
 				A7DF0A331830531E00E1277A /* HGGSEditGroceryItemViewController.m in Sources */,
 				A72F78F7195364DB0061E917 /* HGGSGroceryAisle.m in Sources */,
 				A7D1D3751933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m in Sources */,
+				A7ECD86B19F4131100623723 /* UIImage+UIImageResizable.m in Sources */,
 				A7C58105182EE74D00866FAB /* HGGSDbGroceryFilesStore.m in Sources */,
 				A7C58155182F31E800866FAB /* HGGSMasterListViewController.m in Sources */,
 				A714858B1837B1280026BE5E /* HGGSGrocerySectionsViewController.m in Sources */,

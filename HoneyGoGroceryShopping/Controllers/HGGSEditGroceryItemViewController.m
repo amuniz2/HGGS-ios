@@ -13,7 +13,7 @@
 #import "HGGSGrocerySectionSelectorViewController.h"
 #import "HGGSGroceryStore.h"
 #import "HGGSSelectGrocerySectionViewController.h"
-
+#import "UIImage+UIImageResizable.h"
 
 @interface HGGSEditGroceryItemViewController ()<UIPickerViewDataSource,UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate>
 
@@ -215,21 +215,21 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *image = info[UIImagePickerControllerOriginalImage];
        
-        _imageView.clipsToBounds = YES;
-        /*CGSize imageSize = [_imageView frame].size;
-        _imageView.image = [self resizeImage:image scaledToSize:imageSize];
-        */
-        _imageView.image = image;
-        [[self groceryItem] setImage:image];
+        CGSize imageMaxSize = [_imageView bounds].size;
+        CGSize newSize = [image proportionateReducedSize:imageMaxSize];
+        
+        //_imageView.image = image;
+        [[self groceryItem] setImage:[image resize:newSize]];
+        
+        _imageView.image = [[self groceryItem] image];
+        [_imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [_imageView setClipsToBounds:YES];
+        
         if (_newMedia)
             UIImageWriteToSavedPhotosAlbum(image,
                                            self,
                                            @selector(image:finishedSavingWithError:contextInfo:),
                                            nil);
-    }
-    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
-    {
-        // Code here to support video if enabled
     }
 }
 
@@ -340,30 +340,6 @@ finishedSavingWithError:(NSError *)error
     _actionTaken = cancelChanges;
     [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
     
-}
-- (UIImage *)resizeImage:(UIImage *)image scaledToSize:(CGSize)newSize {
-    //UIGraphicsBeginImageContext(newSize);
-    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
-    // Pass 1.0 to force exact pixel size.
-    CGSize proportionateSize;
-    
-    if (newSize.height < newSize.width)
-    {
-        float heightToWidthRatio = (image.size.height / image.size.width);
-        proportionateSize.height = newSize.height * heightToWidthRatio;
-        proportionateSize.width = newSize.width;
-    }
-    else
-    {
-        float widthToHeightRatio = (image.size.width / image.size.height);
-        proportionateSize.width = newSize.width * widthToHeightRatio;
-        proportionateSize.height = newSize.height;
-    }
-    UIGraphicsBeginImageContextWithOptions(proportionateSize,  NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, proportionateSize.width, proportionateSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
 }
 -(bool) valid
 {

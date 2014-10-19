@@ -140,7 +140,11 @@
 
 -(NSString *)imagesFolder
 {
-    return [[self localFolder] stringByAppendingPathComponent:@"images"];
+    NSString *folder = [[self localFolder] stringByAppendingPathComponent:@"images"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:folder])
+        [[NSFileManager defaultManager] createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:nil];
+    return folder;
+
 }
 
 #pragma mark Public Methods

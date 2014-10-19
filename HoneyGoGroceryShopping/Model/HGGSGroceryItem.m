@@ -17,6 +17,7 @@
     double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
     NSString * itemName = [itemAttributes objectForKey:@"name"];
     
+
     _imagesFolder = imagesFolder;
     
  //   _imageFileName = [[imagesFolder stringByAppendingPathComponent:itemName] stringByAppendingPathExtension:@"jpg"];
@@ -160,23 +161,32 @@
 }
 -(NSString *) savePicture:(UIImage *)image
 {
+    NSError *error;
+    NSString *imagesFolder = [self imagesFolder];
+    NSString *imagePath = [imagesFolder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",[self imageName]] ];
+
     if (image == nil)
+    {
+        if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
+            [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
+        
+        return nil;
+    }
+    //NSString* imageName = [self imageName];
+    
+    
+    NSData* jpeg = UIImageJPEGRepresentation(image,  0.5);
+    
+    if (jpeg == nil)
         return nil;
     
-    //NSString* imageName = [self imageName];
-    NSString *imageName = @"test";
-    NSString *imagesFolder = [self imagesFolder];
-    NSString *imagePath = [imagesFolder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",imageName] ];
+    if (![jpeg writeToFile:imagePath options:NSDataWritingAtomic error:&error])
+    {
+            NSLog(@"Error writing image: %@",error);
+        return nil;
+    }
     
-    NSData* jpeg = UIImageJPEGRepresentation(image,  0.005);
-    
-    if (jpeg != nil)
-        [jpeg writeToFile:imagePath atomically:YES];
-
-    if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
-        return imageName;
-    
-    return nil;
+    return [self imageName];
 }
             
 @end
