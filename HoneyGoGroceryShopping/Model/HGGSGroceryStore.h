@@ -37,6 +37,9 @@ typedef enum storeFileType
 @property (weak) id <HGGSGroceryStoreDelegate> delegate;
 @property (nonatomic, assign, readonly) NSArray* grocerySections;
 @property (nonatomic, readonly) NSDictionary* storeLists;
+@property (nonatomic, copy, readonly) NSString* localFolder;
+@property (nonatomic, copy, readonly) NSString* imagesFolder;
+
 +(HGGSGroceryStore *)createStore:(NSString*)storeName;
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete;
 +(NSString*)getFileNameComponent:(storeFileType)fileType;
@@ -51,7 +54,6 @@ typedef enum storeFileType
 -(HGGSGrocerySection*)findGrocerySection:(NSString*)sectionName inAisles:(NSArray*)aisles;
 -(HGGSGrocerySection *)findGrocerySectionBySectionId:(NSString *)sectionId ;
 -(NSArray*)findGrocerySections:(NSString*)stringToSearchFor inAisles:(bool)inAisles;
--(NSString *)getLocalFolder;
 -(NSArray *) getSharedFileNameComponents;
 -(NSArray*)getGroceryListsFileNames;
 //-(HGGSGrocerySection*) insertNewGrocerySection:(NSString*)name inAisle:(NSInteger)aisleNumber atSectionIndex:(NSInteger)sectionIndex;

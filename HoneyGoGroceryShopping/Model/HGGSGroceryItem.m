@@ -12,11 +12,16 @@
 
 @implementation HGGSGroceryItem
 #pragma mark Initialization Methods
--(id)initFromDictionary:(NSDictionary*)itemAttributes
+-(id)initFromDictionary:(NSDictionary*)itemAttributes imagesFolder:(NSString*)imagesFolder
 {
     double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
+    NSString * itemName = [itemAttributes objectForKey:@"name"];
     
-    self = [self initWithOldDetails:[itemAttributes objectForKey:@"name"]
+    _imagesFolder = imagesFolder;
+    
+ //   _imageFileName = [[imagesFolder stringByAppendingPathComponent:itemName] stringByAppendingPathExtension:@"jpg"];
+    
+    self = [self initWithOldDetails:itemName
                         quantity:quantity
                         unit:[itemAttributes objectForKey:@"unit"]
                         section:[itemAttributes objectForKey:@"section"]
@@ -24,14 +29,16 @@
                         select:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selected"]]
                         lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
                         sectionId:[itemAttributes objectForKey:@"category"]
+                        image:[itemAttributes objectForKey:@"image"]
             ];
     
+;
     return self;
 }
 
--(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId
+-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId image:(NSString*)imageName
 {
-    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate];
+    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate image:[self loadPicture:imageName inFolder:[self imagesFolder]]] ;
     if (self)
     {
         [self setSectionId:sectionId];
@@ -40,7 +47,7 @@
     return self;
 }
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate image:(UIImage *)image
 {
     
     self = [super init];
@@ -54,6 +61,7 @@
         [self setSection:grocerySection];
         [self setSelected:selected];
         [self setLastPurchasedDate:lastPurchasedDate];
+        [self setImage:image];
         
     }
     return self;
@@ -61,7 +69,7 @@
 -(id)init
 {
     NSString* emptyString = @"";
-    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil];
+    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil image:nil];
     if (self)
     {
         [self setSectionId:emptyString];
@@ -72,6 +80,9 @@
 #pragma mark Public Methods
 -(NSDictionary*)asDictionary
 {
+    if ([self image] != nil)
+        [self savePicture:[self image]];
+    
     _asDictionary =[[NSDictionary alloc] initWithObjectsAndKeys:
                     _name,@"name",
                     [NSNumber numberWithDouble:_quantity],@"quantity",
@@ -81,7 +92,12 @@
                     /*(_sectionId == nil) ? @"" : _sectionId, @"category",*/
                     (_section == nil) ? @"" : _section, @"section",
                     [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
+                    [self imageName], @"image",
                     nil];
+    
+    // todo: add property that holds path to image; save image to grocery store folder
+    //http://stackoverflow.com/questions/22428615/how-do-i-get-back-a-saved-picture-on-iphone-camera-roll
+    
     return _asDictionary;
 }
 
@@ -95,6 +111,14 @@
     return [[self name] isEqual:[someItem name]];
 }
 
+#pragma mark Property Overrides
+-(NSString *)imageName
+{
+    if (([self image] != nil) && ([self name] != nil))
+        return [NSString stringWithFormat:@"%lu",(unsigned long)[[self name] hash]];
+    
+    return nil;
+}
 #pragma mark NSCopying 
 -(id)copyWithZone:(NSZone *)zone
 {
@@ -104,7 +128,8 @@
                                                              section:[self section]
                                                                notes:[self notes]
                                                               select:[self selected]
-                                                     lastPurchasedOn:[self lastPurchasedDate]];
+                                                     lastPurchasedOn:[self lastPurchasedDate]
+                                                               image:[self image]];
     
     [copy setSectionId:[self sectionId]];
     
@@ -121,6 +146,38 @@
     //return [[self name] caseInsensitiveCompare:[anotherItem name]];
     return [[self name] compare:[anotherItem name] options:NSCaseInsensitiveSearch];
 }
+-(UIImage *) loadPicture:(NSString *)imageName inFolder:(NSString*) folderName
+{
+ //   return [[UIImage alloc ] init
+    if (imageName == nil)
+        return nil;
+    NSString *imagePath = [[folderName stringByAppendingPathComponent:imageName] stringByAppendingPathExtension:@"jpg"];
+    if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
+        return[UIImage imageWithContentsOfFile:imagePath];
+    
+    return nil;
+    
+}
+-(NSString *) savePicture:(UIImage *)image
+{
+    if (image == nil)
+        return nil;
+    
+    //NSString* imageName = [self imageName];
+    NSString *imageName = @"test";
+    NSString *imagesFolder = [self imagesFolder];
+    NSString *imagePath = [imagesFolder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",imageName] ];
+    
+    NSData* jpeg = UIImageJPEGRepresentation(image,  0.005);
+    
+    if (jpeg != nil)
+        [jpeg writeToFile:imagePath atomically:YES];
 
+    if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
+        return imageName;
+    
+    return nil;
+}
+            
 @end
 

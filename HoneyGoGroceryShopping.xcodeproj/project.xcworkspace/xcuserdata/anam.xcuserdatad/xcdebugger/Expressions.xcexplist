@@ -11,50 +11,30 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSShoppingItemCellView saveValuesEnteredByUser]:HGGSShoppingItemCellView.m">
+         contextName = "-[HGGSGroceryStore getCurrentList]:HGGSGroceryStore.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController viewDidLoad]:HGGSEditGroceryItemViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGrocerySectionsViewController doneEditing:]:HGGSGrocerySectionsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "(quantitySetByUser != _initialQuantity) || (selectedByUser != _initiallySelected)">
+               value = "_ipBeingEdited.row">
+            </PersistentString>
+            <PersistentString
+               value = "!newSectionName">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSStoreList save]:HGGSStoreList.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[listInFile isEqualToString:serializedList]">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[HGGSStoreItems serializeGroceryItemList]:HGGSStoreItems.m">
       </ContextState>
       <ContextState
-         contextName = "-[HGGSEditStoreViewController linkWithDropbox]:HGGSEditStoreViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[DBAccountManager sharedManager]">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[HGGSUPCServiceConsumer productNamesFromJSONResult:]:HGGSUPCServiceConsumer.m">
       </ContextState>
       <ContextState
-         contextName = "-[HGGSEditStoreViewController onSharingStatusUpdate]:HGGSEditStoreViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[[DBAccountManager sharedManager] isLinked]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSGroceryStore findGrocerySectionBySectionId:]:HGGSGroceryStore.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "NSNotFound">
-            </PersistentString>
-            <PersistentString
-               value = "locationOfString.location">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSShoppingItemCellView setQuantity:]:HGGSShoppingItemCellView.m">
+         contextName = "-[HGGSShoppingItemCellView setGroceryItem:]:HGGSShoppingItemCellView.m">
          <PersistentStrings>
             <PersistentString
                value = "[_quantityStepper value]">
@@ -62,65 +42,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSEditGroceryItemViewController adjustSizeOfTextView:]:HGGSEditGroceryItemViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[textView contentSize]">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "-[HGGSStoreItems addItem:]:HGGSStoreItems.m">
       </ContextState>
       <ContextState
          contextName = "-[HGGSStoreList copyOfList]:HGGSStoreList.m">
       </ContextState>
       <ContextState
-         contextName = "-[HGGSEditShoppingListViewController setItemPropertiesPerCellChanges:]:HGGSEditShoppingListViewController.m">
+         contextName = "-[HGGSFindGrocerySectionsTests testFindSingleGrocerySectionBySectionId]:HGGSFindGrocerySectionsTests.m">
       </ContextState>
       <ContextState
-         contextName = "-[HGGSUPCServiceConsumer productNamesFromJSONResult:]:HGGSUPCServiceConsumer.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSSelectGrocerySectionViewController tableView:cellForRowAtIndexPath:]:HGGSSelectGrocerySectionViewController.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSDbGroceryFilesStore copyFileToDropbox:DBFilePath:]:HGGSDbGroceryFilesStore.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[[NSFileManager defaultManager] fileExistsAtPath:localFilePath]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSStoreItems addItem:]:HGGSStoreItems.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSStoreItems copyOfList]:HGGSStoreItems.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[self list]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSSelectGrocerySectionViewController grocerySectionAt:]:HGGSSelectGrocerySectionViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[indexPath row]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSGrocerySectionsViewController doneEditing:]:HGGSGrocerySectionsViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "!newSectionName">
-            </PersistentString>
-            <PersistentString
-               value = "_ipBeingEdited.row">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[HGGSGroceryStore getCurrentList]:HGGSGroceryStore.m">
+         contextName = "-[HGGSEditGroceryItemViewController viewWillAppear:]:HGGSEditGroceryItemViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[HGGSEditGroceryItemViewController save]:HGGSEditGroceryItemViewController.m">
@@ -131,18 +62,38 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSGroceryStore createShoppingList]:HGGSGroceryStore.m">
+         contextName = "-[HGGSEditGroceryItemViewController viewDidAppear:]:HGGSEditGroceryItemViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[grocerySection groceryItems] == nil">
+               value = "[_imageView image]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSShoppingItemCellView setGroceryItem:]:HGGSShoppingItemCellView.m">
+         contextName = "-[HGGSGroceryStore imagesFolder]:HGGSGroceryStore.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController adjustSizeOfTextView:]:HGGSEditGroceryItemViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[_quantityStepper value]">
+               value = "[textView contentSize]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryItem initWithOldDetails:quantity:unit:section:notes:select:lastPurchasedOn:sectionId:image:]:HGGSGroceryItem.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryItem loadPicture:inFolder:]:HGGSGroceryItem.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController tableView:cellForRowAtIndexPath:]:HGGSSelectGrocerySectionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSStoreItems copyOfList]:HGGSStoreItems.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self list]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -155,7 +106,101 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSFindGrocerySectionsTests testFindSingleGrocerySectionBySectionId]:HGGSFindGrocerySectionsTests.m">
+         contextName = "-[HGGSEditStoreViewController onSharingStatusUpdate]:HGGSEditStoreViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[DBAccountManager sharedManager] isLinked]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController grocerySectionAt:]:HGGSSelectGrocerySectionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[indexPath row]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSStoreList save]:HGGSStoreList.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[listInFile isEqualToString:serializedList]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController imagePickerController:didFinishPickingMediaWithInfo:]:HGGSEditGroceryItemViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSShoppingItemCellView setQuantity:]:HGGSShoppingItemCellView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[_quantityStepper value]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSShoppingItemCellView saveValuesEnteredByUser]:HGGSShoppingItemCellView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(quantitySetByUser != _initialQuantity) || (selectedByUser != _initiallySelected)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryItem savePicture:]:HGGSGroceryItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_imagesFolder">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryStore findGrocerySectionBySectionId:]:HGGSGroceryStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "locationOfString.location">
+            </PersistentString>
+            <PersistentString
+               value = "NSNotFound">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryStore createShoppingList]:HGGSGroceryStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[grocerySection groceryItems] == nil">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditStoreViewController linkWithDropbox]:HGGSEditStoreViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[DBAccountManager sharedManager]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSDbGroceryFilesStore copyFileToDropbox:DBFilePath:]:HGGSDbGroceryFilesStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[NSFileManager defaultManager] fileExistsAtPath:localFilePath]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGroceryItem asDictionary]:HGGSGroceryItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self imageName]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditShoppingListViewController setItemPropertiesPerCellChanges:]:HGGSEditShoppingListViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -35,7 +35,7 @@
     NSError *error;
     HGGSGroceryStore* newStore = [[HGGSGroceryStore alloc] initWithStoreName:storeName];
     
-    if (![[NSFileManager defaultManager] createDirectoryAtPath:[newStore getLocalFolder] withIntermediateDirectories:YES attributes:nil error:&error])
+    if (![[NSFileManager defaultManager] createDirectoryAtPath:[newStore localFolder] withIntermediateDirectories:YES attributes:nil error:&error])
     {
         NSLog(@"Error creating store %@ folder: %@", storeName, error);
     }
@@ -54,7 +54,7 @@
     NSLog(@"store deleteStore called");
 
     NSError *error;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete getLocalFolder]] )
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete localFolder]] )
     {
         if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete getFileName:MASTER_LIST]] )
         {
@@ -70,7 +70,7 @@
             
         }
                                                               
-        if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getLocalFolder] error:&error])
+        if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete localFolder] error:&error])
             NSLog(@"Error deleting store's master list: %@.  Error: %@", storeToDelete, error);
     }
     
@@ -104,7 +104,7 @@
     {
         [self setName:storeName];
         [self loadStoreInfo];
-        NSString* folderName = [self getLocalFolder];
+        NSString* folderName = [self localFolder];
         _storeLists = [[NSDictionary alloc] initWithObjectsAndKeys:
                        [HGGSStoreItems createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:MASTER_LIST] list:nil ],[NSNumber  numberWithInt:MASTER_LIST],
                        [HGGSStoreAisles createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG] list:nil ],[NSNumber  numberWithInt:AISLE_CONFIG],
@@ -126,6 +126,21 @@
         }
         _name = name;
     }
+}
+
+-(NSString *)localFolder
+{
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    // for ios, there will only be one director in the list
+    NSString *documentDirectory = [documentDirectories objectAtIndex:0];
+    
+    return [documentDirectory stringByAppendingPathComponent:[self name]];
+}
+
+-(NSString *)imagesFolder
+{
+    return [[self localFolder] stringByAppendingPathComponent:@"images"];
 }
 
 #pragma mark Public Methods
@@ -290,18 +305,9 @@
         HGGSStoreList* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:storeFileType]];
         fileNameWithoutPath = [storeList fileName];
     }
-    return [[self getLocalFolder] stringByAppendingPathComponent:fileNameWithoutPath];
+    return [[self localFolder] stringByAppendingPathComponent:fileNameWithoutPath];
 }
 
--(NSString *)getLocalFolder
-{
-        NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        
-        // for ios, there will only be one director in the list
-        NSString *documentDirectory = [documentDirectories objectAtIndex:0];
-        
-        return [documentDirectory stringByAppendingPathComponent:[self name]];
-}
 
 -(NSArray*) getGroceryListsFileNames
 {
@@ -424,7 +430,7 @@
 -(void) saveStoreInfo
 {
     NSString *fileContents = [self serializeStoreInfo];
-    [self saveFile:[[self getLocalFolder] stringByAppendingPathComponent:STORE_INFO_FILE] contents:fileContents ];
+    [self saveFile:[[self localFolder] stringByAppendingPathComponent:STORE_INFO_FILE] contents:fileContents ];
 }
 
 -(bool)saveCurrentList
@@ -585,7 +591,7 @@
 #pragma mark Private
 -(void)loadStoreInfo
 {
-    NSString *fileContents = [self loadFile:[[self getLocalFolder] stringByAppendingPathComponent:STORE_INFO_FILE]];
+    NSString *fileContents = [self loadFile:[[self localFolder] stringByAppendingPathComponent:STORE_INFO_FILE]];
     if (fileContents)
     {
         NSDate* date;
@@ -614,7 +620,7 @@
 
 -(void)moveToNewStoreFolder:(NSString*)newFolderName
 {
-    NSString *oldPath = [self getLocalFolder];
+    NSString *oldPath = [self localFolder];
     NSString *newPath = [[oldPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:newFolderName];
     NSError *error = nil;
     [[NSFileManager defaultManager] moveItemAtPath:oldPath toPath:newPath error:&error];
@@ -631,7 +637,7 @@
     {
         NSFileManager *fm = [NSFileManager defaultManager];
         
-        NSString *storeFolder = [self getLocalFolder];
+        NSString *storeFolder = [self localFolder];
         if (![fm fileExistsAtPath:storeFolder])
         {
             [fm createDirectoryAtPath:storeFolder withIntermediateDirectories:YES attributes:nil error:nil];

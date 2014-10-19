@@ -21,7 +21,8 @@ typedef enum itemType
     newShoppingItem = 2
 } itemType;
 
-@interface HGGSEditGroceryItemViewController : UIViewController <HGGSBarcodeScannerDelegate>
+@interface HGGSEditGroceryItemViewController : UIViewController <HGGSBarcodeScannerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
 {
     //__weak IBOutlet UITextField *notes;
     __weak IBOutlet UITextField *quantity;
@@ -31,8 +32,11 @@ typedef enum itemType
     __weak IBOutlet UISwitch *select;
     __weak IBOutlet UIToolbar *editToolbar;
     __weak IBOutlet UILabel *selectionLabel;
+    __weak IBOutlet UIImageView *_imageView;
 
     __weak IBOutlet UITextView *_additionalNotes;
+    
+
 }
 @property (nonatomic, strong)HGGSGroceryItem *groceryItem;
 
@@ -51,5 +55,9 @@ typedef enum itemType
 - (IBAction)enterEditModeOrCancel:(id)sender;
 - (IBAction)deleteItem:(id)sender;
 - (IBAction)saveOrReturn:(id)sender;
+@property BOOL newMedia;
+
+-(IBAction) useCamera : (id)sender;
+-(IBAction) useCameraRoll : (id)sender;
 
 @end

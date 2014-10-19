@@ -9,5 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface HGGSGroceryItemPictureViewController : UIViewController
+<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    IBOutlet UIImageView *_imageView;
+}
+@property BOOL newMedia;
+
+-(IBAction) useCamera : (id)sender;
+-(IBAction) useCameraRoll : (id)sender;
 
 @end

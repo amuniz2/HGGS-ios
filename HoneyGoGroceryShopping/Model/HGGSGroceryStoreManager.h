@@ -31,4 +31,5 @@
 -(void)saveMasterList:(HGGSGroceryStore*)store;
 -(void)saveShoppingList:(HGGSGroceryStore*)store;
 -(HGGSGroceryStore *)store:(NSString *)name;
+-(void)loadData:(NSString*)storeName;
 @end

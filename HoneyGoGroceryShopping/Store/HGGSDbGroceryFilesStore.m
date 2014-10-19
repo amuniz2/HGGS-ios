@@ -61,11 +61,14 @@
 
 -(void) copyFromDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
-                   {
-                       [self doCopyFromDropbox:storeList notifyCopyCompleted:notifyCopyCompleted];
-                   });
-    
+    if ([self newDbFile:storeList])
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
+                       {
+                           [self doCopyFromDropbox:storeList notifyCopyCompleted:notifyCopyCompleted];
+                       });
+        
+    }
 }
 
 -(void) copyStoreListsToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
@@ -379,18 +382,14 @@
     dbSharedListFileInfo = [_fs fileInfoForPath:dbSharedListFilePath error:nil];
     dbSharedListModifiedDate = [dbSharedListFileInfo modifiedTime];
     return [dbSharedListModifiedDate compare:[storeList lastSyncDate]] == NSOrderedDescending;
-    
-
 }
 
 -(BOOL)newLocalFile:(HGGSStoreList*)storeList
 {
-    
     NSDate * localFileDate = [storeList lastModificationDate];
     if (localFileDate)
     {
         return [localFileDate compare:[storeList lastSyncDate]] == NSOrderedDescending;
-        
     }
     return NO;
     

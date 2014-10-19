@@ -180,7 +180,8 @@
     NSInteger currentAisleNumber = -1;
     for (NSDictionary *sectionAsDictionary in sections)
     {
-        HGGSGrocerySection * grocerySection = [[HGGSGrocerySection alloc] initFromDictionary:sectionAsDictionary];
+        HGGSGrocerySection * grocerySection = [[HGGSGrocerySection alloc] initFromDictionary:sectionAsDictionary imagesFolder:[[self store] imagesFolder]];
+        
         [grocerySection setDelegate:[self store]];
         if (currentAisleNumber != [grocerySection aisle])
         {

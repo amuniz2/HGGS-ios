@@ -165,6 +165,7 @@
 -(HGGSGroceryStore *)loadStore:(NSString*)storeName
 {
     HGGSGroceryStore *storeToLoad = [[HGGSGroceryStore alloc] initWithStoreName:storeName];
+    // todo: initial load should only load store names!! 
     [_allStores setObject:storeToLoad forKey:storeName];
     
     if ([storeToLoad shareLists])

@@ -5,6 +5,7 @@
 //  Created by Ana Muniz on 11/10/13.
 //  Copyright (c) 2013 Ana Muniz. All rights reserved.
 //
+#import <MobileCoreServices/UTCoreTypes.h>
 
 #import "HGGSEditGroceryItemViewController.h"
 #import "HGGSGroceryItem.h"
@@ -53,6 +54,7 @@
     [select setOn:((_itemType == pantryItem) ? [[self groceryItem] selected]:  YES)];
     [grocerySection setText:[[self groceryItem] section]];
     [selectionLabel setText:[self selectionLabelText]];
+    [_imageView setImage:[[self groceryItem] image]];
     
     [quantity setEnabled:(_itemType != shoppingItem)];
     [quantity setUserInteractionEnabled:(_itemType != shoppingItem)];
@@ -74,6 +76,8 @@
 {
     [super viewWillAppear:animated];
     
+    _imageView.clipsToBounds = YES;
+  
     // clears the keyboard if it is present
     [[self view] endEditing:YES];
     
@@ -161,6 +165,92 @@
 -(IBAction)saveOrReturn:(id)sender
 {
     [self save];
+}
+
+#pragma mark Camera Actions
+- (void) useCamera:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:
+         UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerController *imagePicker =
+        [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.sourceType =
+        UIImagePickerControllerSourceTypeCamera;
+        imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
+        imagePicker.allowsEditing = NO;
+        [self presentViewController:imagePicker
+                           animated:YES completion:nil];
+        _newMedia = YES;
+    }
+}
+
+- (void) useCameraRoll:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:
+         UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+    {
+        UIImagePickerController *imagePicker =
+        [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.sourceType =
+        UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
+        imagePicker.allowsEditing = NO;
+        [self presentViewController:imagePicker
+                           animated:YES completion:nil];
+        _newMedia = NO;
+    }
+}
+#pragma mark UIImagePickerControllerDelegate
+
+-(void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+       
+        _imageView.clipsToBounds = YES;
+        /*CGSize imageSize = [_imageView frame].size;
+        _imageView.image = [self resizeImage:image scaledToSize:imageSize];
+        */
+        _imageView.image = image;
+        [[self groceryItem] setImage:image];
+        if (_newMedia)
+            UIImageWriteToSavedPhotosAlbum(image,
+                                           self,
+                                           @selector(image:finishedSavingWithError:contextInfo:),
+                                           nil);
+    }
+    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
+    {
+        // Code here to support video if enabled
+    }
+}
+
+-(void)image:(UIImage *)image
+finishedSavingWithError:(NSError *)error
+ contextInfo:(void *)contextInfo
+{
+    if (error) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Save failed"
+                              message: @"Failed to save image"
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) hideKeyboard
@@ -251,7 +341,30 @@
     [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
     
 }
-
+- (UIImage *)resizeImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    CGSize proportionateSize;
+    
+    if (newSize.height < newSize.width)
+    {
+        float heightToWidthRatio = (image.size.height / image.size.width);
+        proportionateSize.height = newSize.height * heightToWidthRatio;
+        proportionateSize.width = newSize.width;
+    }
+    else
+    {
+        float widthToHeightRatio = (image.size.width / image.size.height);
+        proportionateSize.width = newSize.width * widthToHeightRatio;
+        proportionateSize.height = newSize.height;
+    }
+    UIGraphicsBeginImageContextWithOptions(proportionateSize,  NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, proportionateSize.width, proportionateSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 -(bool) valid
 {
     NSString* newItemName = [[name text] stringByTrimmingCharactersInSet:
@@ -302,7 +415,8 @@
                                                         section:[grocerySection text]
                                                         notes:[_additionalNotes text]
                                                         select:[select isOn]
-                                                        lastPurchasedOn:[NSDate date]] ;
+                                                        lastPurchasedOn:[NSDate date]
+                                                          image:[_imageView image]] ;
         _actionTaken = (_isNewItem ? saveChanges : replaceItem);
     }
     else

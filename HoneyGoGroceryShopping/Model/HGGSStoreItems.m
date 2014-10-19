@@ -75,6 +75,7 @@
     if (existingItem != nil)
         return -1;
 
+    [newItem setImagesFolder:[[self store] imagesFolder] ];
     [_list addEntriesFromDictionary:[NSDictionary dictionaryWithObject:newItem forKey:[newItem name]]];
     [self sortList];
     
@@ -205,7 +206,7 @@
     
     for (NSDictionary *item in items)
     {
-        HGGSGroceryItem * groceryItem = [[HGGSGroceryItem alloc] initFromDictionary:item];
+        HGGSGroceryItem * groceryItem = [[HGGSGroceryItem alloc] initFromDictionary:item imagesFolder:[[self store]  imagesFolder]];
         
         [listAsArray addObject:groceryItem];
         

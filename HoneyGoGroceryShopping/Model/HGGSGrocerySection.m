@@ -23,7 +23,7 @@
         
         for (NSDictionary  *item in groceryItems)
         {
-            [_groceryItems addObject:[[HGGSGroceryItem alloc] initFromDictionary:item]];
+            [_groceryItems addObject:[[HGGSGroceryItem alloc] initFromDictionary:item imagesFolder:[self  imagesFolder]]];
         }
     }
     return self;
@@ -39,8 +39,9 @@
     return self;
     
 }
--(id)initFromDictionary:(NSDictionary*)itemAttributes
+-(id)initFromDictionary:(NSDictionary*)itemAttributes imagesFolder:(NSString *)imagesFolder
 {
+    _imagesFolder = imagesFolder;
     self = [self initWithOldDetails:[itemAttributes objectForKey:@"name"]
                               aisle:[[itemAttributes objectForKey:@"order" ] intValue]
                               order:[[itemAttributes objectForKey:@"index" ] intValue]

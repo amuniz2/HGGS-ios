@@ -76,6 +76,8 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 
     [_selectSingleProductView setHidden:YES];
     [_selectSingleProductView setUserInteractionEnabled:NO];
+    [cancelScanButton setHidden:NO];
+    
 }
 
 - (void)didReceiveMemoryWarning

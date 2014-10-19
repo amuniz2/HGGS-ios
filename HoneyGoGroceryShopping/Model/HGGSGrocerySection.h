@@ -23,12 +23,13 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *sectionId;
 @property (nonatomic, strong) NSMutableArray* groceryItems;
+@property (nonatomic, copy, readonly) NSString *imagesFolder;
 
--(id)initFromDictionary:(NSDictionary *)itemAttributes;
+-(id)initFromDictionary:(NSDictionary *)itemAttributes imagesFolder:(NSString*)imagesFolder;
 @property(nonatomic,strong)NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name aisle:(NSInteger)aisle order:(NSInteger)order  groceryItemsInSection:(NSMutableArray*)groceryItems;
+/*-(id)initWithDetails:(NSString*)name aisle:(NSInteger)aisle order:(NSInteger)order  groceryItemsInSection:(NSMutableArray*)groceryItems;
 
 -(id)initWithOldDetails:(NSString*)name aisle:(int)aisle order:(int)order sectionId:(NSString*)sectionId  groceryItemsInSection:(NSMutableArray*)groceryItems;
-
+*/
 @end
