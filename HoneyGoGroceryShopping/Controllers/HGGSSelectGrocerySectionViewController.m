@@ -52,7 +52,7 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [_tableView reloadData];
+    //[_tableView reloadData];
     
     [_tableView scrollToRowAtIndexPath:[self indexPathOfGrocerySection:[self selectedSection]] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     

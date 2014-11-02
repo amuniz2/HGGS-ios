@@ -29,14 +29,18 @@
     }
     return proportionateSize;
 }
-- (UIImage *)resize:(CGSize)newSize {
+- (UIImage *)resize:(CGSize)newSize origin:(CGPoint)origin {
  
     UIGraphicsBeginImageContextWithOptions(newSize,  NO, 0.0);
-    [self drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    [self drawInRect:CGRectMake(origin.x, origin.y, newSize.width, newSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
 }
 
-
+- (UIImage *)resizeImageToMaxSize:(CGSize)maxSize origin:(CGPoint)origin
+{
+    CGSize newSize = [self proportionateReducedSize:maxSize];
+    return [self resize:newSize origin:origin];
+}
 @end

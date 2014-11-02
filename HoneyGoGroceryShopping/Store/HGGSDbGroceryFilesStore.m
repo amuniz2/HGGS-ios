@@ -10,6 +10,7 @@
 #import "HGGSGroceryStore.h"
 #import "HGGSStoreList.h"
 #import "HGGSAlertSharedStoreFileUpdated.H"
+#import "NSString+SringExtensions.h"
 
 @implementation HGGSDbGroceryFilesStore
 {
@@ -48,13 +49,15 @@
     
 }
 #pragma mark Public Methods
--(void) copyStoreListsFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+-(void) copyStoreFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                    {
+                       [self doCopyFilesInDirectory:[store imagesFolder] toDropboxFolder:[self dbFolderForStoreImages:store] lastSyncDate:[store lastImagesSyncDate]];
                        [self doCopyFromDropbox:[store getMasterList] notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getGroceryAisles] notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted];
+                       [store setLastImagesSyncDate:[NSDate date]];
                    });
     
 }
@@ -62,31 +65,45 @@
 -(void) copyFromDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
     if ([self newDbFile:storeList])
-    {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                        {
                            [self doCopyFromDropbox:storeList notifyCopyCompleted:notifyCopyCompleted];
                        });
         
-    }
 }
 
--(void) copyStoreListsToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+-(void) copyImagesFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
+    {
+        DBPath* dbStoreFolder = [[DBPath root] childPath:[store name]];
+        
+        [self doCopyFilesInDBFolder:[dbStoreFolder childPath:@"images"] toLocalFolder:[store imagesFolder] lastSyncDate:[store lastImagesSyncDate]];
+        
+        if (notifyCopyCompleted != nil)
+            notifyCopyCompleted(YES);
+    });
+    
+}
+
+-(void) copyStoreToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                    {
-                       [self doCopyToDropbox:[store getGroceryAisles] notifyCopyCompleted:nil];
-                       [self doCopyToDropbox:[store getMasterList] notifyCopyCompleted:nil];
-                       [self doCopyToDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted];
+                       [self doCopyFilesInDirectory:[store imagesFolder] toDropboxFolder:[self dbFolderForStoreImages:store] lastSyncDate:[store lastImagesSyncDate]];
+                       [self doCopyToDropbox:[store getGroceryAisles] notifyCopyCompleted:nil copyImages:NO];
+                       [self doCopyToDropbox:[store getMasterList] notifyCopyCompleted:nil copyImages:NO];
+                       [self doCopyToDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted copyImages:NO];
+                       [store setLastImagesSyncDate:[NSDate date]];
                    });
     
 }
 
--(void) copyToDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+-(void) copyToDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted copyImages:(BOOL)copyImages
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                    {
-                       [self doCopyToDropbox:storeList notifyCopyCompleted:notifyCopyCompleted];
+                       [self doCopyToDropbox:storeList notifyCopyCompleted:notifyCopyCompleted copyImages:copyImages];
                    });
     
 }
@@ -117,44 +134,38 @@
 
 -(void) notifyOfChangesToStore:(HGGSGroceryStore*)store
 {
-    [self notifyOfChangesToStoreList:[store getGroceryAisles]];
-    [self notifyOfChangesToStoreList:[store getMasterList]];
-    [self notifyOfChangesToStoreList:[store getCurrentList]];
+    DBPath* dbStoreFolder = [[DBPath root] childPath:[store name]];
+    
+    [self notifyOfChangesToStoreImages:store inStoreFolder:dbStoreFolder];
+    [self notifyOfChangesToStoreList:[store getGroceryAisles] inFolder:dbStoreFolder];
+    [self notifyOfChangesToStoreList:[store getMasterList]  inFolder:dbStoreFolder];
+    [self notifyOfChangesToStoreList:[store getCurrentList]  inFolder:dbStoreFolder];
 }
 
--(void) notifyOfChangesToStoreList:(HGGSStoreList*)storeList
+-(void) notifyOfChangesToStoreList:(HGGSStoreList*)storeList inFolder:(DBPath *)inFolder
 {
     __weak id weakSelfRef = self;
-    //NSString *storeName = [storeList storeName];
-    DBPath* dbFolderPath = [[DBPath root] childPath:[storeList storeName]];
-    [_fs addObserver:self forPath:[dbFolderPath childPath:[storeList fileName]] block:^{
+ 
+    [_fs addObserver:self forPath:[inFolder childPath:[storeList fileName]] block:^{
         if (![storeList exists])
             [weakSelfRef doCopyFromDropbox:storeList notifyCopyCompleted:nil];
-        /*else
-        {
-            //if files are loaded, determine if the changes are those made by the loaded store itself
-            if ([weakSelfRef newDbFile:storeList ])
-            {
-                // otherwise, we need to prompt user on ui thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelfRef promptUserForReceiptOfDbFile:storeList];
-                });
-            }
-        }
-        */
-            
+    }];
+
+
+}
+
+-(void) notifyOfChangesToStoreImages:(HGGSGroceryStore*)store inStoreFolder:(DBPath *)inStoreFolder
+{
+    __weak id weakSelfRef = self;
+
+    [_fs addObserver:self forPath:[inStoreFolder childPath:@"images"] block:^{
+        
+        // todo: copy image files from dropbox to local
+        [weakSelfRef doCopyFilesInDBFolder:inStoreFolder toLocalFolder:[store imagesFolder] lastSyncDate:[store lastImagesSyncDate]];
     }];
     
 }
--(void)syncWithDropbox:(HGGSStoreList*) storeList
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
-                   {
-                       [self doSyncWithDropbox:storeList];
-                       [self notifyOfChangesToStoreList:storeList];
-                   });
-    
-}
+
 
 #pragma mark UIAlertView
 -(void)promptUserForReceiptOfDbFile:(HGGSStoreList *)storeList
@@ -204,7 +215,33 @@
         [dbFile close];
         if (contents)
         {
+            error = nil;
             fileCopied =[contents writeToFile:localFilePath atomically:NO encoding:NSUTF8StringEncoding error:&error];
+        }
+    }
+    if (error)
+    {
+        NSLog(@"Error copying file %@: %@", dbFileInfo, error);
+    }
+    return fileCopied && !error;
+    
+}
+
+-(BOOL)copyImageFromDropbox:(DBFileInfo *)dbFileInfo localFile:(NSString *)localFilePath
+{
+    DBError *dberror;
+    NSError *error;
+    BOOL fileCopied = NO;
+    DBFile * dbFile = [_fs openFile:[dbFileInfo path] error:&dberror];
+    
+    if (dbFile)
+    {
+        NSData * contents = [dbFile readData:&dberror];
+        [dbFile close];
+        if (contents)
+        {
+            error = nil;
+            fileCopied =[contents writeToFile:localFilePath atomically:NO ];
         }
     }
     if (error)
@@ -223,13 +260,14 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:localFilePath])
         return NO;
-    
+
     DBFile * dbFile = [_fs openFile:dbFilePath error:&error];
     if (error)
         dbFile = [_fs createFile:dbFilePath error:&error];
     
     if (dbFile)
     {
+        error = nil;
         fileCopied =[dbFile writeContentsOfFile:localFilePath shouldSteal:NO error:&error];
         [dbFile close];
     }
@@ -264,20 +302,31 @@
     NSArray * filesInStoreFolder = [_fs listFolder:[[DBPath root] childPath:storeName] error:&error];
     return ([filesInStoreFolder count] > 0);
 }
--(DBPath*) dbFolderPathFor:(HGGSStoreList*)storeList
+-(DBPath*) dbFilePathFor:(HGGSStoreList*)storeList
 {
     DBPath *dbStoreFolderPath = [[DBPath root] childPath:[storeList storeName]];
     return [dbStoreFolderPath childPath:[storeList fileName]];
 }
+-(NSString *)localFilePathForList:(HGGSStoreList*)storeList
+{
+    NSString *localPath =  [storeList localFolder];
+    return [localPath stringByAppendingPathComponent:[storeList fileName]];
+
+}
+-(DBPath *)dbFolderForStoreImages:(HGGSGroceryStore*)store
+{
+    DBPath *dbStoreFolderPath = [[DBPath root] childPath:[store name]];
+    return [dbStoreFolderPath childPath:@"images"];
+
+}
+
 -(void) doCopyFromDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
     bool fileCopied = NO;
     DBError *error;
-    NSString *localPath =  [storeList localFolder];
-    NSString *localFileName = [localPath stringByAppendingPathComponent:[storeList fileName]];
    
-    DBFileInfo *fileInfo = [_fs fileInfoForPath:[self dbFolderPathFor:storeList] error:&error];
-    if([self copyFileFromDropbox:fileInfo localFile:localFileName])
+    DBFileInfo *fileInfo = [_fs fileInfoForPath:[self dbFilePathFor:storeList] error:&error];
+    if([self copyFileFromDropbox:fileInfo localFile:[self localFilePathForList:storeList]])
     {
         fileCopied = YES;
         [storeList setLastSyncDate:[NSDate date]];
@@ -295,8 +344,79 @@
     }
     
 }
+-(bool)isDbFile:(DBFileInfo*)dbFileInfo ofType:(NSString*)extension newerThan:(NSDate*)otherFileDate
+{
+    if (![[[dbFileInfo path]name] endsWith:[NSString stringWithFormat:@".%@",extension]])
+        return NO;
+    
+    NSDate* dbFileDate = [dbFileInfo modifiedTime];
+    
+    return ((otherFileDate == nil) || ([dbFileDate compare:otherFileDate] == NSOrderedDescending));
+    
+}
 
--(void) doCopyToDropbox:(HGGSStoreList*)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+-(bool)isFile:(NSString*)filePath ofType:(NSString*)extension newerThan:(NSDate*)otherFileDate
+{
+    if (![filePath endsWith:[NSString stringWithFormat:@".%@",extension]])
+          return NO;
+        
+    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+    
+    if (fileAttributes == nil)
+        return NO;
+    
+    if([fileAttributes valueForKey:NSFileType] != NSFileTypeRegular)
+        return NO;
+
+    NSDate* localFileDate = [fileAttributes objectForKey:NSFileModificationDate];
+    
+    return ((otherFileDate == nil) || ([localFileDate compare:otherFileDate] == NSOrderedDescending));
+    
+}
+
+-(void) doCopyFilesInDirectory:(NSString*)localFolder toDropboxFolder:(DBPath*)dbFolder lastSyncDate:(NSDate*)lastSyncDate
+{
+    NSString *jpegFilePath;
+    DBPath *dbFilePath;
+    DBFileInfo * dbFileInfo;
+    
+    NSArray *contentsOfFolder = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:localFolder error:nil];
+    
+    dbFileInfo = ([_fs fileInfoForPath:dbFolder error:nil ]);
+    if (dbFileInfo == nil)
+        [_fs createFolder:dbFolder error:nil];
+ 
+    for (NSString * file in contentsOfFolder)
+    {
+        dbFilePath = [dbFolder childPath:file];
+        jpegFilePath = [localFolder stringByAppendingPathComponent:file];
+        if ([self isFile:jpegFilePath ofType:@"jpg" newerThan:lastSyncDate])
+            [self copyFileToDropbox:jpegFilePath DBFilePath:dbFilePath];
+    }
+    
+}
+
+-(void) doCopyFilesInDBFolder:(DBPath*)dbFolder toLocalFolder:(NSString*)localFolder lastSyncDate:(NSDate*)lastSyncDate
+{
+    NSString *localFilePath;
+    
+    NSArray * filesInImagesFolder = [_fs listFolder:dbFolder error:nil];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:localFolder])
+        [[NSFileManager defaultManager] createDirectoryAtPath:localFolder withIntermediateDirectories:NO attributes:nil error:nil];
+    
+    for (DBFileInfo *dbFileInfo in filesInImagesFolder)
+    {
+        
+        localFilePath = [localFolder stringByAppendingPathComponent:[[dbFileInfo path] name]];
+        
+        if ([self isDbFile:dbFileInfo ofType:@"jpg" newerThan:lastSyncDate])
+            [self copyImageFromDropbox:dbFileInfo localFile:localFilePath];
+    }
+    
+}
+
+-(void) doCopyToDropbox:(HGGSStoreList*)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted copyImages:(BOOL)copyImages
 {
     NSString* storeName = [storeList storeName];
     DBPath * dbStoreFolder = [[DBPath root] childPath:storeName];
@@ -309,6 +429,12 @@
     {
         fileCopied = YES;
         [storeList setLastSyncDate:[NSDate date]];
+        if (copyImages)
+        {
+            //images may have been updated as well
+            [self doCopyFilesInDirectory:[[storeList store] imagesFolder] toDropboxFolder:[dbStoreFolder childPath:@"images"] lastSyncDate:[[storeList store] lastImagesSyncDate]];
+            
+        }
     }
     if (notifyCopyCompleted)
     {
@@ -359,18 +485,6 @@
     
 }
 
--(void)doSyncWithDropbox:(HGGSStoreList*) storeList
-{
-    if([self newLocalFile:storeList])
-    {
-        [self copyToDropbox:storeList  notifyCopyCompleted:nil];
-    }
-    else if ([self newDbFile:storeList])
-    {
-        [self copyFromDropbox:storeList notifyCopyCompleted:nil];
-    }
-}
-
 -(BOOL)newDbFile:(HGGSStoreList*)storeList
 {
     DBPath * dbStoreFolder = [[DBPath root] childPath:[storeList storeName]];
@@ -378,18 +492,26 @@
     DBFileInfo * dbSharedListFileInfo;
     NSDate *dbSharedListModifiedDate;;
     
+    //NSString *localFilePath = [self localFilePathForList:storeList] ;
+    //NSDictionary *localFileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:localFilePath error:nil];
+
     dbSharedListFilePath = [dbStoreFolder childPath:[storeList fileName]];
     dbSharedListFileInfo = [_fs fileInfoForPath:dbSharedListFilePath error:nil];
     dbSharedListModifiedDate = [dbSharedListFileInfo modifiedTime];
+    //return [dbSharedListModifiedDate compare:[localFileAttributes objectForKey:NSFileModificationDate]] == NSOrderedDescending;
     return [dbSharedListModifiedDate compare:[storeList lastSyncDate]] == NSOrderedDescending;
 }
 
+//TODO: not used --- but should we use it?
 -(BOOL)newLocalFile:(HGGSStoreList*)storeList
 {
+    DBPath * dbFilePath = [self dbFilePathFor:storeList];
+    DBFileInfo *dbFileInfo = [_fs fileInfoForPath:dbFilePath error:nil];
     NSDate * localFileDate = [storeList lastModificationDate];
+    
     if (localFileDate)
     {
-        return [localFileDate compare:[storeList lastSyncDate]] == NSOrderedDescending;
+        return [localFileDate compare:[dbFileInfo modifiedTime]] == NSOrderedDescending;
     }
     return NO;
     

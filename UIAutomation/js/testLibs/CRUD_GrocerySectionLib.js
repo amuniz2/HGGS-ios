@@ -50,7 +50,8 @@ function enterDeleteMode(editAislesWindow)
 }
 
 function exitDeleteMode(editAislesWindow)
-{	assertTrue(editAislesWindow.ExitDeleteModeButton().isValid());
+{	
+	assertTrue(editAislesWindow.ExitDeleteModeButton().isValid());
 	if (editAislesWindow.ExitDeleteModeButton().isValid())
 	{
 		editAislesWindow.ExitDeleteModeButton().tap();
@@ -116,6 +117,7 @@ function testAddGrocerySectionInNewAisle(target, app)
 
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown', 'middle item in aisle 0','new grocery section in same aisle'], 'Aisle 1', ['new grocery section in new aisle']) );
 
+	exitEditMode(editAislesWindow);
 }	  
 
 function testCannotInsertGrocerySectionWithNoName(target, app)
@@ -135,7 +137,8 @@ function testCannotInsertGrocerySectionWithNoName(target, app)
  	newSectionCell.DoneButton().waitForInvalid();
 
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown', 'middle item in aisle 0','new grocery section in same aisle'], 'Aisle 1', ['new grocery section in new aisle']) );
-	  
+	
+	exitEditMode(editAislesWindow);  
 }
 
 function testCannotInsertGrocerySectionWithDuplicateName(target, app)
@@ -186,10 +189,13 @@ function testDeleteSectionInAisle(target, app)
 	enterDeleteMode(editAislesWindow);
 	var deleteCell = editAislesWindow.CellToDelete('new grocery section in same aisle');
 	deleteCell.DeleteSwitch().tap();
+	deleteCell.logElement();
 	deleteCell.ConfirmDeleteButton().tap();
 	 
 	deleteCell.ConfirmDeleteButton().waitForInvalid();
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown', 'middle item in aisle 0'], 'Aisle 1', ['new grocery section in new aisle'], 'Aisle 2', ['unique grocery section in aisle 2'] ));	 
+
+	exitEditMode(editAislesWindow);
 }
 
 function testDeleteLastSectionInAisle(target, app)
@@ -207,7 +213,6 @@ function testDeleteLastSectionInAisle(target, app)
 	 
 	// todo: this needs to change!
 	deleteCell.DeleteSwitch().tap();
-	deleteCell.DeleteSwitch().tap();
 	
 	target.pushTimeout(2);
 	deleteCell.ConfirmDeleteButton().isValid();
@@ -219,7 +224,6 @@ function testDeleteLastSectionInAisle(target, app)
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown', 'middle item in aisle 0'], 'Aisle 1', ['new grocery section in new aisle']) );
 
 	//todo: this should not need to be done 2x!
-	exitDeleteMode(editAislesWindow);	 	 
 	exitDeleteMode(editAislesWindow);
 }
 
@@ -232,16 +236,20 @@ function testUpdateSectionAisle(target, app)
 	enterEditMode(editAislesWindow);
 	 
 	var editCell = editAislesWindow.CellToEdit('middle item in aisle 0');
-	editCell.EditButton().tap();
-	editCell.EditButton().waitForInvalid();
+	editCell.tap();
 
+	target.pushTimeout(2);
+	editCell.AisleNumberTextField().isValid();
+	target.popTimeout();
 	
-	 editCell.AisleNumberTextField().setValue("5");
+	editCell.AisleNumberTextField().setValue("5");
 	 
 	editCell.DoneButton().tap();
  	editCell.DoneButton().waitForInvalid();
 
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown'], 'Aisle 1', ['new grocery section in new aisle'], 'Aisle 5', ['middle item in aisle 0']) );	
+
+	exitEditMode(editAislesWindow);
 }
 
 function testUpdateSectionName(target, app)
@@ -253,9 +261,12 @@ function testUpdateSectionName(target, app)
 	enterEditMode(editAislesWindow);
 	 
 	var editCell = editAislesWindow.CellToEdit('middle item in aisle 0');
-	editCell.EditButton().tap();
-	editCell.EditButton().waitForInvalid();
-	 
+	
+	editCell.tap();
+	target.pushTimeout(2);
+	editCell.SectionNameTextField().isValid();
+	target.popTimeout();
+	
 	editCell.SectionNameTextField().setValue('first item in aisle 5');
 	 
 	editCell.DoneButton().tap();
@@ -264,14 +275,15 @@ function testUpdateSectionName(target, app)
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown'], 'Aisle 1', ['new grocery section in new aisle'], 'Aisle 5', ['first item in aisle 5']) );
 	 
 	exitEditMode(editAislesWindow);	
+	
 }
 
 function testSaveAndLoadAisleConfig(target, app)
 {
-	setupSectionTest(target, app)	
+	//setupSectionTest(target, app)	
 	exitSectionTest(target, app);	 
 
- 	setupSectionTest(target, app)
+ 	setupSectionTest(target, app);
 
 	var editAislesWindow = new EditAislesWindow(target, app, testStoreName); 	 
 	testEditAislesWindowValidity(editAislesWindow, new Hash('Aisle 0', ['unknown'], 'Aisle 1', ['new grocery section in new aisle'], 'Aisle 5', ['first item in aisle 5']) );

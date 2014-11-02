@@ -13,12 +13,13 @@
 #import "HGGSGroceryAisle.h"
 #import "HGGSGrocerySection.h"
 #import "HGGSShoppingItemCell.h"
+#import "HGGSZoomGroceryItemPictureViewController.h"
 
 @interface HGGSShoppingListViewController ()
 {
     NSArray* _searchResults;
-//    bool _changesToSave;
     HGGSStoreList* _shoppingList;
+    HGGSGroceryItem *_currentGroceryItem;
     
 }
 
@@ -43,10 +44,6 @@
     UINavigationItem *navItem = [self navigationItem];
     
     [navItem setTitle:[NSString stringWithFormat:@"%@ Shopping List",[_store name]]];
-    //_changesToSave = NO;
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
  
     if (![_store shoppingListIsMoreRecentThanCurrentList] )
         [_store createShoppingList];
@@ -59,7 +56,6 @@
 {
     for (HGGSShoppingItemCell *cell in [[self tableView] visibleCells])
     {
-        
         [cell saveUserValuesEnteredByUser];
     }
 }
@@ -69,15 +65,7 @@
     HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
     [storeManager saveShoppingList:[self store]];
     //_changesToSave = NO;
-    
-}
-
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (tableView != [self tableView])
-        return;
-    
-    [(HGGSShoppingItemCell*)cell saveUserValuesEnteredByUser];
+    [super viewWillDisappear:animated];
 }
 
 
@@ -87,6 +75,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"toZoomPicture"])
+    {
+        HGGSZoomGroceryItemPictureViewController *zoomController = segue.destinationViewController;
+        
+        [zoomController setGroceryItem:_currentGroceryItem];
+    }
+    else
+    {
+        NSLog(@"Unrecognized seque identifier: %@", segue.identifier);
+    }
+  }
 
 #pragma mark - Table view data source
 
@@ -123,11 +126,12 @@
 {
     @try
     {
-        NSString *cellIdentifier = @"ShoppingItemCell";
         HGGSGroceryItem * groceryItem = [self groceryItemAt:indexPath inTableView:tableView];
+        NSString *cellIdentifier = ([groceryItem image] == nil) ? @"ShoppingItemCell" : @"ShoppingItemCellWithImage";
         HGGSShoppingItemCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
  
         [cell setGroceryItem:groceryItem];
+        [cell setDelegate:self];
   
         //set text...
         return cell;
@@ -170,15 +174,39 @@
 {
           return 44;
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     HGGSGroceryItem *itemInRow = [self groceryItemAt:indexPath inTableView:tableView];
  
-    return [self heightNeededForText:[itemInRow name] font:[UIFont boldSystemFontOfSize:15] ] +
-    [self heightNeededForText:[itemInRow notes] font:[UIFont italicSystemFontOfSize:13] ] + 6;
-    
+    return [HGGSShoppingItemCell heightNeeded:itemInRow];
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView != [self tableView])
+        return;
+    
+    [(HGGSShoppingItemCell*)cell saveUserValuesEnteredByUser];
+}
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //self.someProperty = [self.someArray objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:@"toZoomPicture" sender:self];
+}*/
+#pragma mark HGGSShowGroceryItemPictureDelegate
+-(void) didRequestZoomOf:(HGGSGroceryItem *)groceryItem
+{
+    HGGSZoomGroceryItemPictureViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ZoomPicture"];
+    
+    [controller setGroceryItem:groceryItem];
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    //_currentGroceryItem = groceryItem;
+    //[self performSegueWithIdentifier:@"toZoomPicture" sender:self];
+    
+
+}
 #pragma mark Private
 -(HGGSGroceryItem*)groceryItemAt:(NSIndexPath*)indexPath inTableView:(UITableView*)tableView
 {
@@ -207,15 +235,6 @@
     {
         NSLog(@"exception in groceryItemAt:inTableView:%@", e);
     }
-    
-}
-
--(int)heightNeededForText:(NSString*)text font:(UIFont *)font
-{
-    NSAttributedString * attributedText = [[NSAttributedString alloc] initWithString:text
-                                                                          attributes:[[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-    CGSize maximumSize = CGSizeMake(210, CGFLOAT_MAX);
-    return [attributedText boundingRectWithSize:maximumSize options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
     
 }
 

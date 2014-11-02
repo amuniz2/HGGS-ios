@@ -92,8 +92,7 @@ function testChangeNameOfExistingItemInMasterList(target, app)
 	var editItemWindow = new EditGroceryItemWindow(target, app);	
 	editItemWindow.NameTextView().setValue(data.item1WithChangedName.Name );
 	
-	app.keyboard().buttons()["Return"].tap();
-	app.keyboard().buttons()["Return"].waitForInvalid();
+	dismissKeyboardIfPresent(app);
 	
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -112,10 +111,7 @@ function testCannotAddItemWithNoNameToMasterList(target, app)
 	 
 	var editItemWindow = new EditGroceryItemWindow(target, app);
 	setMasterItemValuesInEditWindow(app, editItemWindow, data.groceryItem2);
-	 
-	//app.keyboard().buttons()["Return"].tap();
-	//app.keyboard().buttons()["Return"].waitForInvalid();
-	
+	 	
 	expectedAlertMessage = "Name Required"
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -125,8 +121,8 @@ function testCannotAddItemWithNoNameToMasterList(target, app)
 	okayButton.waitForInvalid(); 
 
 	editItemWindow.NameTextView().setValue(data.groceryItem2.Name );
-	app.keyboard().buttons()["Return"].tap();
-	app.keyboard().buttons()["Return"].waitForInvalid();
+	dismissKeyboardIfPresent(app);
+	
 	
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -148,10 +144,7 @@ function testCannotAddItemWithSameNameToMasterList(target, app)
 	var editItemWindow = new EditGroceryItemWindow(target, app);
 	editItemWindow.NameTextView().setValue(data.itemWithSameNameAsItem2.Name ); 
 	setMasterItemValuesInEditWindow(app, editItemWindow, data.itemWithSameNameAsItem2);
-	 
-	//app.keyboard().buttons()["Return"].tap();
-	//app.keyboard().buttons()["Return"].waitForInvalid();
-	
+	 	
 	expectedAlertMessage = "Duplicate Item";
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -309,11 +302,7 @@ function testAutoAddOfAssignedUnknownGrocerySection(target, app)
 	editItemWindow.QuantityTextField().setValue(data.groceryItem1.Quantity);
 	editItemWindow.QuantityUnitTextField().setValue(data.groceryItem1.Unit);
 	
-	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
-	{ 
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
 
 	editItemWindow.ItemGrocerySection().setValue(data.groceryItem1.Section);
 	editItemWindow.SelectGrocerySectionButton().tap();

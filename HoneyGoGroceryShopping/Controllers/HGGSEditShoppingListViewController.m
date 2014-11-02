@@ -75,14 +75,7 @@
 {
     [self saveChangedCellsStillDisplayed:[self activeTableView]];
 
-    /*if (_changesToSave)
-    {
-        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveCurrentList:[self store]];
-        
-        _changesToSave = NO;
-        
-    }*/
+    [super viewWillDisappear:animated];
 
 }
 

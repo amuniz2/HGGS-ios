@@ -89,11 +89,7 @@ function testAddShoppingItemAndAssignToNewGrocerySection(target, app)
 	setShoppingItemValuesInEditWindow(app, editItemWindow, data.shoppingListItem6);
 	//editWithShoppingItemValues(app, editItemWindow, data.shoppingListItem6);
 
-	if (app.keyboard().isValid())
-	{
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
 
 	editItemWindow.SelectGrocerySectionButton().tap();
 	editItemWindow.SelectGrocerySectionButton().waitForInvalid();	
@@ -197,8 +193,8 @@ function testCannotAddShoppingItemWithNoName(target, app)
 	okayButton.waitForInvalid(); 
 	
 	editItemWindow.NameTextView().setValue(data.shoppingListItem4.Name );
-	app.keyboard().buttons()["Return"].tap();
-	app.keyboard().buttons()["Return"].waitForInvalid();
+	dismissKeyboardIfPresent(app);
+	
 	
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -222,11 +218,8 @@ function testCannotSaveShoppingItemWithDuplicateName(target, app)
 		var editItemWindow = new EditGroceryItemWindow(target, app);
 		editItemWindow.NameTextView().setValue(data.shoppingListItem1.Name);
 
-		if (app.keyboard().isValid())
-		{
-			app.keyboard().buttons()["Return"].tap();
-			app.keyboard().buttons()["Return"].waitForInvalid();
-		}
+		dismissKeyboardIfPresent(app);
+		
 		expectedAlertMessage = "Duplicate Item"
 		editItemWindow.DoneButton().tap();
 		editItemWindow.DoneButton().waitForInvalid();

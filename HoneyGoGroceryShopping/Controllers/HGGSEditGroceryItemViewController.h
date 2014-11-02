@@ -55,9 +55,9 @@ typedef enum itemType
 - (IBAction)enterEditModeOrCancel:(id)sender;
 - (IBAction)deleteItem:(id)sender;
 - (IBAction)saveOrReturn:(id)sender;
-@property BOOL newMedia;
 
 -(IBAction) useCamera : (id)sender;
 -(IBAction) useCameraRoll : (id)sender;
+-(IBAction) deleteImage:(id)sender;
 
 @end

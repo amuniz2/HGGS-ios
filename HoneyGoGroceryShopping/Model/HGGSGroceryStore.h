@@ -39,6 +39,7 @@ typedef enum storeFileType
 @property (nonatomic, readonly) NSDictionary* storeLists;
 @property (nonatomic, copy, readonly) NSString* localFolder;
 @property (nonatomic, copy, readonly) NSString* imagesFolder;
+@property (nonatomic, copy) NSDate* lastImagesSyncDate;
 
 +(HGGSGroceryStore *)createStore:(NSString*)storeName;
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete;
@@ -46,6 +47,7 @@ typedef enum storeFileType
 @property(nonatomic, copy)NSString *name;
 @property Boolean shareLists;
 @property(readonly, copy)NSDate* lastModificationDate;
+@property BOOL preparedForWork;
 
 -(id)initWithStoreName:(NSString *)storeName;
 -(bool)anyListsLoaded;

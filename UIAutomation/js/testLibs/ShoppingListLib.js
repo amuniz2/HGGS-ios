@@ -31,9 +31,14 @@ function createOrSelectTestStoreForShoppingListTest(target, app, storeName)
 
 function createMasterListWithItemWhoseSectionIsNotDefined(target, app)
 {
-	testStoreWithNonExistingGrocerySections = createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
+	var mainWindow = new MainWindow(target, app);
 	var data = new testMasterListForGroceryStoreWithUnknownGrocerySections();
-
+	testStoreWithNonExistingGrocerySections = createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
+	
+ 	mainWindow.StorePicker().wheels()[0].selectValue(testStoreWithNonExistingGrocerySections);
+	mainWindow.EditStoreButton().tap();
+	mainWindow.EditStoreButton().waitForInvalid();
+	
 	var editStoreWindow = new EditStoreWindow(target, app);
 	editStoreWindow.EditMasterListButton().tap();
 	editStoreWindow.EditMasterListButton().waitForInvalid();
@@ -49,11 +54,7 @@ function createMasterListWithItemWhoseSectionIsNotDefined(target, app)
 	editItemWindow.QuantityTextField().setValue(data.groceryItem1.Quantity);
 	editItemWindow.QuantityUnitTextField().setValue(data.groceryItem1.Unit);
 	
-	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
-	{ 
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
 
 	editItemWindow.ItemGrocerySection().setValue(data.groceryItem1.Section);
 	editItemWindow.DoneButton().tap();

@@ -17,13 +17,21 @@
          contextName = "-[HGGSEditGroceryItemViewController viewDidLoad]:HGGSEditGroceryItemViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[HGGSShoppingItemCell setGroceryItem:]:HGGSShoppingItemCell.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[self imageView] frame]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSGrocerySectionsViewController doneEditing:]:HGGSGrocerySectionsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "!newSectionName">
+               value = "_ipBeingEdited.row">
             </PersistentString>
             <PersistentString
-               value = "_ipBeingEdited.row">
+               value = "!newSectionName">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -31,7 +39,13 @@
          contextName = "-[HGGSStoreItems serializeGroceryItemList]:HGGSStoreItems.m">
       </ContextState>
       <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController indexPathOfGrocerySection:]:HGGSSelectGrocerySectionViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSUPCServiceConsumer productNamesFromJSONResult:]:HGGSUPCServiceConsumer.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSDbGroceryFilesStore newDbFile:]:HGGSDbGroceryFilesStore.m">
       </ContextState>
       <ContextState
          contextName = "-[HGGSShoppingItemCellView setGroceryItem:]:HGGSShoppingItemCellView.m">
@@ -54,6 +68,14 @@
          contextName = "-[HGGSEditGroceryItemViewController viewWillAppear:]:HGGSEditGroceryItemViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController numberOfSectionsInTableView:]:HGGSSelectGrocerySectionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[_groceryAisles itemCount]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSEditGroceryItemViewController save]:HGGSEditGroceryItemViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -62,10 +84,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController prepareForSegue:sender:]:HGGSEditGroceryItemViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSEditGroceryItemViewController viewDidAppear:]:HGGSEditGroceryItemViewController.m">
          <PersistentStrings>
             <PersistentString
                value = "[_imageView image]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGrocerySectionsViewController tableView:canEditRowAtIndexPath:]:HGGSGrocerySectionsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "_ipBeingEdited">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -106,6 +139,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController viewDidLoad]:HGGSSelectGrocerySectionViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSEditGroceryItemViewController resizeImage:scaledToSize:]:HGGSEditGroceryItemViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -118,6 +154,17 @@
          <PersistentStrings>
             <PersistentString
                value = "[[DBAccountManager sharedManager] isLinked]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController viewDidAppear:]:HGGSSelectGrocerySectionViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSEditGroceryItemViewController imagePickerController:didFinishPickingMediaWithInfo:]:HGGSEditGroceryItemViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[_imageView frame]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -138,18 +185,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[HGGSEditGroceryItemViewController imagePickerController:didFinishPickingMediaWithInfo:]:HGGSEditGroceryItemViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "[_imageView frame]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "-[HGGSShoppingItemCellView setQuantity:]:HGGSShoppingItemCellView.m">
          <PersistentStrings>
             <PersistentString
                value = "[_quantityStepper value]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSGrocerySectionsViewController tableView:shouldIndentWhileEditingRowAtIndexPath:]:HGGSGrocerySectionsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[tableView isEditing]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -170,13 +217,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[HGGSSelectGrocerySectionViewController tableView:numberOfRowsInSection:]:HGGSSelectGrocerySectionViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[aisle grocerySections] count]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[HGGSGroceryStore findGrocerySectionBySectionId:]:HGGSGroceryStore.m">
          <PersistentStrings>
             <PersistentString
-               value = "NSNotFound">
+               value = "locationOfString.location">
             </PersistentString>
             <PersistentString
-               value = "locationOfString.location">
+               value = "NSNotFound">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -214,6 +269,20 @@
       </ContextState>
       <ContextState
          contextName = "-[HGGSEditShoppingListViewController setItemPropertiesPerCellChanges:]:HGGSEditShoppingListViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[HGGSDbGroceryFilesStore isDbFile:ofType:newerThan:]:HGGSDbGroceryFilesStore.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[dbFileInfo path] name]">
+            </PersistentString>
+            <PersistentString
+               value = "[dbFileInfo path]">
+            </PersistentString>
+            <PersistentString
+               value = "[[[dbFileInfo path]name] endsWith:[NSString stringWithFormat:@&quot;.%@&quot;,extension]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

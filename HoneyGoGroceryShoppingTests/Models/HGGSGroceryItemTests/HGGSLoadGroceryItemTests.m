@@ -50,7 +50,7 @@
                                 expectedSection,@"section",
                                 nil];
     
-    HGGSGroceryItem *item = [[HGGSGroceryItem alloc] initFromDictionary:_groceryItemAsDictionary];
+    HGGSGroceryItem *item = [[HGGSGroceryItem alloc] initFromDictionary:_groceryItemAsDictionary imagesFolder:nil];
     
     XCTAssertEqualObjects([item unit], expectedUnit);
     XCTAssertEqualObjects([item sectionId], expectedSectionId);
@@ -101,7 +101,7 @@
     bool selected = YES;
 
     
-    HGGSGroceryItem *item = [[HGGSGroceryItem alloc] initWithOldDetails:expectedName quantity:expectedQuantity unit:expectedUnit section:expectedSection notes:expectedNotes select:selected lastPurchasedOn:expectedDate sectionId:expectedSectionId];
+    HGGSGroceryItem *item = [[HGGSGroceryItem alloc] initWithOldDetails:expectedName quantity:expectedQuantity unit:expectedUnit section:expectedSection notes:expectedNotes select:selected lastPurchasedOn:expectedDate sectionId:expectedSectionId image:nil];
     
     XCTAssertEqualObjects([item unit], expectedUnit);
     XCTAssertEqualObjects([item sectionId], expectedSectionId);

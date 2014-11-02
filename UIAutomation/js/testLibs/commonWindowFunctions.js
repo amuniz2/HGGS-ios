@@ -49,6 +49,7 @@ function createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, a
 	{
 		createStore(target, app, storeName);		
 	}
+	
 	return storeName;
 	
 }
@@ -122,11 +123,8 @@ function setCommonItemValuesInEditWindow(app, editWindow, item)
 	editWindow.QuantityTextField().setValue(item.Quantity);
 	editWindow.QuantityUnitTextField().setValue(item.Unit);
 
-	if (app.keyboard().checkIsValid() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].checkIsValid())
-	{ 
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
+	
 	// note: select has 3 different meanings:
 	// (1) from master list, it means the item should be selected by default when preparing a shopping list
 	// (2) from current list, it means the change(s) should be applied to the corresponding item
@@ -169,11 +167,8 @@ function cancelWithShoppingItemValues(app, editWindow, item)
 {	
 	setShoppingItemValuesInEditWindow(app, editWindow, item);
 	
-	if (app.keyboard().isValid())
-	{
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
+	
 	editWindow.CancelButton().tap();
 	editWindow.CancelButton().waitForInvalid();
 	
@@ -184,14 +179,21 @@ function editWithMasterItemValues(app, editWindow, item)
 {	
 	setMasterItemValuesInEditWindow(app, editWindow, item);
 	
-	if (app.keyboard().isValid())
+	dismissKeyboardIfPresent(app);
+	
+	editWindow.DoneButton().tap();
+	editWindow.DoneButton().waitForInvalid();
+	
+	
+}
+
+function dismissKeyboardIfPresent(app)
+{
+	if (app.keyboard().isVisible() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].isEnabled())
 	{
 		app.keyboard().buttons()["Return"].tap();
 		app.keyboard().buttons()["Return"].waitForInvalid();
 	}
-	editWindow.DoneButton().tap();
-	editWindow.DoneButton().waitForInvalid();
-	
 	
 }
 
@@ -199,11 +201,8 @@ function editWithShoppingItemValues(app, editWindow, item)
 {	
 	setShoppingItemValuesInEditWindow(app, editWindow, item);
 	
-	if (app.keyboard().isValid())
-	{
-		app.keyboard().buttons()["Return"].tap();
-		app.keyboard().buttons()["Return"].waitForInvalid();
-	}
+	dismissKeyboardIfPresent(app);
+	
 	editWindow.DoneButton().tap();
 	editWindow.DoneButton().waitForInvalid();
 	
@@ -285,7 +284,7 @@ function prepareShoppingList(target, app, storeName, masterItemsToInclude, items
 
 function testMasterListData()
 {
-	this.defaultGroceryItem = new MasterGroceryItem('', '1', 'Units', '', 'Grocery Section', '0', true);	
+	this.defaultGroceryItem = new MasterGroceryItem(null, '1', 'Units', null, 'Grocery Section', '0', true);	
 	this.groceryItem1 = new MasterGroceryItem('M Item 1', '3.5', 'lbs', 'M Item 1 Notes', 'Grocery Section', '0', true);	
 	this.updatedGroceryItem1 = new MasterGroceryItem('M Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false); 
 	this.item1WithChangedName = new MasterGroceryItem('M New Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false);  
@@ -307,7 +306,7 @@ function testMasterListData()
 }
 function testCurrentListData()
 {
-	this.defaultGroceryItem = new CurrentGroceryItem('', '1', 'Units', '', 'Grocery Section', '0', true, true);	
+	this.defaultGroceryItem = new CurrentGroceryItem(null, '1', 'Units', null, 'Grocery Section', '0', true, true);	
 	this.groceryItem2InNewSection = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', true, true);	
 	this.groceryItemInProduceSection = new CurrentGroceryItem('Item 3', '10', 'oz', 'Should be in produce section', 'produce', '1', false, false);	
 	this.shoppingGroceryItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '1.25', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
@@ -315,7 +314,7 @@ function testCurrentListData()
 	this.shoppingListItem1 = new CurrentGroceryItem('Shopping Item Not Originally In Master List', '1.5', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false, true);	
 	this.shoppingListItem2 = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes', 'produce', '1', true, true);	
 	this.shoppingListItem3 = new CurrentGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', true, true);	
-	this.shoppingListItem2_updated = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true, false);	
+	this.shoppingListItem2_updated = new CurrentGroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true, true);	
 	this.shoppingListItem4 = new CurrentGroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true, true);	
 	
 	this.shoppingListItem5_NotAddedToMaster = new CurrentGroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);	

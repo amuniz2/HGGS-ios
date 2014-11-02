@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (UIImageResizable)
+
 -(CGSize) proportionateReducedSize:(CGSize)newSize;
--(UIImage *)resize:(CGSize)newSize ;
+-(UIImage *)resize:(CGSize)newSize origin:(CGPoint)origin;
+- (UIImage *)resizeImageToMaxSize:(CGSize)maxSize origin:(CGPoint)origin;
 
 @end

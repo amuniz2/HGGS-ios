@@ -39,7 +39,7 @@
 {
     [[store getMasterList] save];
     
-    NSString *fileName = [[store getLocalFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:MASTER_LIST]];
+    NSString *fileName = [[store localFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:MASTER_LIST]];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:fileName]);
     
 }
@@ -48,7 +48,7 @@
 {
     [store saveGroceryAisles];
     
-    NSString *fileName = [[store getLocalFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG]];
+    NSString *fileName = [[store localFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG]];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:fileName]);
     
 }
@@ -57,7 +57,7 @@
 {
     [store saveStoreInfo];
     
-    NSString *fileName = [[store getLocalFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:STORE]];
+    NSString *fileName = [[store localFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:STORE]];
     XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:fileName]);
     
 }

@@ -13,6 +13,7 @@
 #import "HGGSGrocerySectionSelectorViewController.h"
 #import "HGGSGroceryStore.h"
 #import "HGGSSelectGrocerySectionViewController.h"
+#import "NSString+SringExtensions.h"
 #import "UIImage+UIImageResizable.h"
 
 @interface HGGSEditGroceryItemViewController ()<UIPickerViewDataSource,UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate>
@@ -40,22 +41,20 @@
     [_additionalNotes setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
     
     _originalGroceryItemName = [[self groceryItem] name];
-    /*if ((originalName != nil) && (![originalName isEqualToString:@""]))
-    {
-        [name setEditable:NO];
-        [name setUserInteractionEnabled:NO];
-    }
-    */
     [name setText:_originalGroceryItemName];
     
     [_additionalNotes setText:[[self groceryItem] notes]];
     [units setText:[[self groceryItem] unit]];
     [quantity setText:[NSString stringWithFormat:@"%g",[[self groceryItem] quantity]]];
-    [select setOn:((_itemType == pantryItem) ? [[self groceryItem] selected]:  YES)];
+    [self initializeSelectionControls];
     [grocerySection setText:[[self groceryItem] section]];
-    [selectionLabel setText:[self selectionLabelText]];
     [_imageView setImage:[[self groceryItem] image]];
-    
+
+    if ([[self groceryItem] image] == nil)
+    {
+        _imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        _imageView.layer.borderWidth = 2.0f;
+    }
     [quantity setEnabled:(_itemType != shoppingItem)];
     [quantity setUserInteractionEnabled:(_itemType != shoppingItem)];
     [quantity setBackgroundColor:(_itemType != shoppingItem) ?
@@ -142,8 +141,10 @@
             return @"Automatically include in new shopping list";
 
         case newShoppingItem:
-        case shoppingItem:
             return @"Include in master grocery list";
+            
+        case shoppingItem:
+            return nil;
         
         default:
             return @"Needs label text defined";
@@ -182,10 +183,14 @@
         imagePicker.allowsEditing = NO;
         [self presentViewController:imagePicker
                            animated:YES completion:nil];
-        _newMedia = YES;
     }
 }
-
+-(void)deleteImage:(id)sender
+{
+    [_groceryItem setImage:nil];
+    [_imageView setImage:nil];
+    
+}
 - (void) useCameraRoll:(id)sender
 {
     if ([UIImagePickerController isSourceTypeAvailable:
@@ -200,7 +205,6 @@
         imagePicker.allowsEditing = NO;
         [self presentViewController:imagePicker
                            animated:YES completion:nil];
-        _newMedia = NO;
     }
 }
 #pragma mark UIImagePickerControllerDelegate
@@ -216,20 +220,22 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         UIImage *image = info[UIImagePickerControllerOriginalImage];
        
         CGSize imageMaxSize = [_imageView bounds].size;
-        CGSize newSize = [image proportionateReducedSize:imageMaxSize];
-        
+        //CGSize newSize = [image proportionateReducedSize:imageMaxSize];
         //_imageView.image = image;
-        [[self groceryItem] setImage:[image resize:newSize]];
+        [[self groceryItem] setImage:[image resizeImageToMaxSize:imageMaxSize origin:CGPointMake(0,0)]] ;
+        _imageView.layer.borderColor = nil;
+        _imageView.layer.borderWidth = 0.0f;
         
         _imageView.image = [[self groceryItem] image];
         [_imageView setContentMode:UIViewContentModeScaleAspectFit];
         [_imageView setClipsToBounds:YES];
         
-        if (_newMedia)
+        /*if (_newMedia)
             UIImageWriteToSavedPhotosAlbum(image,
                                            self,
                                            @selector(image:finishedSavingWithError:contextInfo:),
                                            nil);
+         */
     }
 }
 
@@ -341,12 +347,24 @@ finishedSavingWithError:(NSError *)error
     [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
     
 }
+-(void)initializeSelectionControls
+{
+    NSString* selectionLabelText = [self selectionLabelText];
+    if (selectionLabelText != nil)
+    {
+        [select setOn:((_itemType == pantryItem) ? [[self groceryItem] selected]:  YES)];
+        [selectionLabel setText:selectionLabelText];
+        return;
+    }
+    [selectionLabel setHidden:YES];
+    [select setHidden:YES];
+    
+}
 -(bool) valid
 {
-    NSString* newItemName = [[name text] stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceCharacterSet]];
+    NSString* newItemName = [name text] ;
    
-    if ((newItemName == nil) || ([newItemName  length] == 0))
+    if ([NSString isEmptyOrNil:newItemName])
     {
         [name setBackgroundColor:[UIColor redColor]];
         UIAlertView *errorAlert = [[UIAlertView alloc]
@@ -391,8 +409,9 @@ finishedSavingWithError:(NSError *)error
                                                         section:[grocerySection text]
                                                         notes:[_additionalNotes text]
                                                         select:[select isOn]
-                                                        lastPurchasedOn:[NSDate date]
-                                                          image:[_imageView image]] ;
+                                                lastPurchasedOn:[NSDate date] ];
+                                                         // image:[_imageView image]] ;
+        [_groceryItem setImage:[_imageView image]];
         _actionTaken = (_isNewItem ? saveChanges : replaceItem);
     }
     else
@@ -400,6 +419,7 @@ finishedSavingWithError:(NSError *)error
         [_groceryItem setUnit:[units text]];
         [_groceryItem setNotes:[_additionalNotes text]];
         [_groceryItem setSection:[grocerySection text]];
+        //[_groceryItem setImage:[_imageView image]];
         
         if (_itemType != shoppingItem)
         {

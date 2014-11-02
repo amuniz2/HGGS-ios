@@ -70,6 +70,7 @@
         [storeManager saveMasterList:[self store]];
         _changesToSave =NO;
     }
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -95,7 +96,6 @@
         {
             groceryItem = [[HGGSGroceryItem alloc] init];
             
-            //[groceryItem setImagesFolder:[[_masterGroceryList store] imagesFolder]];
             [editItemController setInEditMode:YES];
             [editItemController setExistingItems:_masterGroceryList];
             
@@ -115,7 +115,6 @@
             else
                 groceryItem = [_masterGroceryList itemAt:[activeTableView indexPathForSelectedRow].row];
         
-            //[groceryItem setImagesFolder:[[_masterGroceryList store] imagesFolder]];
             [editItemController setGroceryItem:groceryItem];
             [editItemController setItemType:pantryItem];
             

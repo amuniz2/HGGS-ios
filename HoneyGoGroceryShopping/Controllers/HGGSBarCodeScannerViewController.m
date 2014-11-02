@@ -45,6 +45,8 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 //- (void)viewDidAppear:(BOOL)animated
 -(void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     [_highlightView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin /*| UIViewAutoresizingFlexibleBottomMargin*/];
     
     //[[self view] setAutoresizesSubviews:NO];

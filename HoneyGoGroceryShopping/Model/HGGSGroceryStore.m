@@ -14,6 +14,7 @@
 #import "HGGSGroceryStore.h"
 #import "HGGSStoreAisles.h"
 #import "HGGSStoreItems.h"
+#import "NSString+SringExtensions.h"
 
 #define STORE_INFO_FILE @"StoreInfo.json"
 #define MASTER_LIST_FILE @"master_list.json"
@@ -23,6 +24,7 @@
 
 @interface HGGSGroceryStore () <NSCopying>
 {
+    
 }
 
 @end
@@ -76,6 +78,19 @@
     
 }
 
++(void) deleteStoreImages:(HGGSGroceryStore*)store
+{
+    NSString* imagePath;
+    
+    NSArray *contentsOfFolder = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[store imagesFolder] error:nil];
+    for (NSString * file in contentsOfFolder)
+    {
+        imagePath = [[store imagesFolder]stringByAppendingPathComponent:file ];
+        [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
+    }
+    [[NSFileManager defaultManager] removeItemAtPath:[store imagesFolder] error:nil];
+}
+
 +(NSString*)getFileNameComponent:(storeFileType)fileType
 {
     if (fileType == STORE)
@@ -102,8 +117,10 @@
     self = [self init];
     if (self)
     {
+        [self setPreparedForWork:NO];
         [self setName:storeName];
         [self loadStoreInfo];
+        
         NSString* folderName = [self localFolder];
         _storeLists = [[NSDictionary alloc] initWithObjectsAndKeys:
                        [HGGSStoreItems createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:MASTER_LIST] list:nil ],[NSNumber  numberWithInt:MASTER_LIST],
@@ -171,12 +188,7 @@
 
 -(bool)isPopulated:(NSString *)stringToTest
 {
-    if (!stringToTest)
-        return false;
-    
-    return[[stringToTest stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceCharacterSet]] length] > 0;
-    
+    return ![NSString isEmptyOrNil:stringToTest];
 }
 -(void)createShoppingList
 {
@@ -481,7 +493,7 @@
     NSEnumerator *enumerator = [_storeLists objectEnumerator];
     HGGSStoreList *storeList;
     
-    
+    [self saveStoreInfo];
     while ((storeList = [enumerator nextObject])) {
         [storeList unload];
     }
@@ -617,6 +629,7 @@
             [[self getGroceryAisles] setLastSyncDate:date];
             date = [HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_CurrentList"]];
             [[self getCurrentList] setLastSyncDate:date];
+            [self setLastImagesSyncDate:[HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_Images"]]];
             
         }
     }
@@ -682,9 +695,9 @@
     NSMutableDictionary * storeProperties = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[self name],@"Name",[NSNumber numberWithBool:[self shareLists]],@"ShareLists",
                 [HGGSDate dateAsString:[[self getMasterList] lastSyncDate]], @"LastSyncDate_MasterList",
                 [HGGSDate dateAsString:[[self getGroceryAisles] lastSyncDate]], @"LastSyncDate_GroceryAisles",
-                [HGGSDate dateAsString:[[self getCurrentList] lastSyncDate]], @"LastSyncDate_CurrentList"
-                                             
-                                             ,nil ];
+                [HGGSDate dateAsString:[[self getCurrentList] lastSyncDate]], @"LastSyncDate_CurrentList",
+                [HGGSDate dateAsString:[self lastImagesSyncDate]], @"LastSyncDate_Images",
+            nil ];
     
     NSData* jsonData = [NSJSONSerialization
                         dataWithJSONObject:storeProperties

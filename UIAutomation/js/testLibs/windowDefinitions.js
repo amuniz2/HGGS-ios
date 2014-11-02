@@ -59,7 +59,7 @@ function EditAislesWindow(target, application, storeName)
 	//this.CellToDelete  = function(sectionName) { return new EditGrocerySectionCellView(this.AislesTableView(), sectionName); };
 	
 	//when editing sections / aisles
-	this.InsertAfterSectionButton = function InsertAfterSectionButton(sectionName) { 
+	this.InsertAfterSectionButton = function(sectionName) { 
 		return this.AislesTableView().cells()[sectionName].buttons()["Insert " + sectionName]; 
 	};
 	
@@ -68,7 +68,7 @@ function EditAislesWindow(target, application, storeName)
 		var cell = this.AislesTableView().cells()[sectionName];
 		assertTrue(cell.isValid(), sectionName + " cell not valid");
 		
-		var deleteSwitch = cell.switches()["Delete " + sectionName];
+		var deleteSwitch = cell.buttons()["Delete " + sectionName];
 		assertTrue(deleteSwitch.isValid(), "Delete button in cell is not valid");
 		return deleteSwitch; 
 	};
@@ -77,19 +77,19 @@ function EditAislesWindow(target, application, storeName)
 
 function DeleteGrocerySectionCellView(app, tableView, cellName)
 {
-	this.DeleteSwitch = function() { return app.mainWindow().tableViews()[0].cells()[cellName].switches()["Delete " + cellName]; };
+	this.DeleteSwitch = function() { return app.mainWindow().tableViews()[0].cells()[cellName].buttons()["Delete " + cellName]; };
 	this.ConfirmDeleteButton = function() { return app.mainWindow().tableViews()[0].cells()[cellName].buttons()["Delete"]; };
-	this.logElement = function() { app.mainWindow().tableViews()[0].cells()[cellName].logElement();}
+	this.logElement = function() { app.mainWindow().tableViews()[0].logElement();}
 };
 
 function EditGrocerySectionCellView(tableView, cellName)
-{
+{	
 	var cell = tableView.cells()[cellName];
-	this.EditButton = function() { return cell.buttons()["More info, " + cellName]; };
-	this.DoneButton = function() { 		return cell.buttons()["Done Editing Section Button"]; };
+	this.logElement = function() { cell.logElement(); };
+	this.DoneButton = function() { return cell.buttons()["Done Editing Section Button"]; };
 	this.DecrementAisleNumberButton = function() { return cell.buttons()["Decrement"]; };
 	this.IncrementAisleNumberButton = function() { return cell.buttons()["Increment"]; };
-	                                                                   
+	this.tap = function() { return cell.tap();};                                                                  
 	this.SectionNameTextField = function() { return cell.textFields()["Section Name Field"]; };
 	this.AisleNumberTextField = function() { return cell.textFields()["Aisle Number Field"]; };
 }
@@ -132,9 +132,12 @@ function GroceryItem(name, quantity, unit, notes, section, aisle, selected)
 	this.Section = section;
 	this.Selected = selected;
 	this.Aisle = aisle;
-	this.MasterItemCellName = function() { return this.Name + ', ' + this.Notes ; };
-	this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
-	this.ShoppingListCellName = function() { return this.Name + ', ' + this.Notes  + ', ' + this.Quantity + ' ' + this.Unit; };
+	//this.MasterItemCellName = function() { return this.Name + ', ' + this.Notes ; };
+	//this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
+	//this.ShoppingListCellName = function() { return this.Name + ', ' + this.Notes  + ', ' + this.Quantity + ' ' + this.Unit; };
+	this.MasterItemCellName = function() { return this.Name; };
+	this.PrepareShoppingListCellName = function() { return this.Name; };
+	this.ShoppingListCellName = function() { return this.Name; };
 	
 }
 //MasterGroceryItem.prototype - new GroceryItem(name, quantity, unit, notes, section, aisle, selected);
@@ -161,9 +164,9 @@ function EditGroceryItemWindow(target, application)
 	this.SelectGrocerySectionButton = function() {return app.mainWindow().buttons()['Select Grocery Section Button']; };
 	this.ScanButton = function() { return app.mainWindow().buttons()['Scan Button']; };
 	this.SelectedSwitch = function() { return app.mainWindow().switches()['Item Selected Switch'];}
-	this.DeleteItemButton = function(){ return app.mainWindow().toolbars()[0].buttons()['Delete']; };
-	this.CancelButton = function(){ return app.mainWindow().toolbars()[0].buttons()['Cancel']; };
-	this.DoneButton = function() { return app.mainWindow().toolbars()[0].buttons()['Done']; };
+	this.DeleteItemButton = function(){ return app.mainWindow().toolbars()[1].buttons()['Delete']; };
+	this.CancelButton = function(){ return app.mainWindow().toolbars()[1].buttons()['Cancel']; };
+	this.DoneButton = function() { return app.mainWindow().toolbars()[1].buttons()['Done']; };
 
 }
 

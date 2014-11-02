@@ -99,7 +99,7 @@
     NSString* fileContents =@"[{\"id\":\"b162db18-7ac2-43cd-979e-d02c1cd39348\",\"unit\":\"\",\"category\":\"a6eeabae-491d-4680-ab50-696f7e30769c\",\"selected\":true,\"lastPurchasedDate\":\"Sun Jul 14 12:48:15 EDT 2013\",\"name\":\"swifter pads\",\"quantity\":1,\"notes\":\"\"},{\"id\":\"61668427-63c5-4a97-a709-ed0afccf8057\",\"unit\":\"\",\"category\":\"a6eeabae-491d-4680-ab50-696f7e30769c\",\"selected\":true,\"lastPurchasedDate\":\"Sun Jul 14 12:48:15 EDT 2013\",\"name\":\"water\",\"quantity\":1,\"notes\":\"\"}]";
     HGGSGroceryStore* localStore = [[HGGSGroceryStoreManager sharedStoreManager] addStore:_testStoreName];
     
-    NSString* fileName = [[localStore getLocalFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:MASTER_LIST]];
+    NSString* fileName = [[localStore localFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:MASTER_LIST]];
     XCTAssertTrue( [fileContents writeToFile:fileName atomically:NO encoding:NSUTF8StringEncoding error:nil]);
     
     NSArray * itemsLoaded = [[localStore  getMasterList] list];

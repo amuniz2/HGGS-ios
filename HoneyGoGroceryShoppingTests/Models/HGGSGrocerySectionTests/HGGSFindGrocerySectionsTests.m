@@ -15,7 +15,8 @@
 
 @implementation HGGSFindGrocerySectionsTests
 {
-    HGGSGroceryStore* _store;
+    HGGSStoreAisles* _storeAisles;
+    HGGSGroceryStore *_store;
     NSString* _storeName;
     HGGSGrocerySection* _deliSection ;
     HGGSGrocerySection* _dairySection;
@@ -26,12 +27,14 @@
     [super setUp];
     _storeName = @"FindGrocerySectionsTest";
     _store = [[HGGSGroceryStoreManager sharedStoreManager] addStore:_storeName];
+    _storeAisles = [_store getGroceryAisles];
+    _deliSection = [_storeAisles insertNewGrocerySection:@"Deli" inAisle:1 atSectionIndex:0  ] ;
 
-    _deliSection = [_store insertNewGrocerySection:@"Deli" inAisle:1 atSectionIndex:0  ] ;
-    [_store insertNewGrocerySection:@"other section in aisle 1" inAisle:1 atSectionIndex:1  ];
-    [_store insertNewGrocerySection:@"Frozen Meats" inAisle:2 atSectionIndex:0  ];
+    [_storeAisles insertNewGrocerySection:@"other section in aisle 1" inAisle:1 atSectionIndex:1  ];
+    [_storeAisles insertNewGrocerySection:@"Frozen Meats" inAisle:2 atSectionIndex:0  ];
 
-    _dairySection = [_store insertNewGrocerySection:@"Dairy" inAisle:5 atSectionIndex:0  ] ;
+
+    _dairySection = [_storeAisles insertNewGrocerySection:@"Dairy" inAisle:5 atSectionIndex:0  ] ;
     [_dairySection setSectionId:@"9ac05a99-86a3-4456-adea-98bb650be8c5"];
 
     

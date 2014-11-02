@@ -59,7 +59,6 @@
     XCTAssertEqualObjects(expectedNotes,[itemAttributes objectForKey:@"notes"]);
     XCTAssertEqualObjects(expectedQuantity,[itemAttributes objectForKey:@"quantity"]);
     XCTAssertEqualObjects(expectedSection,[itemAttributes objectForKey:@"section"]);
-    XCTAssertEqualObjects(expectedSectionId,[itemAttributes objectForKey:@"category"]);
     XCTAssertEqualObjects(expectedSelected,[itemAttributes objectForKey:@"selected"]);
     XCTAssertEqualObjects(expectedUnit,[itemAttributes objectForKey:@"unit"]);
     

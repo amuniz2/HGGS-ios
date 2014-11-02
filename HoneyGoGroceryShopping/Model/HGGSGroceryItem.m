@@ -7,10 +7,15 @@
 //
 
 #import <Foundation/NSJSONSerialization.h>
+#import "NSString+SringExtensions.h"
+
 #import "HGGSGroceryItem.h"
 #import "HGGSDate.h"
 
 @implementation HGGSGroceryItem
+{
+    UIImage *_image;
+}
 #pragma mark Initialization Methods
 -(id)initFromDictionary:(NSDictionary*)itemAttributes imagesFolder:(NSString*)imagesFolder
 {
@@ -39,16 +44,18 @@
 
 -(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId image:(NSString*)imageName
 {
-    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate image:[self loadPicture:imageName inFolder:[self imagesFolder]]] ;
+    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate ] ;
     if (self)
     {
+        [self setImageName:imageName];
+        //[self setImage:[self loadPicture:imageName inFolder:[self imagesFolder]]];
         [self setSectionId:sectionId];
     
     }
     return self;
 }
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate image:(UIImage *)image
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate
 {
     
     self = [super init];
@@ -62,7 +69,7 @@
         [self setSection:grocerySection];
         [self setSelected:selected];
         [self setLastPurchasedDate:lastPurchasedDate];
-        [self setImage:image];
+        //[self setImage:image];
         
     }
     return self;
@@ -70,7 +77,7 @@
 -(id)init
 {
     NSString* emptyString = @"";
-    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil image:nil];
+    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil ];
     if (self)
     {
         [self setSectionId:emptyString];
@@ -81,25 +88,26 @@
 #pragma mark Public Methods
 -(NSDictionary*)asDictionary
 {
-    if ([self image] != nil)
+    if ([self imageModified])
         [self savePicture:[self image]];
     
-    _asDictionary =[[NSDictionary alloc] initWithObjectsAndKeys:
-                    _name,@"name",
-                    [NSNumber numberWithDouble:_quantity],@"quantity",
+    NSString *imageName = [self imageName];
+    
+    NSDictionary *ret =[[NSDictionary alloc] initWithObjectsAndKeys:
+                    _name, @"name",
+                    [NSNumber numberWithDouble:_quantity], @"quantity",
                     (_unit == nil) ? @"" : _unit, @"unit",
                     (_notes == nil) ? @"" : _notes, @"notes",
                     [HGGSBool boolAsString:_selected], @"selected",
-                    /*(_sectionId == nil) ? @"" : _sectionId, @"category",*/
                     (_section == nil) ? @"" : _section, @"section",
-                    [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
-                    [self imageName], @"image",
+                        (_image == nil) ? @"" : imageName, @"image",
+                        [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
                     nil];
     
     // todo: add property that holds path to image; save image to grocery store folder
     //http://stackoverflow.com/questions/22428615/how-do-i-get-back-a-saved-picture-on-iphone-camera-roll
     
-    return _asDictionary;
+    return ret;
 }
 
 #pragma mark NSObject Overrides
@@ -115,11 +123,47 @@
 #pragma mark Property Overrides
 -(NSString *)imageName
 {
-    if (([self image] != nil) && ([self name] != nil))
-        return [NSString stringWithFormat:@"%lu",(unsigned long)[[self name] hash]];
+    //if (([self image] == nil) || ([self name] == nil))
+    //    return nil;
     
-    return nil;
+    if (_imageName == nil)
+        _imageName = [self generateImageName];
+    
+    return _imageName;
 }
+-(UIImage *)image
+{
+    if ((_image == nil) && (_imageName != nil))
+    {
+        _image = [self loadPicture:[self imageName] inFolder:[self imagesFolder]];
+        [self setImageModified:NO];
+    }
+    return _image;
+        
+}
+-(void)setImage:(UIImage *)image
+{
+    if ((image == nil) && (image != _image))
+    {
+        _image = nil;
+        _imageName = nil;
+//        [self deletePicture:imageName];
+        [self setImageModified:YES];
+        return;
+    }
+    if (image != _image)
+    {
+        _image = image;
+        [self setImageModified:YES];
+    }
+    if ([NSString isEmptyOrNil:_imageName])
+        [self setImageName:[self generateImageName]];
+}
+-(NSString *)generateImageName
+{
+    return [NSString stringWithFormat:@"%lu",(unsigned long)[[self name] hash]];
+}
+
 #pragma mark NSCopying 
 -(id)copyWithZone:(NSZone *)zone
 {
@@ -129,10 +173,12 @@
                                                              section:[self section]
                                                                notes:[self notes]
                                                               select:[self selected]
-                                                     lastPurchasedOn:[self lastPurchasedDate]
-                                                               image:[self image]];
+                                                     lastPurchasedOn:[self lastPurchasedDate]];
     
+    [copy setImageName:[self imageName]];
+    [copy setImage:[self image]];
     [copy setSectionId:[self sectionId]];
+    [copy setImagesFolder:[self imagesFolder]];
     
     return copy;
 }
@@ -152,8 +198,11 @@
  //   return [[UIImage alloc ] init
     if (imageName == nil)
         return nil;
+    
+    [self setImageName:imageName];
+    
     NSString *imagePath = [[folderName stringByAppendingPathComponent:imageName] stringByAppendingPathExtension:@"jpg"];
-    if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
+    if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:nil])
         return[UIImage imageWithContentsOfFile:imagePath];
     
     return nil;
@@ -167,7 +216,7 @@
 
     if (image == nil)
     {
-        if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:NO])
+        if( [[NSFileManager defaultManager] fileExistsAtPath:imagePath isDirectory:nil])
             [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
         
         return nil;

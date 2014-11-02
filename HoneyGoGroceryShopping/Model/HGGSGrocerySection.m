@@ -11,6 +11,7 @@
 
 @implementation HGGSGrocerySection
 #pragma mark Initialization
+
 -(id)initWithDetails:(NSString*)name aisle:(NSInteger)aisle order:(NSInteger)order groceryItemsInSection:(NSMutableArray*)groceryItems
 {
     self = [super init];

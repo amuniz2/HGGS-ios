@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import "HGGSShoppingItemCell.h"
+
 @class HGGSGroceryStore;
 
-@interface HGGSShoppingListViewController : UITableViewController
+@interface HGGSShoppingListViewController : UITableViewController<HGGSShowGroceryItemPictureDelegate>
 {}
 @property (nonatomic, strong) HGGSGroceryStore* store;
-
 @end

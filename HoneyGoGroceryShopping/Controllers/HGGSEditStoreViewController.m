@@ -56,11 +56,6 @@
     
     [self toggleEditMode:NO];
     
-/*    [[DBAccountManager sharedManager] addObserver:self block:(DBAccountManagerObserver)^(DBAccount* account)
-     {
-         [self onSharingStatusUpdate];
-     }];
- */
 }
 
 
@@ -78,6 +73,7 @@
     {
        [self renameStore];
     }
+    [[self groceryStore] unloadLists];
     [super viewWillDisappear:animated];
     
 }
@@ -223,9 +219,11 @@
          {
              [_groceryStore setShareLists:YES];
              [self updateDropboxActionButton];
-             [dbStore copyToDropbox:[_groceryStore getMasterList]  notifyCopyCompleted:nil];
-             [dbStore copyToDropbox:[_groceryStore getGroceryAisles]  notifyCopyCompleted:nil];
-             [dbStore copyToDropbox:[_groceryStore getCurrentList]  notifyCopyCompleted:nil];
+             [dbStore copyStoreToDropbox:_groceryStore notifyCopyCompleted:nil];
+             //[dbStore copyToDropbox:[_groceryStore getMasterList]  notifyCopyCompleted:nil];
+             //[dbStore copyToDropbox:[_groceryStore getGroceryAisles]  notifyCopyCompleted:nil];
+             //[dbStore copyToDropbox:[_groceryStore getCurrentList]  notifyCopyCompleted:nil];
+             
          }
      }];
 }

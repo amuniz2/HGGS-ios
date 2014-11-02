@@ -7,6 +7,7 @@
 //
 
 #import "HGGSUPCServiceConsumer.h"
+#import "NSString+SringExtensions.h"
 
 @implementation HGGSUPCServiceConsumer 
 {

@@ -13,6 +13,7 @@
 #import "HGGSGrocerySection.h"
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSStoreAisles.h"
+//#IMPORT "HGGSAisleHeaderCellViewTableViewCell.h"
 
 #define EDIT_CELL_ID  @"EditGrocerySectionCell"
 
@@ -59,6 +60,7 @@
     [[self store] setDelegate:self];
 
     self.editing = NO;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,7 +77,17 @@
         [storeManager saveGroceryAisles:_store ];
         _changesToSave =NO;
     }
-    
+    [super viewWillDisappear:animated];
+}
+
+-(void)dealloc
+{
+    if (_changesToSave)
+    {
+        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+        [storeManager saveGroceryAisles:_store];
+        _changesToSave =NO;
+    }
 }
 
 #pragma mark Actions
@@ -91,9 +103,14 @@
 {
     UITableView *tv = [self activeTableView];
     bool isCurrentlyEditing = [tv isEditing];
+
+    if (!isCurrentlyEditing)
+        _changesToSave = YES;
     _editIsDeleting = NO;
     [tv setEditing:!isCurrentlyEditing];
     [self reloadDataForTableView:tv];
+ 
+    
 }
 
 - (IBAction)setAisleNumber:(id)sender
@@ -174,8 +191,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    //return 1;
     if (tableView == self.tableView)
         return [[_store getGroceryAisles] itemCount];
     else
@@ -256,18 +271,25 @@
     //set text...
     return cell;
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    HGGSGrocerySection * section=[self grocerySectionAt:indexPath inTableView:[self activeTableView]];
+    int fieldWidth = (_editIsDeleting) ? 200 : 290;
+    int heightForSectionName = MAX(44, [self heightNeededForText:[section name] font:[UIFont systemFontOfSize:17] fieldWidth:fieldWidth]);
+    
     if ([self isCellBeingEdited:indexPath])
-        return 88;
+        return heightForSectionName + 44 ;
     else
-        return 44;
+        return heightForSectionName;
+
+    //return ;
+    
 }
 
 -(UITableViewCell*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
-{
-//return [[[[self searchDisplayController] searchResultsTableView] tableHeaderView] view;
-    
+{    
     NSString *cellIdentifier;
     HGGSGroceryAisle* aisle;
     
@@ -279,6 +301,8 @@
         cellIdentifier =  @"GrocerySectionHeaderCell";
         
     UITableViewCell *cell= [[self tableView] dequeueReusableCellWithIdentifier:cellIdentifier];
+    //cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    
     UILabel *aisleLabel = (UILabel*)[cell viewWithTag:1] ;
     @try
     {
@@ -310,28 +334,15 @@
     else
         return 44;
 }
-/*
--(UITableViewCell*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section
-{
-    NSString *cellIdentifier = (_deleting) ? @"AisleConfigDelFooterCell" : @"AisleConfigRegFooterCell";
-    return [[self tableView] dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-}
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    
-    return 44;
-}
-*/
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    //if ((_ipBeingEdited) && (_ipBeingEdited.row == indexPath.row))
-    //    return NO;
-    //else
-    return YES;
+    if ((_ipBeingEdited) && (_ipBeingEdited.row == indexPath.row) && (_ipBeingEdited.section == indexPath.section))
+        return NO;
+    else
+        return YES;
 }
 
 
@@ -353,10 +364,9 @@
     }
         
 }
-- (BOOL)tableView:(UITableView *)tableView
-shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+ 
     if ([self isCellBeingEdited:indexPath])
         return NO;
     else
@@ -482,12 +492,7 @@ shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _currentGrocerySection = [self grocerySectionAt:indexPath inTableView:tableView];
     
-    NSIndexPath* previousIndexPath;
-    if (_ipBeingEdited)
-        previousIndexPath = [_ipBeingEdited copy];
-    
     _ipBeingEdited = [indexPath copy];
-   
     
 }
 -(void)endEditingOfCell
@@ -515,6 +520,15 @@ shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
     }
 
 }
+-(int)heightNeededForText:(NSString*)text font:(UIFont *)font fieldWidth:(float)fieldWidth
+{
+    NSAttributedString * attributedText = [[NSAttributedString alloc] initWithString:text
+                                                                          attributes:[[NSDictionary alloc] initWithObjectsAndKeys:font,NSFontAttributeName, nil]];
+    CGSize maximumSize = CGSizeMake(fieldWidth, CGFLOAT_MAX);
+    return [attributedText boundingRectWithSize:maximumSize options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+    
+}
+
 -(bool)isCellBeingEdited:(NSIndexPath*)indexPath
 {
     return (_ipBeingEdited ) && (indexPath.row == _ipBeingEdited.row) && (indexPath.section == _ipBeingEdited.section);

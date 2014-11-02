@@ -102,14 +102,14 @@
     {
         case ShareLocalFile:
         {
-            [dbStore copyStoreListsToDropbox:_groceryStore  notifyCopyCompleted:^void(BOOL succeeded)
+            [dbStore copyStoreToDropbox:_groceryStore  notifyCopyCompleted:^void(BOOL succeeded)
              { [self synchActivityCompleted:succeeded];}];
         }
         break;
             
         case ShareDropboxFile:
         {
-            [dbStore copyStoreListsFromDropbox:_groceryStore notifyCopyCompleted:^void(BOOL succeeded)
+            [dbStore copyStoreFromDropbox:_groceryStore notifyCopyCompleted:^void(BOOL succeeded)
              { [self synchActivityCompleted:succeeded];}];
         }
         break;

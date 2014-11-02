@@ -39,6 +39,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [[self storeSelector] reloadComponent:0];
 }
 - (void)didReceiveMemoryWarning
@@ -53,6 +54,7 @@
     HGGSGroceryStoreManager *storeManager = [HGGSGroceryStoreManager sharedStoreManager];
     HGGSGroceryStore *storeSelected = [[storeManager allStores] objectForKey:[_keys objectAtIndex:[_storeSelector selectedRowInComponent:0]]];
     
+    [storeManager prepareStore:storeSelected];
     if ([segue.identifier isEqualToString:@"toEditStore"])
     {
         HGGSEditStoreViewController *editStoreController = segue.destinationViewController;

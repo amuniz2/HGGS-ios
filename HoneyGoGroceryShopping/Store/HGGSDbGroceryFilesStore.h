@@ -17,12 +17,11 @@
 +(HGGSDbGroceryFilesStore*) sharedDbStore;
 
 -(void)groceryFilesExistForStore:(NSString *)storeName returnResult:(void(^)(BOOL))returnResult;
--(void)syncWithDropbox:(HGGSStoreList*) storeList;
 -(void) copyFromDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
--(void) copyStoreListsFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
--(void) copyStoreListsToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
--(void) copyToDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
+-(void) copyStoreFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
+-(void) copyStoreToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
+-(void) copyToDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted copyImages:(BOOL)copyImages;
 -(void) deleteFromDropbox:(HGGSStoreList *)storeList notifyDeleteCompleted:(void(^)(BOOL))notifyDeleteCompleted;
--(void)notifyOfChangesToStoreList:(HGGSStoreList*)storeList;
 -(void)notifyOfChangesToStore:(HGGSGroceryStore*)store;
+-(void) copyImagesFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
 @end

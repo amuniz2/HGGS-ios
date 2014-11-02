@@ -70,7 +70,7 @@
 -(bool) fileExists
 {
     NSString* localFilePath = [self filePath];
-    return  [[NSFileManager defaultManager] fileExistsAtPath:localFilePath isDirectory:NO];
+    return  [[NSFileManager defaultManager] fileExistsAtPath:localFilePath isDirectory:nil];
 }
 
 -(NSUInteger) itemCount
