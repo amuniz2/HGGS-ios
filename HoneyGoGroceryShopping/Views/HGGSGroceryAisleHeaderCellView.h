@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HGGSAisleHeaderCellViewTableViewCell : UITableViewCell
+@interface HGGSGroceryAisleHeaderCellView: UITableViewCell
 {
     __weak IBOutlet UILabel *aisleNumberLabel;
 }

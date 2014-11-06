@@ -60,7 +60,7 @@
     [quantity setBackgroundColor:(_itemType != shoppingItem) ?
      ([UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:1.0]):
      ([UIColor colorWithRed:0.81 green:0.89 blue:0.95 alpha:1.0])];
-    
+        
 	// Do any additional setup after loading the view.
     [_additionalNotes setDelegate:self];
     [name setDelegate:self];

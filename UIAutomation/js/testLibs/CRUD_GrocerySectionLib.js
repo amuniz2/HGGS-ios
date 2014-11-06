@@ -32,7 +32,8 @@ function exitSectionTest(target, app, editAislesWindow)
 	editAislesWindow = new EditAislesWindow(target, app, testStoreName);
 	editAislesWindow.BackButton().tap();
 	editAislesWindow.BackButton().waitForInvalid();
-	
+	target.delay(1) // give the app  1 second to finish persisting the aisle information?
+ 	
 	var editStoreWindow = new EditStoreWindow(target, app);
 	editStoreWindow.BackButton().tap();
 	editStoreWindow.BackButton().waitForInvalid();

@@ -51,9 +51,12 @@
 #pragma mark Public Methods
 -(void) copyStoreFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
+    
+    [self copyImagesFromDropbox:store notifyCopyCompleted:nil];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                    {
-                       [self doCopyFilesInDirectory:[store imagesFolder] toDropboxFolder:[self dbFolderForStoreImages:store] lastSyncDate:[store lastImagesSyncDate]];
+                       [self doCopyImagesFromDropbox:store notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getMasterList] notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getGroceryAisles] notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted];
@@ -76,16 +79,19 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
     {
-        DBPath* dbStoreFolder = [[DBPath root] childPath:[store name]];
-        
-        [self doCopyFilesInDBFolder:[dbStoreFolder childPath:@"images"] toLocalFolder:[store imagesFolder] lastSyncDate:[store lastImagesSyncDate]];
-        
-        if (notifyCopyCompleted != nil)
-            notifyCopyCompleted(YES);
+        [self doCopyImagesFromDropbox:store notifyCopyCompleted:notifyCopyCompleted];
     });
     
 }
-
+-(void) doCopyImagesFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
+{
+    DBPath* dbStoreFolder = [[DBPath root] childPath:[store name]];
+    
+    [self doCopyFilesInDBFolder:[dbStoreFolder childPath:@"images"] toLocalFolder:[store imagesFolder] lastSyncDate:[store lastImagesSyncDate]];
+    
+    if (notifyCopyCompleted != nil)
+        notifyCopyCompleted(YES);
+}
 -(void) copyStoreToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
@@ -309,7 +315,7 @@
 }
 -(NSString *)localFilePathForList:(HGGSStoreList*)storeList
 {
-    NSString *localPath =  [storeList localFolder];
+    NSString *localPath =  [[storeList store] localFolder];
     return [localPath stringByAppendingPathComponent:[storeList fileName]];
 
 }
@@ -421,7 +427,7 @@
     NSString* storeName = [storeList storeName];
     DBPath * dbStoreFolder = [[DBPath root] childPath:storeName];
     DBPath * dbStoreFileName ;
-    NSString *localFile = [[storeList localFolder] stringByAppendingPathComponent:[storeList fileName]];
+    NSString *localFile = [[[storeList store] localFolder] stringByAppendingPathComponent:[storeList fileName]];
     bool fileCopied = NO;
 
     dbStoreFileName = [dbStoreFolder childPath:[storeList fileName]];

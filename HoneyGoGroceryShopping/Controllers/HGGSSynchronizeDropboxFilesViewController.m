@@ -102,6 +102,7 @@
     {
         case ShareLocalFile:
         {
+            [self showActivityIndicator];
             [dbStore copyStoreToDropbox:_groceryStore  notifyCopyCompleted:^void(BOOL succeeded)
              { [self synchActivityCompleted:succeeded];}];
         }
@@ -109,6 +110,7 @@
             
         case ShareDropboxFile:
         {
+            [self showActivityIndicator];
             [dbStore copyStoreFromDropbox:_groceryStore notifyCopyCompleted:^void(BOOL succeeded)
              { [self synchActivityCompleted:succeeded];}];
         }
@@ -118,8 +120,6 @@
         {
             //_sharingStatus = linked;
             [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
-
-            
         }
         break;
             
@@ -136,22 +136,27 @@
     return optionDescriptions;
 }
 
--(void) startSynchActivity
+-(void)showActivityIndicator
 {
     if (!_activityIndicator)
     {
-        _activityIndicator  = [[UIActivityIndicatorView alloc] init];
+        _activityIndicator  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [_activityIndicator setHidesWhenStopped:YES];
+        _activityIndicator.center = CGPointMake(actionButton.center.x, actionButton.frame.origin.y + actionButton.frame.size.height + 20);
+        [self.view addSubview:_activityIndicator];
+        
     }
+    [_activityIndicator startAnimating];
 }
--(void) stopSynchActivity
+-(void) hideActivityIndicator
 {
     [_activityIndicator stopAnimating];
+    _activityIndicator = nil;
 }
 
 -(void)synchActivityCompleted:(BOOL) succeeded
 {
-    [self stopSynchActivity];
+    [self hideActivityIndicator];
     if (!succeeded)
     {
         [self displayError];

@@ -32,7 +32,7 @@ typedef enum
 }
 @property (weak) id <HGGSStoreListDelegate> delegate;
 
-@property (nonatomic, readonly, copy) NSString* localFolder;
+//@property (nonatomic, readonly, copy) NSString* localFolder;
 @property (nonatomic, readonly, copy) NSString* fileName;
 @property (nonatomic, readonly) NSString *storeName;
 @property (nonatomic, readonly, weak) id store;
@@ -45,7 +45,7 @@ typedef enum
 @property (nonatomic, copy) NSDate* lastSyncDate;
 
 
--(id)initWithFile:(NSString*)fileName store:(id)store storeFolder:(NSString*)localFolder;
+-(id)initWithFile:(NSString*)fileName store:(id)store;
 
 -(void)load;
 -(void)reload;

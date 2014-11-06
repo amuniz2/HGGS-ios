@@ -23,7 +23,7 @@
 		A72F78FE195364DB0061E917 /* HGGSStoreList.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78F5195364DB0061E917 /* HGGSStoreList.m */; };
 		A733B951187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A733B950187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m */; };
 		A7517EBE19F5E158008D9401 /* HGGSZoomGroceryItemPictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7517EBD19F5E158008D9401 /* HGGSZoomGroceryItemPictureViewController.m */; };
-		A7627F801A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7627F7F1A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.m */; };
+		A7627F801A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7627F7F1A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.m */; };
 		A76809B418836E4C00B7E2F0 /* WebServiceErrorResponse.html in Resources */ = {isa = PBXBuildFile; fileRef = A76809B318836E4C00B7E2F0 /* WebServiceErrorResponse.html */; };
 		A76809B7188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = A76809B6188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m */; };
 		A76809BA1883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76809B91883A0A600B7E2F0 /* HGGSUPCServiceConsumerTests.m */; };
@@ -127,8 +127,8 @@
 		A733B950187BA20F0064CEE9 /* HGGSBarCodeScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSBarCodeScannerViewController.m; sourceTree = "<group>"; };
 		A7517EBC19F5E158008D9401 /* HGGSZoomGroceryItemPictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSZoomGroceryItemPictureViewController.h; sourceTree = "<group>"; };
 		A7517EBD19F5E158008D9401 /* HGGSZoomGroceryItemPictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSZoomGroceryItemPictureViewController.m; sourceTree = "<group>"; };
-		A7627F7E1A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSAisleHeaderCellViewTableViewCell.h; sourceTree = "<group>"; };
-		A7627F7F1A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSAisleHeaderCellViewTableViewCell.m; sourceTree = "<group>"; };
+		A7627F7E1A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryAisleHeaderCellView.h; sourceTree = "<group>"; };
+		A7627F7F1A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryAisleHeaderCellView.m; sourceTree = "<group>"; };
 		A76809B318836E4C00B7E2F0 /* WebServiceErrorResponse.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = WebServiceErrorResponse.html; sourceTree = "<group>"; };
 		A76809B5188385AB00B7E2F0 /* HGGSUPCServiceConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSUPCServiceConsumer.h; sourceTree = "<group>"; };
 		A76809B6188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSUPCServiceConsumer.m; sourceTree = "<group>"; };
@@ -518,8 +518,8 @@
 				A7E2454A18C38D9700B4C5B9 /* HGGSAisleHeaderCellView.m */,
 				A7D1D3731933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.h */,
 				A7D1D3741933C3CD0023F270 /* HGGSAlertSharedStoreFileUpdated.m */,
-				A7627F7E1A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.h */,
-				A7627F7F1A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.m */,
+				A7627F7E1A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.h */,
+				A7627F7F1A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -657,7 +657,7 @@
 				A7E2454B18C38D9700B4C5B9 /* HGGSAisleHeaderCellView.m in Sources */,
 				A7AD910018581F4000785342 /* HGGSShoppingItemCell.m in Sources */,
 				A7EB1D43184D761700198EC6 /* HGGSEditShoppingListViewController.m in Sources */,
-				A7627F801A01BE3A006176DC /* HGGSAisleHeaderCellViewTableViewCell.m in Sources */,
+				A7627F801A01BE3A006176DC /* HGGSGroceryAisleHeaderCellView.m in Sources */,
 				A72F78F8195364DB0061E917 /* HGGSGroceryItem.m in Sources */,
 				A76809B7188385AB00B7E2F0 /* HGGSUPCServiceConsumer.m in Sources */,
 				A7DF0A361830876200E1277A /* HGGSSynchronizeDropboxFilesViewController.m in Sources */,

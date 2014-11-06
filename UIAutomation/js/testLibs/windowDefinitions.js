@@ -49,10 +49,10 @@ function EditAislesWindow(target, application, storeName)
 	this.Toolbar = function() { return app.mainWindow().toolbar(); };
 	this.BackButton = function() { return app.mainWindow().navigationBars()[0].leftButton(); };
 	this.AislesTableView = function() { return app.mainWindow().tableViews()[0]; };
-	this.EnterEditModeButton = function() { return this.AislesTableView().groups()[0].elements()[0].buttons()["Edit"]; };
-	this.EnterDeleteModeButton = function() { return this.AislesTableView().groups()[0].elements()[0].buttons()["Delete"]; };
-	this.ExitEditModeButton = function() { return this.AislesTableView().groups()[0].elements()[0].buttons()["Done"]; };
-	this.ExitDeleteModeButton = function() { return this.AislesTableView().groups()[0].elements()[0].buttons()["Done"]; };
+	this.EnterEditModeButton = function() { return this.AislesTableView().groups()[0].buttons()["Edit"]; };
+	this.EnterDeleteModeButton = function() { return this.AislesTableView().groups()[0].buttons()["Delete"]; };
+	this.ExitEditModeButton = function() { return this.AislesTableView().groups()[0].buttons()["Done"]; };
+	this.ExitDeleteModeButton = function() { return this.AislesTableView().groups()[0].buttons()["Done"]; };
 	
 	this.CellToEdit  = function(sectionName) { return new EditGrocerySectionCellView(this.AislesTableView(), sectionName); };
 	this.CellToDelete  = function(sectionName) { return new DeleteGrocerySectionCellView(app, this.AislesTableView(), sectionName); };

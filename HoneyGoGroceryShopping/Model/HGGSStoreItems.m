@@ -19,9 +19,9 @@
     NSMutableArray * _sortedList;
 }
 #pragma mark Class Methods
-+(HGGSStoreItems*) createList:(NSString*)storeFolder store:(id)store fileName:(NSString *)fileName list:(NSMutableArray*)list
++(HGGSStoreItems*) createList:(NSString *)fileName store:(id)store list:(NSMutableArray*)list
 {
-    return [[HGGSStoreItems alloc] initWithFile:fileName store:store storeFolder:storeFolder];
+    return [[HGGSStoreItems alloc] initWithFile:fileName store:store];
 }
 
 +(NSMutableDictionary*)convertItemsToDictionary:(NSArray*)items
@@ -35,10 +35,10 @@
 }
 
 #pragma mark Initializers
--(id)initWithFile:(NSString*)fileName store:(id)store storeFolder:(NSString*)localFolder
+-(id)initWithFile:(NSString*)fileName store:(id)store
 {
     
-    self = [super initWithFile:fileName store:store storeFolder:localFolder];
+    self = [super initWithFile:fileName store:store];
     _sortedList = nil;
     return self;
 }

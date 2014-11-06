@@ -18,15 +18,15 @@
     NSMutableArray *_list;
 }
 #pragma mark Class Methods
-+(HGGSStoreList*) createList:(NSString*)storeFolder store:(id)store fileName:(NSString *)fileName list:(NSMutableArray*)list
++(HGGSStoreList*) createList:(NSString *)fileName store:(id)store  list:(NSMutableArray*)list
 {
-    return [[HGGSStoreAisles alloc] initWithList:list fileName:fileName store:store storeFolder:storeFolder];
+    return [[HGGSStoreAisles alloc] initWithList:list fileName:fileName store:store ];
 }
 
 #pragma mark Initializers
--(id)initWithList:(NSMutableArray*)list fileName:(NSString*)fileName store:(id)store storeFolder:(NSString*)localFolder
+-(id)initWithList:(NSMutableArray*)list fileName:(NSString*)fileName store:(id)store
 {
-    self = [super initWithFile:fileName store:store storeFolder:localFolder];
+    self = [super initWithFile:fileName store:store];
     if (self)
     {
         _list = list;

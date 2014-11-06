@@ -100,7 +100,7 @@
                     (_notes == nil) ? @"" : _notes, @"notes",
                     [HGGSBool boolAsString:_selected], @"selected",
                     (_section == nil) ? @"" : _section, @"section",
-                        (_image == nil) ? @"" : imageName, @"image",
+                        (_imageName == nil) ? @"" : imageName, @"image",
                         [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
                     nil];
     

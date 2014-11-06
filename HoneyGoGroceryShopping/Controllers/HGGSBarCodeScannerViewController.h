@@ -19,6 +19,7 @@
     __weak IBOutlet UIPickerView *_productSelector;
     __weak IBOutlet UIView *_selectSingleProductView;
     __weak IBOutlet UIButton *cancelScanButton;
+    __weak IBOutlet UIButton *doneButton;
 }
 @property (weak) id <HGGSBarcodeScannerDelegate> delegate;
 - (IBAction)ProductSelected:(id)sender;

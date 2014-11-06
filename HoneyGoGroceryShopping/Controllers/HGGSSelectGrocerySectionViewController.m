@@ -140,7 +140,7 @@
 
 }
 
--(UITableViewCell*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     static NSString *aisleHeaderCellIdentifier = @"AisleHeaderCell";
     HGGSGroceryAisle *aisle;
@@ -159,7 +159,7 @@
     }
     [cell setAisleNumber:[aisle number]];
         
-    return cell;
+    return cell.contentView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

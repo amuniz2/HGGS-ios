@@ -41,6 +41,8 @@ function testAddNewStore(target, app)
  	assertTrue(editStoreWindow.StoreNameTextField().isEnabled(), "Edit field is not enabled after clicking Compose button");
  	target.popTimeout();	
  	editStoreWindow.StoreNameTextField().setValue("My New Grocery Store");
+	target.delay(1);
+	
  	editStoreWindow.DoneEditingStoreNameButton().tap();
 
  	

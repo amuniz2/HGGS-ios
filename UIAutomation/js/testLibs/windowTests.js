@@ -66,7 +66,7 @@ function testEditAislesWindowValidity(window, expectedAisles)
 			break;
 	
 		
-		assertEquals(aisle, window.AislesTableView().groups()[j].elements()[0].staticTexts()[0].name(), "Expected '" + aisle + "' not found");		
+		assertEquals(aisle, window.AislesTableView().groups()[j].staticTexts()[0].name(), "Expected '" + aisle + "' not found");		
 		expectedNumberOfSections += expectedAisles.getItem(aisle).length;
 		for (var section in expectedAisles[aisle])
 		{

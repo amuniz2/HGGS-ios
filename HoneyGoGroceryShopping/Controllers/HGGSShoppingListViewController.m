@@ -144,7 +144,7 @@
 }
 
 
--(UITableViewCell*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString *cellIdentifier = @"ShoppingAisleHeaderCell";
     HGGSGroceryAisle* aisle;
@@ -168,7 +168,7 @@
     {
         NSLog(@"exception in viewForHeaderInSection: %@", e);
     }
-    return cell;
+    return cell.contentView;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

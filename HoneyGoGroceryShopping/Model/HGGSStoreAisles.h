@@ -17,7 +17,7 @@
 }
 
 
-+(HGGSStoreList*) createList:(NSString*)storeFolder store:(id)store fileName:(NSString *)fileName list:(NSMutableArray*)list;
++(HGGSStoreList*) createList:(NSString *)fileName store:(id)store  list:(NSMutableArray*)list;
 
 -(void)insertAisle:(HGGSGroceryAisle*)aisle atIndex:(NSInteger)index;
 

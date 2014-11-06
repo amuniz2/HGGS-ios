@@ -121,12 +121,11 @@
         [self setName:storeName];
         [self loadStoreInfo];
         
-        NSString* folderName = [self localFolder];
         _storeLists = [[NSDictionary alloc] initWithObjectsAndKeys:
-                       [HGGSStoreItems createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:MASTER_LIST] list:nil ],[NSNumber  numberWithInt:MASTER_LIST],
-                       [HGGSStoreAisles createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG] list:nil ],[NSNumber  numberWithInt:AISLE_CONFIG],
-                       [HGGSStoreItems createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:CURRENT_LIST] list:nil ],[NSNumber  numberWithInt:CURRENT_LIST],
-                       [HGGSStoreAisles createList:folderName store:self fileName:[HGGSGroceryStore getFileNameComponent:SHOPPING_LIST] list:nil ],[NSNumber  numberWithInt:SHOPPING_LIST],
+                       [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:MASTER_LIST] store:self list:nil ],[NSNumber  numberWithInt:MASTER_LIST],
+                       [HGGSStoreAisles createList:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG] store:self  list:nil ],[NSNumber  numberWithInt:AISLE_CONFIG],
+                       [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:CURRENT_LIST] store:self  list:nil ],[NSNumber  numberWithInt:CURRENT_LIST],
+                       [HGGSStoreAisles createList:[HGGSGroceryStore getFileNameComponent:SHOPPING_LIST] store:self  list:nil ],[NSNumber  numberWithInt:SHOPPING_LIST],
                        nil];
     }
     return self;

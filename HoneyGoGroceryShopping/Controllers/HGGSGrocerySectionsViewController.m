@@ -60,7 +60,10 @@
     [[self store] setDelegate:self];
 
     self.editing = NO;
-    
+
+    // Register the class for a header view reuse.
+    [[self tableView] registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"GroceryAisleHeaderViewIdentifier"];
+ 
 }
 
 - (void)didReceiveMemoryWarning
@@ -196,6 +199,8 @@
     else
         return [_searchResults count];
 }
+
+//NOTE / TODO: IF CHANGING TO SWIPE BEHAVIOR, THIS METHOD NEEDS TO BE CHANGED AND POSSIBLY REMOVED
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self isCellBeingEdited:indexPath])
@@ -288,43 +293,47 @@
     
 }
 
--(UITableViewCell*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {    
     NSString *cellIdentifier;
     HGGSGroceryAisle* aisle;
+    if (tableView == [self tableView])
+    {
+        aisle = [[_store getGroceryAisles] itemAt:section];
+    }
+    else
+    {
+        aisle = [_searchResults objectAtIndex:section];
+    }
+    NSString *aisleLabelText = [NSString stringWithFormat:@"Aisle %li",(long)[aisle number]];
     
     if ((tableView == [self tableView]) && (section == 0))
     {
         cellIdentifier = (tableView.isEditing)  ? @"EditngAislesConfigHeaderCell" : @"AislesConfigHeaderCell";
+
+
     }
     else
+    {
         cellIdentifier =  @"GrocerySectionHeaderCell";
         
+        /*static NSString *headerReuseIdentifier = @"GroceryAisleHeaderViewIdentifier";
+        
+        // Reuse the instance that was created in viewDidLoad, or make a new one if not enough.
+        UITableViewHeaderFooterView *sectionHeaderView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerReuseIdentifier];
+        sectionHeaderView.textLabel.text = aisleLabelText;
+        
+        return sectionHeaderView;*/
+    }
     UITableViewCell *cell= [[self tableView] dequeueReusableCellWithIdentifier:cellIdentifier];
     //cell.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     
     UILabel *aisleLabel = (UILabel*)[cell viewWithTag:1] ;
-    @try
-    {
-        if (tableView == [self tableView])
-        {
-            aisle = [[_store getGroceryAisles] itemAt:section];
-        }
-        else
-        {
-            aisle = [_searchResults objectAtIndex:section];
-        }
-        NSString *aisleLabelText = [NSString stringWithFormat:@"Aisle %li",(long)[aisle number]];
-        [aisleLabel setText:aisleLabelText];
-        [aisleLabel setAccessibilityValue:aisleLabelText];
-        [aisleLabel setAccessibilityLabel:aisleLabelText];
-        
-    }
-    @catch (NSException *e)
-    {
-        NSLog(@"exception in viewForHeaderInSection: %@", e);
-    }
-    return cell;
+    [aisleLabel setText:aisleLabelText];
+    [aisleLabel setAccessibilityValue:aisleLabelText];
+    [aisleLabel setAccessibilityLabel:aisleLabelText];
+    
+    return cell.contentView;
 }
 
  -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

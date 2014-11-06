@@ -86,6 +86,7 @@
     HGGSEditGroceryItemViewController *editItemController = segue.destinationViewController;
     UITableView* activeTableView;
 
+
     activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
     if ([segue.identifier isEqualToString:@"toEditGroceryItem"])
     {
@@ -146,17 +147,6 @@
 }
 #pragma mark UITableViewDelegate Methods
 
-/*-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [self searchBar];
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [[self searchBar] bounds].size.height;
-}
-*/
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -190,9 +180,9 @@
     [self performSegueWithIdentifier:@"toEditGroceryItem" sender:self];
 
 }
-#pragma mark - UISearchDisplayController Delegate Methods
+#pragma mark - UISearchController Delegate Methods
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+- (BOOL)searchDisplayController:(UISearchController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     _searchResults = [_masterGroceryList findItems:searchString];
     

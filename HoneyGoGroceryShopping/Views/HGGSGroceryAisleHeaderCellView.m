@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Ana Muniz. All rights reserved.
 //
 
-#import "HGGSAisleHeaderCellViewTableViewCell.h"
+#import "HGGSGroceryAisleHeaderCellView.h"
 
-@implementation HGGSAisleHeaderCellViewTableViewCell
+@implementation HGGSGroceryAisleHeaderCellView
 
 - (void)awakeFromNib {
     // Initialization code
-    self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [aisleNumberLabel setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];
+    //self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    //[aisleNumberLabel setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];
 
 }
 
@@ -35,6 +35,11 @@
         [self layoutSubviews];
     }
 }
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+}
+
 #pragma mark Property Overrides
 -(void)setAisleNumber:(NSInteger)aisleNumber
 {

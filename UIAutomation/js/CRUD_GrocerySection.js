@@ -17,7 +17,7 @@ test("GrocerySections_AddGrocerySectionInNewAisle", function(target, app)
 	testAddGrocerySectionInNewAisle(target, app);
 });
 
-/*test("GrocerySections_CannotInsertGrocerySectionWithNoName", function(target, app)
+test("GrocerySections_CannotInsertGrocerySectionWithNoName", function(target, app)
 {
 	testCannotInsertGrocerySectionWithNoName(target, app);
 });
@@ -56,7 +56,7 @@ test("GrocerySections_CannotAddSectionWithDupplicateName", function(target, app)
 {
 	UIALogger.logWarning("Not Implemented");
 });
-*/
+
 test("GrocerySections_SaveAndLoadAisleConfig", function(target, app)
 {
 	testSaveAndLoadAisleConfig(target, app);

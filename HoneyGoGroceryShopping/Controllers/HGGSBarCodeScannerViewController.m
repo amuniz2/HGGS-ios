@@ -47,7 +47,7 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 {
     [super viewDidLoad];
     
-    [_highlightView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin /*| UIViewAutoresizingFlexibleBottomMargin*/];
+    [_highlightView setAutoresizingMask:/*UIViewAutoresizingFlexibleTopMargin |*/ UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |  UIViewAutoresizingFlexibleBottomMargin ];
     
     //[[self view] setAutoresizesSubviews:NO];
     [[_highlightView layer] setBorderColor:[[UIColor greenColor] CGColor]];
@@ -63,25 +63,37 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     [_session addOutput:_output];
     
     [_output setMetadataObjectTypes:[_output availableMetadataObjectTypes]];
-    [_output setRectOfInterest:[_highlightView bounds]];
-    
-    
-    _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
-    [_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    [_previewLayer setFrame:[_highlightView bounds]];
-    if ([[_previewLayer connection] isVideoOrientationSupported]) {
-        [[_previewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
-    }
-    [[[self view] layer] insertSublayer:_previewLayer above:[_highlightView layer]];
-    [_session startRunning];
-    //[[self view] bringSubviewToFront:_highlightView];
-
+ 
     [_selectSingleProductView setHidden:YES];
     [_selectSingleProductView setUserInteractionEnabled:NO];
     [cancelScanButton setHidden:NO];
     
+    [[cancelScanButton layer] setBorderWidth:1.0];
+    [[cancelScanButton layer] setBorderColor:[UIColor blueColor].CGColor];
+    [[doneButton layer] setBorderWidth:1.0];
+    [[doneButton layer] setBorderColor:[UIColor blueColor].CGColor];
+    [[[_productSelector superview] layer] setBorderWidth:1.0];
+    [[[_productSelector superview]  layer] setBorderColor:[UIColor blueColor].CGColor];
+    
 }
+-(void)viewDidLayoutSubviews
+{
+    if ([_session isRunning])
+        return;
 
+    [_output setRectOfInterest:[_highlightView bounds]];
+    _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
+    [_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    [_previewLayer setFrame:[_highlightView frame]];
+    if ([[_previewLayer connection] isVideoOrientationSupported]) {
+        [[_previewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
+    }
+    [[[self view] layer] insertSublayer:_previewLayer above:[_highlightView layer]];
+    
+     [_session startRunning];
+    //[[self view] bringSubviewToFront:_highlightView];
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -163,7 +175,7 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     
     [webServiceRequest setHTTPBody: requestBodyData];
     //[_highlightView setHidden:YES];
-    //[self showActivityIndicator];
+    [self showActivityIndicator];
     _connectionToWebService = [[NSURLConnection alloc] initWithRequest:webServiceRequest delegate:self startImmediately:YES];
     
 }
@@ -171,6 +183,8 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 {
     _activityIndicator  = [[UIActivityIndicatorView alloc] init];
     [_activityIndicator setHidesWhenStopped:YES];
+    _activityIndicator.center = _selectSingleProductView.center;
+    [self.view addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
     
 }

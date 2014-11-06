@@ -16,7 +16,7 @@
 }
 
 
-+(id) createList:(NSString*)localFolder store:(id)store fileName:(NSString *)fileName list:(NSMutableArray*)list;
++(id) createList:(NSString *)fileName store:(id)store list:(NSMutableArray*)list;
 
 -(NSMutableArray*)copyOfList;
 -(bool) itemExists:(NSString *)key;
