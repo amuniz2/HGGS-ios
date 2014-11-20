@@ -13,14 +13,17 @@
 #define UPC_NAMESPACE @"http://searchupc.com/"
 #define UPC_ACCESS_TOKEN @"2ADB35B4-7F5C-485F-B616-E2E38120EA14"
 
-@interface HGGSBarCodeScannerViewController () <AVCaptureMetadataOutputObjectsDelegate, NSURLConnectionDataDelegate,
+@interface HGGSBarCodeScannerViewController () <NSURLConnectionDataDelegate,
 UIPickerViewDelegate, UIPickerViewDataSource>
 {
     AVCaptureSession *_session;
     AVCaptureDevice *_device;
     AVCaptureDeviceInput *_input;
+    //AVCaptureVideoDataOutput *_output;
     AVCaptureMetadataOutput *_output;
     AVCaptureVideoPreviewLayer * _previewLayer;
+    dispatch_queue_t _dispatchQueue;
+    
     NSMutableData * _productDataReceived;
     NSURLConnection *_connectionToWebService ;
     UIActivityIndicatorView * _activityIndicator;
@@ -45,6 +48,8 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 //- (void)viewDidAppear:(BOOL)animated
 -(void)viewDidLoad
 {
+    NSError *error;
+    
     [super viewDidLoad];
     
     [_highlightView setAutoresizingMask:/*UIViewAutoresizingFlexibleTopMargin |*/ UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |  UIViewAutoresizingFlexibleBottomMargin ];
@@ -56,14 +61,35 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     _session = [[AVCaptureSession alloc] init];
     _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
-    [_session addInput:_input];
+    if (_input) {
+        [_session addInput:_input];
+    } else {
+        NSLog(@"Error: %@", error);
+    }
     
     _output = [[AVCaptureMetadataOutput alloc] init];
-    [_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    [_session addOutput:_output];
     
-    [_output setMetadataObjectTypes:[_output availableMetadataObjectTypes]];
+    //[_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
  
+    _dispatchQueue = dispatch_queue_create("myQueue", NULL);
+    [_output setMetadataObjectsDelegate:self queue:_dispatchQueue];
+    [_output setMetadataObjectTypes:[_output availableMetadataObjectTypes]];
+    
+    if (_device.isAutoFocusRangeRestrictionSupported)
+    {
+        if ([_device lockForConfiguration:&error])
+        {
+            [_device setAutoFocusRangeRestriction:AVCaptureAutoFocusRangeRestrictionNear];
+            [_device unlockForConfiguration];
+        }
+    }
+    if ([_session canAddOutput:_output])
+        [_session addOutput:_output];
+    if (![_session isRunning])
+        [_session startRunning];
+    if ([_session canAddOutput:_output])
+        [_session addOutput:_output];
+    
     [_selectSingleProductView setHidden:YES];
     [_selectSingleProductView setUserInteractionEnabled:NO];
     [cancelScanButton setHidden:NO];
@@ -74,24 +100,35 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     [[doneButton layer] setBorderColor:[UIColor blueColor].CGColor];
     [[[_productSelector superview] layer] setBorderWidth:1.0];
     [[[_productSelector superview]  layer] setBorderColor:[UIColor blueColor].CGColor];
+    [self startCapture];
     
 }
--(void)viewDidLayoutSubviews
+-(void)startCapture
+//-(void)viewDidLayoutSubviews
 {
-    if ([_session isRunning])
-        return;
 
-    [_output setRectOfInterest:[_highlightView bounds]];
+    CGRect imageCaptureRect = CGRectMake([_highlightView frame].origin.x,[_highlightView frame].origin.y, [_scannerView frame].size.width, [_scannerView frame].size.height);
+    
+    //[_output setRectOfInterest:imageCaptureRect];
+    
     _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     [_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    [_previewLayer setFrame:[_highlightView frame]];
+    [_previewLayer setFrame:imageCaptureRect];
     if ([[_previewLayer connection] isVideoOrientationSupported]) {
         [[_previewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
     }
     [[[self view] layer] insertSublayer:_previewLayer above:[_highlightView layer]];
+    //[self.view.layer addSublayer:_previewLayer];
+
     
-     [_session startRunning];
-    //[[self view] bringSubviewToFront:_highlightView];
+    if ([_session canAddOutput:_output])
+        [_session addOutput:_output];
+    if (![_session isRunning])
+        [_session startRunning];
+    if ([_session canAddOutput:_output])
+        [_session addOutput:_output];
+    
+     [[self view] bringSubviewToFront:_highlightView];
     
 }
 - (void)didReceiveMemoryWarning
@@ -101,7 +138,7 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 }
 
 #pragma mark Capture Image
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
     if (_connectionToWebService == nil)
     {

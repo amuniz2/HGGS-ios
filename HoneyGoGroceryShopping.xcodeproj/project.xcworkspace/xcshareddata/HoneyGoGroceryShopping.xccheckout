@@ -10,29 +10,29 @@
 	<string>HoneyGoGroceryShopping</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>8E47978D-9AB6-42C4-93E3-2B5E80629319</key>
+		<key>9D2E46C86920A305AE20B483745220034C99FF2B</key>
 		<string>https://github.com/amuniz2/HGGS-ios.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>HoneyGoGroceryShopping.xcodeproj/project.xcworkspace</string>
+	<string>HoneyGoGroceryShopping.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>8E47978D-9AB6-42C4-93E3-2B5E80629319</key>
+		<key>9D2E46C86920A305AE20B483745220034C99FF2B</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/amuniz2/HGGS-ios.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>8E47978D-9AB6-42C4-93E3-2B5E80629319</string>
+	<string>9D2E46C86920A305AE20B483745220034C99FF2B</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8E47978D-9AB6-42C4-93E3-2B5E80629319</string>
+			<string>9D2E46C86920A305AE20B483745220034C99FF2B</string>
 			<key>IDESourceControlWCCName</key>
 			<string>HGGS-ios</string>
 		</dict>
