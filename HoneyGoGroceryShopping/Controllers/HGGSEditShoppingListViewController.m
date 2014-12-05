@@ -251,6 +251,7 @@
     }
     if (itemHasChanged)
     {
+        [self updateItemInMasterListIfInformationWasAdded:[editController groceryItem]];
         UITableView* activeTableView;
         
         activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
@@ -259,7 +260,32 @@
             _searchResults = [_currentGroceryList findItems:[[[self searchDisplayController] searchBar] text]];
         
         [activeTableView reloadData ];
+    
     }
+    
+}
+-(void)updateItemInMasterListIfInformationWasAdded:(HGGSGroceryItem *)item
+{
+    HGGSStoreList *masterList = [_store getMasterList];
+    HGGSGroceryItem * masterItem = [masterList findItems:[item name]];
+    bool save = NO;
+    if (([masterItem imageName] == nil) && ([item imageName] != nil))
+    {
+        [masterItem setImageName:[item imageName]];
+        save = YES;
+    }
+    if (([masterItem notes] == nil) && ([item notes] != nil))
+    {
+        [masterItem setNotes:[item notes]];
+        save = YES;
+    }
+    if (([masterItem section] == nil) && ([item section] != nil))
+    {
+        [masterItem setSection:[item section]];
+        save = YES;
+    }
+    
+    [[HGGSGroceryStoreManager sharedStoreManager] saveMasterList:[self store]];
     
 }
 -(void) handleReturnFromAddItemController:(HGGSEditGroceryItemViewController*) editController

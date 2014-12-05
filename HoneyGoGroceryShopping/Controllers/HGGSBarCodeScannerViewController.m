@@ -19,7 +19,6 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     AVCaptureSession *_session;
     AVCaptureDevice *_device;
     AVCaptureDeviceInput *_input;
-    //AVCaptureVideoDataOutput *_output;
     AVCaptureMetadataOutput *_output;
     AVCaptureVideoPreviewLayer * _previewLayer;
     dispatch_queue_t _dispatchQueue;
@@ -44,12 +43,9 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     }
     return self;
 }
-// reference: http://stackoverflow.com/questions/20274544/barcode-scanning-in-ios-7
-//- (void)viewDidAppear:(BOOL)animated
 -(void)viewDidLoad
 {
-    NSError *error;
-    
+    NSError *error = nil;
     [super viewDidLoad];
     
     [_highlightView setAutoresizingMask:/*UIViewAutoresizingFlexibleTopMargin |*/ UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |  UIViewAutoresizingFlexibleBottomMargin ];
@@ -60,21 +56,6 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     
     _session = [[AVCaptureSession alloc] init];
     _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
-    if (_input) {
-        [_session addInput:_input];
-    } else {
-        NSLog(@"Error: %@", error);
-    }
-    
-    _output = [[AVCaptureMetadataOutput alloc] init];
-    
-    //[_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
- 
-    _dispatchQueue = dispatch_queue_create("myQueue", NULL);
-    [_output setMetadataObjectsDelegate:self queue:_dispatchQueue];
-    [_output setMetadataObjectTypes:[_output availableMetadataObjectTypes]];
-    
     if (_device.isAutoFocusRangeRestrictionSupported)
     {
         if ([_device lockForConfiguration:&error])
@@ -83,12 +64,16 @@ UIPickerViewDelegate, UIPickerViewDataSource>
             [_device unlockForConfiguration];
         }
     }
+    _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
+    if ([_session canAddInput:_input])
+         [_session addInput:_input];
+    _output = [[AVCaptureMetadataOutput alloc] init];
+    [_output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+
     if ([_session canAddOutput:_output])
-        [_session addOutput:_output];
-    if (![_session isRunning])
-        [_session startRunning];
-    if ([_session canAddOutput:_output])
-        [_session addOutput:_output];
+         [_session addOutput:_output];
+    
+    [_output setMetadataObjectTypes:[_output availableMetadataObjectTypes]];
     
     [_selectSingleProductView setHidden:YES];
     [_selectSingleProductView setUserInteractionEnabled:NO];
@@ -100,37 +85,27 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     [[doneButton layer] setBorderColor:[UIColor blueColor].CGColor];
     [[[_productSelector superview] layer] setBorderWidth:1.0];
     [[[_productSelector superview]  layer] setBorderColor:[UIColor blueColor].CGColor];
-    [self startCapture];
     
 }
--(void)startCapture
-//-(void)viewDidLayoutSubviews
+-(void)viewDidLayoutSubviews
 {
-
-    CGRect imageCaptureRect = CGRectMake([_highlightView frame].origin.x,[_highlightView frame].origin.y, [_scannerView frame].size.width, [_scannerView frame].size.height);
+    if ([_session isRunning])
+        return;
     
-    //[_output setRectOfInterest:imageCaptureRect];
-    
+    [_output setRectOfInterest:[_highlightView bounds]];
     _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     [_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    [_previewLayer setFrame:imageCaptureRect];
+    [_previewLayer setFrame:[_scannerView frame]];
     if ([[_previewLayer connection] isVideoOrientationSupported]) {
         [[_previewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
     }
     [[[self view] layer] insertSublayer:_previewLayer above:[_highlightView layer]];
-    //[self.view.layer addSublayer:_previewLayer];
-
     
-    if ([_session canAddOutput:_output])
-        [_session addOutput:_output];
-    if (![_session isRunning])
-        [_session startRunning];
-    if ([_session canAddOutput:_output])
-        [_session addOutput:_output];
-    
-     [[self view] bringSubviewToFront:_highlightView];
+    [_session startRunning];
+    //[[self view] bringSubviewToFront:_highlightView];
     
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -174,9 +149,9 @@ UIPickerViewDelegate, UIPickerViewDataSource>
 {
     [_session stopRunning];
     _device = nil;
-    //_previewLayer = nil;
-    //_output = nil;
+    _previewLayer = nil;
     _input = nil;
+    _output = nil;
     _session = nil;
 }
 #pragma mark Private
