@@ -23,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *quantity;
 @property (weak, nonatomic) IBOutlet UIImageView *itemPictureView;
 
-@property (weak, nonatomic, readonly) IBOutlet UIImageView *imageView;
+
+//@property (weak, nonatomic, readonly) IBOutlet UIImageView *imageView;
 
 @property (nonatomic) HGGSGroceryItem *groceryItem;
 

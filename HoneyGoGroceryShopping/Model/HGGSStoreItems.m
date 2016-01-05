@@ -123,6 +123,9 @@
 
 -(NSArray*)findItems:(NSString*)stringToSearchFor
 {
+    if ([stringToSearchFor length] == 0)
+        return [self list];
+    
     NSMutableArray* results = [[NSMutableArray alloc] init];
     NSRange locationOfString;
     
@@ -146,14 +149,14 @@
     return [[self list] objectAtIndex:index];
     
 }
--(HGGSGroceryItem*) item:(NSString *)key
+-(HGGSGroceryItem*) itemWithKey:(NSString *)key
 {
     return [_list objectForKey:key ];
     
 }
 -(bool) itemExists:(NSString *)key
 {
-    return ([self item:key] != nil);
+    return ([self itemWithKey:key] != nil);
 }
 
 -(void)remove:(NSString *)key

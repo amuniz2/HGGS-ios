@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 @class HGGSGroceryStore;
 
-@interface HGGSMasterListViewController : UITableViewController
+@interface HGGSMasterListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
 {
-    __weak IBOutlet UISearchBar *_searchBar;
+    //__weak IBOutlet UISearchBar *_searchBar;
     bool _addNewItem;
 }
 @property (nonatomic, strong) HGGSGroceryStore* store;
+@property (strong, nonatomic) UISearchController *searchController;
 @end

@@ -20,7 +20,7 @@
 
 -(NSMutableArray*)copyOfList;
 -(bool) itemExists:(NSString *)key;
--(HGGSGroceryItem*) item:(NSString *)key;
+//-(HGGSGroceryItem*) itemWithkey:(NSString *)key;
 -(void)remove:(NSString *)key;
 
 @end

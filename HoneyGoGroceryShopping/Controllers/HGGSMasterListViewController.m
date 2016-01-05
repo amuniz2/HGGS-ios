@@ -15,9 +15,10 @@
 
 @interface HGGSMasterListViewController ()
 {
-    NSArray* _searchResults;
+    //NSArray* _searchResults;
     bool _changesToSave;
     HGGSStoreItems* _masterGroceryList;
+    NSArray* _listItems;
 }
 
 @end
@@ -50,7 +51,16 @@
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addGroceryItem:)];
     [navItem setRightBarButtonItem:addButton];
-    
+
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+//    self.searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonCountry",@"Item"),
+//                                                          NSLocalizedString(@"ScopeButtonCapital",@"Section")];
+    self.searchController.searchBar.delegate = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.definesPresentationContext = YES;
+    [self.searchController.searchBar sizeToFit];
  }
 -(void)dealloc
 {
@@ -87,7 +97,7 @@
     UITableView* activeTableView;
 
 
-    activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
+    activeTableView = [self tableView];
     if ([segue.identifier isEqualToString:@"toEditGroceryItem"])
     {
         [editItemController setGroceryStore:_store];
@@ -111,10 +121,10 @@
         }
         else
         {
-            if (_searchResults)
-                groceryItem = [_searchResults objectAtIndex:[activeTableView indexPathForSelectedRow].row];
-            else
-                groceryItem = [_masterGroceryList itemAt:[activeTableView indexPathForSelectedRow].row];
+//            if (_searchResults)
+//                groceryItem = [_listItems objectAtIndex:[activeTableView indexPathForSelectedRow].row];
+//            else
+                groceryItem = [_listItems objectAtIndex:[activeTableView indexPathForSelectedRow].row];
         
             [editItemController setGroceryItem:groceryItem];
             [editItemController setItemType:pantryItem];
@@ -136,14 +146,19 @@
 #pragma mark UITableViewDataSource Methods
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.tableView) {
+    if (_masterGroceryList == nil) {
         _masterGroceryList = [[self store] getMasterList];
-        return [_masterGroceryList itemCount];
+        _listItems = [_masterGroceryList list];
     }
-    if (_searchResults)
-        return [_searchResults count];
+    return [_listItems count];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(nonnull NSString *)title atIndex:(NSInteger)index
+{
     
-    return 0;
+    CGRect searchBarFrame = self.searchController.searchBar.frame;
+    [self.tableView scrollRectToVisible:searchBarFrame animated:NO];
+    return NSNotFound;
 }
 #pragma mark UITableViewDelegate Methods
 
@@ -151,12 +166,7 @@
 {
     
     //check for cell that can be reused:
-    HGGSGroceryItem * groceryItem;
-    
-    if (tableView == self.tableView)
-        groceryItem = [_masterGroceryList itemAt:[indexPath row]];
-    else
-        groceryItem = [_searchResults objectAtIndex:[indexPath row]];
+    HGGSGroceryItem * groceryItem = [_listItems objectAtIndex:[indexPath row]];
     
     HGGSMasterItemCellView* cell = [[self tableView] dequeueReusableCellWithIdentifier:@"MasterItemCell"];
     [cell setGroceryItem:groceryItem];
@@ -180,31 +190,48 @@
     [self performSegueWithIdentifier:@"toEditGroceryItem" sender:self];
 
 }
-#pragma mark - UISearchController Delegate Methods
+//#pragma mark - UISearchController Delegate Methods
 
-- (BOOL)searchDisplayController:(UISearchController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-    _searchResults = [_masterGroceryList findItems:searchString];
-    
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
-}
+//- (BOOL)searchDisplayController:(UISearchController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+//{
+//    _searchResults = [_masterGroceryList findItems:searchString];
+//    
+//    // Return YES to cause the search result table view to be reloaded.
+//    return YES;
+//}
 
 
 #pragma mark UISearchBarDelegate Methods
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    _searchResults = nil;
+    _listItems = [_masterGroceryList list];
+    [self.tableView reloadData];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    [self updateSearchResultsForSearchController:self.searchController];
+}
+
+#pragma mark UISearchResultsUpdatingDelegate Methods
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSString *searchString = searchController.searchBar.text;
+    //[self searchForText:searchString scope:searchController.searchBar.selectedScopeButtonIndex];
+    [self searchForText:searchString];
+    [self.tableView reloadData];
+}
 
 #pragma mark Private
+- (void)searchForText:(NSString *)searchText
+{
+    _listItems = [_masterGroceryList findItems:searchText];
+    
+}
+
 -(HGGSGroceryItem *)groceryItemAt:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
-    if (tableView == self.tableView)
-        return [_masterGroceryList itemAt:[indexPath row]];
-    
-    return [_searchResults objectAtIndex:[indexPath row]];
+    return [_listItems objectAtIndex:[indexPath row]];
     
 }
 
@@ -212,32 +239,22 @@
 {
     bool itemHasChanged = (editController.actionTaken == saveChanges) || (editController.actionTaken == deleteItem) || (editController.actionTaken == replaceItem);
     _changesToSave = _changesToSave || itemHasChanged;
+
     
     if (editController.actionTaken == deleteItem)
     {
         [_masterGroceryList remove:[[editController groceryItem] name] ];
+        _listItems = [_masterGroceryList list];
     }
     else if (editController.actionTaken == replaceItem)
     {
         [_masterGroceryList remove:[editController originalGroceryItemName]];
-        NSInteger lastRow = [_masterGroceryList addItem:[editController groceryItem]];
-                                    
-        if (lastRow < 0)
-        {
-            //todo: display alert that item could not be added
-            return;
-        }
-                                    
+        [_masterGroceryList addItem:[editController groceryItem]];
+        _listItems = [_masterGroceryList list];        
     }
     if (itemHasChanged)
     {
-        UITableView* activeTableView;
-        
-        activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
-        
-        if (_searchResults)
-            _searchResults = [_masterGroceryList findItems:[[[self searchDisplayController] searchBar] text]];
-
+        UITableView* activeTableView = [self tableView];
         [activeTableView reloadData ];
     }
     
@@ -249,7 +266,6 @@
     _changesToSave = _changesToSave || editController.actionTaken == saveChanges ;
     if (editController.actionTaken == saveChanges)
     {
-        UITableView* activeTableView;
         /* todo: delete if addItem works after allowing name change
         */
         NSInteger lastRow = [_masterGroceryList addItem:[editController groceryItem]];
@@ -259,11 +275,13 @@
             //todo: display alert that item could not be added
             return;
         }
-        activeTableView = (_searchResults) ? [[self searchDisplayController] searchResultsTableView] : [self tableView];
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRow inSection:0];
+        _listItems = [_masterGroceryList list];
+//        NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRow inSection:0];
+//        
+//        [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:ip ] withRowAnimation:UITableViewRowAnimationTop];
         
-        [activeTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ip ] withRowAnimation:UITableViewRowAnimationTop];
-        [activeTableView reloadData ];
+        // filter...
+        [[self tableView] reloadData ];
     }
     
 }

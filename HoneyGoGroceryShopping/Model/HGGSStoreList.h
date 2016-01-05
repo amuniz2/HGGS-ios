@@ -59,6 +59,7 @@ typedef enum
 -(NSInteger)addItem:(id)newItem;
 -(NSMutableArray*)findItems:(NSString*)stringToSearchFor;
 -(id) itemAt:(NSInteger)index;
+-(id) itemWithKey:(NSString *) key;
 -(void)loadListFromString:(NSString*)fileContents;
 -(void)removeItem:(id)item;
 -(NSString*) serializeList;

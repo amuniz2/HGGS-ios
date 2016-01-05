@@ -14,7 +14,12 @@
 }
 
 @property double quantity;
+
 @property bool selected;
+@property bool isPantryItem;
+@property bool isInShoppingCart;
+@property bool includeInShoppingList;
+
 @property (nonatomic, copy) NSString *sectionId;
 @property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, copy)NSString *unit;

@@ -202,7 +202,6 @@
     return UITableViewCellEditingStyleNone;
 }
 
-
 #pragma mark - UISearchDisplayController Delegate Methods
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
@@ -267,7 +266,7 @@
 -(void)updateItemInMasterListIfInformationWasAdded:(HGGSGroceryItem *)item
 {
     HGGSStoreList *masterList = [_store getMasterList];
-    HGGSGroceryItem * masterItem = [masterList findItems:[item name]];
+    HGGSGroceryItem * masterItem = [masterList itemWithKey:[item name]];
     bool save = NO;
     if (([masterItem imageName] == nil) && ([item imageName] != nil))
     {
