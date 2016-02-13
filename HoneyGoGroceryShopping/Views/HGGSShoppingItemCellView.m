@@ -19,7 +19,7 @@
 {
     [_nameLabel setAdjustsFontSizeToFitWidth:YES];
     [_quantityLabel setAdjustsFontSizeToFitWidth:YES];
-    _initiallySelected = [groceryItem selected];
+    _initiallySelected = [groceryItem includeInShoppingList];
     _initialQuantity = [groceryItem quantity];
     [_nameLabel setText:[groceryItem name]];
     
@@ -46,9 +46,9 @@
         [_groceryItem setQuantity:quantitySetByUser];
     }
     bool selectedByUser = [_itemSelected isOn];
-    if (selectedByUser != [_groceryItem selected])
+    if (selectedByUser != [_groceryItem includeInShoppingList])
     {
-        [_groceryItem setSelected:selectedByUser];
+        [_groceryItem setIncludeInShoppingList:selectedByUser];
     }
     return (quantitySetByUser != _initialQuantity) || (selectedByUser != _initiallySelected);
 }

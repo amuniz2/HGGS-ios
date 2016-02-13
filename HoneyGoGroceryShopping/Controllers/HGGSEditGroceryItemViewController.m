@@ -352,7 +352,7 @@ finishedSavingWithError:(NSError *)error
     NSString* selectionLabelText = [self selectionLabelText];
     if (selectionLabelText != nil)
     {
-        [select setOn:((_itemType == pantryItem) ? [[self groceryItem] selected]:  YES)];
+        [select setOn:((_itemType == pantryItem) ? [[self groceryItem] includeInShoppingListByDefault]:  YES)];
         [selectionLabel setText:selectionLabelText];
         return;
     }
@@ -408,7 +408,8 @@ finishedSavingWithError:(NSError *)error
                                                         unit:[units text]
                                                         section:[grocerySection text]
                                                         notes:[_additionalNotes text]
-                                                        select:[select isOn]
+                                                includeInPantry:YES
+                                                        selectByDefault:[select isOn]
                                                 lastPurchasedOn:[NSDate date] ];
                                                          // image:[_imageView image]] ;
         [_groceryItem setImage:[_imageView image]];
@@ -421,15 +422,26 @@ finishedSavingWithError:(NSError *)error
         [_groceryItem setSection:[grocerySection text]];
         //[_groceryItem setImage:[_imageView image]];
         
-        if (_itemType != shoppingItem)
+        if (_itemType == pantryItem)
         {
-            [_groceryItem setSelected:[select isOn]];
+            [_groceryItem setIncludeInShoppingListByDefault:[select isOn]];
+            [_groceryItem setIsPantryItem:YES];
+            _saveToMasterList = YES;
             [_groceryItem setQuantity:[[quantity text] doubleValue] ];
+        }
+        else if (_itemType == newShoppingItem)
+        {
+            //[_groceryItem setSelected:[select isOn]];
+            bool includeInMasterList = [select isOn];
             
+            [_groceryItem setQuantity:[[quantity text] doubleValue] ];
+            [_groceryItem setIncludeInShoppingListByDefault:includeInMasterList];
+            [_groceryItem setIsPantryItem:includeInMasterList];
+            _saveToMasterList = includeInMasterList;
         }
         else
         {
-            _saveToMasterList = [select isOn];
+            _saveToMasterList = [_groceryItem isPantryItem];
         }
         _actionTaken = saveChanges;
     }

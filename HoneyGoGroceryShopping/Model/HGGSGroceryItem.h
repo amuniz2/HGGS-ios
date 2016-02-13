@@ -15,10 +15,11 @@
 
 @property double quantity;
 
-@property bool selected;
+//@property bool selected;
 @property bool isPantryItem;
 @property bool isInShoppingCart;
 @property bool includeInShoppingList;
+@property bool includeInShoppingListByDefault;
 
 @property (nonatomic, copy) NSString *sectionId;
 @property (nonatomic, readonly, copy) NSString *name;
@@ -35,9 +36,9 @@
 -(id)initFromDictionary:(NSDictionary *)itemAttributes imagesFolder:(NSString*)imagesFolder;
 @property(nonatomic,strong, readonly) NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate;// image:(UIImage*)imageName;
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate;
 
--(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId image:(NSString*)imageName;
+//-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId image:(NSString*)imageName;
 
 - (NSComparisonResult) compareWithAnotherItem:(HGGSGroceryItem*) anotherItem;
 

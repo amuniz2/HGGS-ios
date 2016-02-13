@@ -16,9 +16,9 @@
 
 typedef enum itemType
 {
-    pantryItem = 0,
-    shoppingItem = 1,
-    newShoppingItem = 2
+    pantryItem = 0,  // item from master list
+    shoppingItem = 1, // item from current list
+    newShoppingItem = 2 // item being added to current list
 } itemType;
 
 @interface HGGSEditGroceryItemViewController : UIViewController <HGGSBarcodeScannerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>

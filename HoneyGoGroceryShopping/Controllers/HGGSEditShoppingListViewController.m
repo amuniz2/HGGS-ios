@@ -294,9 +294,9 @@
     if (editController.actionTaken == saveChanges)
     {
         UITableView* activeTableView;
-        bool addToMaster = [[editController groceryItem] selected];
+        bool addToMaster = [[editController groceryItem] isPantryItem];
         
-        [[editController groceryItem] setSelected:YES];
+        [[editController groceryItem] setIncludeInShoppingList:YES];
         NSInteger lastRow = [_currentGroceryList addItem:[editController groceryItem]];
         if (lastRow < 0)
         {

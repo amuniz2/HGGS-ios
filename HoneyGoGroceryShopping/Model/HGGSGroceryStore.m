@@ -204,7 +204,7 @@
     
     for (HGGSGroceryItem *item in [currentList list])
     {
-        if ([item selected])
+        if ([item includeInShoppingList])
         {
             HGGSGroceryAisle* unknownSectionAisle = [shoppingStoreList itemAt:0 ];
             if  ([self isPopulated:[item section]])
@@ -223,7 +223,7 @@
                 grocerySection = [[unknownSectionAisle grocerySections] objectAtIndex:0];
             
             shoppingItem =[item copy];
-            [shoppingItem setSelected:NO];
+            [shoppingItem setIsInShoppingCart:NO];
             if ([grocerySection groceryItems] == nil)
                 [grocerySection setGroceryItems:[[NSMutableArray alloc ] initWithObjects:shoppingItem, nil]];
             else

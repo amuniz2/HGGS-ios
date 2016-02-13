@@ -27,35 +27,36 @@
     
  //   _imageFileName = [[imagesFolder stringByAppendingPathComponent:itemName] stringByAppendingPathExtension:@"jpg"];
     
-    self = [self initWithOldDetails:itemName
+    self = [self initWithDetails:itemName
                         quantity:quantity
                         unit:[itemAttributes objectForKey:@"unit"]
                         section:[itemAttributes objectForKey:@"section"]
                         notes:[itemAttributes objectForKey:@"notes"]
-                        select:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selected"]]
+                 includeInPantry:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"includeInPantry"]]
+                 selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selectByDefault"]]
                         lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
-                        sectionId:[itemAttributes objectForKey:@"category"]
-                        image:[itemAttributes objectForKey:@"image"]
+//                        sectionId:[itemAttributes objectForKey:@"category"]
+//                        image:[itemAttributes objectForKey:@"image"]
             ];
     
 ;
     return self;
 }
 
--(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId image:(NSString*)imageName
-{
-    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate ] ;
-    if (self)
-    {
-        [self setImageName:imageName];
-        //[self setImage:[self loadPicture:imageName inFolder:[self imagesFolder]]];
-        [self setSectionId:sectionId];
-    
-    }
-    return self;
-}
+//-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId image:(NSString*)imageName
+//{
+//    self = [self initWithDetails:name quantity:amount unit:unitDescription section:grocerySection notes:notes select:selected lastPurchasedOn:lastPurchasedDate ] ;
+//    if (self)
+//    {
+//        [self setImageName:imageName];
+//        //[self setImage:[self loadPicture:imageName inFolder:[self imagesFolder]]];
+//        [self setSectionId:sectionId];
+//    
+//    }
+//    return self;
+//}
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate
 {
     
     self = [super init];
@@ -67,7 +68,11 @@
         [self setQuantity:amount];
         [self setUnit:unitDescription];
         [self setSection:grocerySection];
-        [self setSelected:selected];
+        [self setIsPantryItem:includeInPantry];
+        [self setIncludeInShoppingListByDefault:selectByDefault];
+        [self setIsInShoppingCart:NO];
+        [self setIncludeInShoppingList:YES];
+        //[self setSelected:selected];
         [self setLastPurchasedDate:lastPurchasedDate];
         //[self setImage:image];
         
@@ -77,7 +82,7 @@
 -(id)init
 {
     NSString* emptyString = @"";
-    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString select:YES lastPurchasedOn:nil ];
+    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString includeInPantry:YES selectByDefault:NO lastPurchasedOn:nil ];
     if (self)
     {
         [self setSectionId:emptyString];
@@ -98,14 +103,14 @@
                     [NSNumber numberWithDouble:_quantity], @"quantity",
                     (_unit == nil) ? @"" : _unit, @"unit",
                     (_notes == nil) ? @"" : _notes, @"notes",
-                    [HGGSBool boolAsString:_selected], @"selected",
+                    [HGGSBool boolAsString:_isPantryItem], @"isPantryItem",
+                        [HGGSBool boolAsString:_includeInShoppingListByDefault], @"_includeInShoppingListByDefault",
+                        [HGGSBool boolAsString:_includeInShoppingList], @"includeInShoppingList",
+                        [HGGSBool boolAsString:_isInShoppingCart], @"isInShoppingCart",
                     (_section == nil) ? @"" : _section, @"section",
                         (_imageName == nil) ? @"" : imageName, @"image",
                         [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
                     nil];
-    
-    // todo: add property that holds path to image; save image to grocery store folder
-    //http://stackoverflow.com/questions/22428615/how-do-i-get-back-a-saved-picture-on-iphone-camera-roll
     
     return ret;
 }
@@ -164,7 +169,7 @@
     return [NSString stringWithFormat:@"%lu",(unsigned long)[[self name] hash]];
 }
 
-#pragma mark NSCopying 
+#pragma mark NSCopying
 -(id)copyWithZone:(NSZone *)zone
 {
     HGGSGroceryItem *copy = [[HGGSGroceryItem alloc] initWithDetails:[self name]
@@ -172,9 +177,12 @@
                                                                 unit:[self unit]
                                                              section:[self section]
                                                                notes:[self notes]
-                                                              select:[self selected]
+                                                    includeInPantry:[self  isPantryItem]
+                                                     selectByDefault:[self includeInShoppingListByDefault]
                                                      lastPurchasedOn:[self lastPurchasedDate]];
     
+    [copy setIsInShoppingCart:[self isInShoppingCart]];
+    [copy setIncludeInShoppingList:[self includeInShoppingList]];
     [copy setImageName:[self imageName]];
     [copy setImage:[self image]];
     [copy setSectionId:[self sectionId]];

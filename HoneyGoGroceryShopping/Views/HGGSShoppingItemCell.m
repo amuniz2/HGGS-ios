@@ -28,7 +28,7 @@
     [_name setText:[groceryItem name]];
     [_quantity setText:[NSString stringWithFormat:@"%g %@", [groceryItem quantity], [groceryItem unit]]];
     [_notes setText:[groceryItem notes]];
-    [_completed setSelected:[groceryItem selected]];
+    [_completed setSelected:[groceryItem isInShoppingCart]];
     UIImage *itemImage = [groceryItem image];
     if (itemImage == nil)
         return;
@@ -59,7 +59,7 @@
 }
 -(void) saveUserValuesEnteredByUser
 {
-    [_groceryItem setSelected:[_completed isSelected]];
+    [_groceryItem setIsInShoppingCart:[_completed isSelected]];
 }
 
 #pragma mark Class Helper Methods
