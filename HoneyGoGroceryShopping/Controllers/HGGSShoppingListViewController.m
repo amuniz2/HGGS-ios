@@ -18,7 +18,7 @@
 @interface HGGSShoppingListViewController ()
 {
     NSArray* _searchResults;
-    HGGSStoreList* _shoppingList;
+    NSMutableArray* _shoppingList;
     HGGSGroceryItem *_currentGroceryItem;
     
 }
@@ -45,12 +45,9 @@
     
     [navItem setTitle:[NSString stringWithFormat:@"%@ Shopping List",[_store name]]];
  
-    if (![_store shoppingListIsMoreRecentThanCurrentList] )
-        [_store createShoppingList];
-    
-    _shoppingList = [_store getShoppingList];
-
+    _shoppingList = [_store createShoppingList:_startNewShoppingList];
 }
+
 
 -(void) saveChangedCellsStillDisplayed
 {
@@ -63,7 +60,7 @@
 {
     [self saveChangedCellsStillDisplayed];
     HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-    [storeManager saveShoppingList:[self store]];
+    [storeManager saveGroceryList:[self store]];
     //_changesToSave = NO;
     [super viewWillDisappear:animated];
 }
@@ -96,7 +93,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tableView)
-        return [_shoppingList itemCount];
+        return [_shoppingList count];
     else
         return [_searchResults count];
 }
@@ -106,7 +103,7 @@
     @try {
         if (tableView == self.tableView)
         {
-            HGGSGroceryAisle* aisle = [_shoppingList itemAt:section];
+            HGGSGroceryAisle* aisle = [_shoppingList objectAtIndex:section];
             return [aisle  groceryItemCount];
         }
         else if (_searchResults)
@@ -212,7 +209,7 @@
 {
     @try
     {
-        HGGSGroceryAisle* aisle = [_shoppingList itemAt:[indexPath section]];
+        HGGSGroceryAisle* aisle = [_shoppingList objectAtIndex:[indexPath section]];
         HGGSGroceryItem *item = nil;
         int currentIndex = 0;
         

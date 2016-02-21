@@ -48,6 +48,7 @@ typedef enum
 -(id)initWithFile:(NSString*)fileName store:(id)store;
 
 -(void)load;
+-(void)loadFromPreviousMasterFile;
 -(void)reload;
 -(bool)save;
 -(void)unload;

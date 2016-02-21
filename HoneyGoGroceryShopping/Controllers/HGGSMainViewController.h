@@ -18,5 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UIPickerView *storeSelector;
 -(IBAction) editStore : (id)sender;
+-(IBAction) promptIfNewListShouldBeStarted:(id)sender;
 -(void) addStore;
 @end

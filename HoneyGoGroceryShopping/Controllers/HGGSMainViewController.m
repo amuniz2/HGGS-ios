@@ -17,6 +17,10 @@
 @end
 //todo: NSUserDefaults..
 @implementation HGGSMainViewController
+{
+    bool _startNewShoppingList;
+    UIAlertView *_startNewListAlertView;
+}
 
 #pragma mark Lifecycle Methods
 - (void)viewDidLoad
@@ -34,9 +38,13 @@
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addStore)];
     [navItem setRightBarButtonItem:addButton];
+    _startNewListAlertView = nil;
 
 }
-
+-(void)dealloc
+{
+     _startNewListAlertView = nil;
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -67,11 +75,14 @@
     else if ([segue.identifier isEqualToString:@"toEditShoppingList"])
     {
         HGGSEditShoppingListViewController *editShoppingListController = segue.destinationViewController;
+        //TODO: Ask user if new list should be started.
+        [editShoppingListController setStartNewList:_startNewShoppingList];
         [editShoppingListController setStore:storeSelected];
     }
     else if ([segue.identifier isEqualToString:@"toShoppingList"])
     {
         HGGSShoppingListViewController *shoppingListController = segue.destinationViewController;
+        [shoppingListController setStartNewShoppingList:[storeSelected noItemsLeftToShopFor]];
         [shoppingListController setStore:storeSelected];
     }
     else
@@ -79,8 +90,34 @@
 
     
 }
+#pragma mart Alert Boxes
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView == _startNewListAlertView)
+    {
+        _startNewShoppingList =(buttonIndex != alertView.cancelButtonIndex);
+        [self performSegueWithIdentifier:@"toEditShoppingList" sender:self];
+    }
+}
 
 #pragma mark Actions
+-(IBAction)promptIfNewListShouldBeStarted:(id)sender
+{
+    HGGSGroceryStoreManager *storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+    HGGSGroceryStore *storeSelected = [[storeManager allStores] objectForKey:[_keys objectAtIndex:[_storeSelector selectedRowInComponent:0]]];
+    
+    NSString* promptMessage = [NSString stringWithFormat:@"Start a new shopping list for %@?", [storeSelected name]];
+    
+    if (_startNewListAlertView == nil)
+    {
+        _startNewListAlertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Prepar Shopping List" message:promptMessage delegate:self
+                                  cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        _startNewListAlertView.alertViewStyle = UIAlertViewStyleDefault;
+        
+    }
+    [_startNewListAlertView show];
+}
 -(IBAction)editStore:(id)sender
 {
     // load master list view controller and display the view

@@ -47,9 +47,11 @@
 -(NSMutableArray *)findMatchingGrocerySections:(NSString *)stringToMatch
 {
     NSMutableArray *returnArray = nil;
+    NSString *upperCaseStringToMatch = [stringToMatch uppercaseString];
+    
     for (HGGSGrocerySection * section in [self grocerySections])
     {
-        NSRange locationOfString =[[section name] rangeOfString:stringToMatch options:NSCaseInsensitiveSearch];
+        NSRange locationOfString =[[[section name] uppercaseString] rangeOfString:upperCaseStringToMatch options:NSCaseInsensitiveSearch];
         if (locationOfString.location != NSNotFound)
         {
             if (returnArray == nil)

@@ -17,9 +17,10 @@
 typedef enum storeFileType
 {
     STORE,
-    MASTER_LIST,
-    CURRENT_LIST,
-    SHOPPING_LIST,
+//    MASTER_LIST,
+//    CURRENT_LIST,
+//    SHOPPING_LIST,
+    LIST,
     AISLE_CONFIG
     
 } storeFileType;
@@ -36,7 +37,8 @@ typedef enum storeFileType
 }
 @property (weak) id <HGGSGroceryStoreDelegate> delegate;
 @property (nonatomic, assign, readonly) NSArray* grocerySections;
-@property (nonatomic, readonly) NSDictionary* storeLists;
+@property (nonatomic, readonly) HGGSStoreItems* storeList;
+@property (nonatomic, readonly) HGGSStoreAisles* aisles;
 @property (nonatomic, copy, readonly) NSString* localFolder;
 @property (nonatomic, copy, readonly) NSString* imagesFolder;
 @property (nonatomic, copy) NSDate* lastImagesSyncDate;
@@ -51,26 +53,22 @@ typedef enum storeFileType
 
 -(id)initWithStoreName:(NSString *)storeName;
 -(bool)anyListsLoaded;
--(void)createCurrentList;
--(void)createShoppingList;
+-(void)resetCurrentList;
+-(NSMutableArray*)createShoppingList:(BOOL)resetShoppingList;
 -(HGGSGrocerySection*)findGrocerySection:(NSString*)sectionName inAisles:(NSArray*)aisles;
 -(HGGSGrocerySection *)findGrocerySectionBySectionId:(NSString *)sectionId ;
 -(NSArray*)findGrocerySections:(NSString*)stringToSearchFor inAisles:(bool)inAisles;
--(NSArray *) getSharedFileNameComponents;
 -(NSArray*)getGroceryListsFileNames;
 //-(HGGSGrocerySection*) insertNewGrocerySection:(NSString*)name inAisle:(NSInteger)aisleNumber atSectionIndex:(NSInteger)sectionIndex;
--(HGGSStoreItems*) getCurrentList;
+-(HGGSStoreItems*) getGroceryList;
 -(HGGSStoreAisles *) getGroceryAisles;
--(HGGSStoreItems*) getMasterList;
--(HGGSStoreAisles*)getShoppingList;
 -(void)reloadLists;
 -(void)removeGrocerySection:(HGGSGrocerySection*)grocerySection fromAisle:(HGGSGroceryAisle *)aisle;
--(bool)saveCurrentList;
 -(bool)saveGroceryAisles;
--(bool)saveMasterList;
--(bool)saveShoppingList;
+-(bool)saveGroceryList;
+//-(bool)saveShoppingList;
 -(void) saveStoreInfo;
--(bool) shoppingListIsMoreRecentThanCurrentList;
--(void)unloadLists;
-
+//-(bool) shoppingListIsMoreRecentThanCurrentList;
+-(void)unload;
+-(BOOL)noItemsLeftToShopFor;
 @end

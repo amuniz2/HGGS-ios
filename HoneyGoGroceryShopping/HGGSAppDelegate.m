@@ -21,7 +21,11 @@
     DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:APP_KEY secret:APP_SECRET];
     
     [DBAccountManager setSharedManager:accountManager];
-    
+
+#if TARGET_IPHONE_SIMULATOR
+    // where are you?
+    NSLog(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+#endif
     
     return YES;
 }

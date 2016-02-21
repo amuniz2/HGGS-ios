@@ -75,7 +75,7 @@
     {
        [self renameStore];
     }
-    [[self groceryStore] unloadLists];
+    [[self groceryStore] unload];
     [super viewWillDisappear:animated];
     
 }

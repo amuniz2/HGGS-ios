@@ -17,9 +17,7 @@
 #import "NSString+SringExtensions.h"
 
 #define STORE_INFO_FILE @"StoreInfo.json"
-#define MASTER_LIST_FILE @"master_list.json"
-#define CURRENT_LIST_FILE @"current_list.json"
-#define SHOPPING_LIST_FILE @"shopping_list.json"
+#define GROCERY_LIST_FILE @"grocery_list.json"
 #define AISLE_CONFIG_FILE @"category.json"
 
 @interface HGGSGroceryStore () <NSCopying>
@@ -58,22 +56,19 @@
     NSError *error;
     if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete localFolder]] )
     {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete getFileName:MASTER_LIST]] )
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete getFileName:LIST]] )
         {
             
-            if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getFileName:MASTER_LIST] error:&error])
+            if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getFileName:LIST] error:&error])
                     NSLog(@"Error deleting store's master list: %@.  Error: %@", storeToDelete, error);
 
             if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getFileName:AISLE_CONFIG] error:&error])
                 NSLog(@"Error deleting store's aisle information: %@.  Error: %@", storeToDelete, error);
-           
-            [[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getFileName:CURRENT_LIST] error:&error];
-            [[NSFileManager defaultManager] removeItemAtPath:[storeToDelete getFileName:SHOPPING_LIST] error:&error];
             
         }
                                                               
         if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete localFolder] error:&error])
-            NSLog(@"Error deleting store's master list: %@.  Error: %@", storeToDelete, error);
+            NSLog(@"Error deleting store's grocery list: %@.  Error: %@", storeToDelete, error);
     }
     
 }
@@ -95,16 +90,10 @@
 {
     if (fileType == STORE)
         return STORE_INFO_FILE;
-    else if (fileType == MASTER_LIST)
-        return MASTER_LIST_FILE;
-    else if (fileType == CURRENT_LIST)
-        return CURRENT_LIST_FILE;
-    else if (fileType == SHOPPING_LIST)
-        return SHOPPING_LIST_FILE;
     else if (fileType == AISLE_CONFIG)
         return AISLE_CONFIG_FILE;
-    return nil;
     
+    return GROCERY_LIST_FILE;
 }
 
 #pragma mark Initializers
@@ -121,12 +110,9 @@
         [self setName:storeName];
         [self loadStoreInfo];
         
-        _storeLists = [[NSDictionary alloc] initWithObjectsAndKeys:
-                       [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:MASTER_LIST] store:self list:nil ],[NSNumber  numberWithInt:MASTER_LIST],
-                       [HGGSStoreAisles createList:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG] store:self  list:nil ],[NSNumber  numberWithInt:AISLE_CONFIG],
-                       [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:CURRENT_LIST] store:self  list:nil ],[NSNumber  numberWithInt:CURRENT_LIST],
-                       [HGGSStoreAisles createList:[HGGSGroceryStore getFileNameComponent:SHOPPING_LIST] store:self  list:nil ],[NSNumber  numberWithInt:SHOPPING_LIST],
-                       nil];
+        _storeList = [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:LIST] store:self list:nil ];
+        //TODO:?
+        _aisles = (HGGSStoreAisles*)[HGGSStoreAisles createList:[HGGSGroceryStore getFileNameComponent:AISLE_CONFIG] store:self list:nil];
     }
     return self;
 }
@@ -166,47 +152,43 @@
 #pragma mark Public Methods
 -(bool)anyListsLoaded
 {
- 
-    NSEnumerator *enumerator = [_storeLists objectEnumerator];
-    HGGSStoreList * storeList;
-    bool listLoaded = NO;
-    
-    while ((storeList = [enumerator nextObject]) && !listLoaded)
-    {
-        listLoaded = [storeList exists];
-    }
-    return listLoaded;
+    return [_storeList exists];
 }
 
--(void)createCurrentList
+-(void)resetCurrentList
 {
-    HGGSStoreList *masterList = [self getMasterList];
-    NSMutableArray* currentList = [masterList copyOfList];
-    [self setItems:currentList listType:CURRENT_LIST];
+    HGGSStoreItems *itemList = [self getGroceryList];
+    NSMutableArray * itemsToRemove = [[NSMutableArray alloc] init];
+    
+    for (HGGSGroceryItem *item in [itemList list])
+    {
+        if ([item isPantryItem])
+            [item setIncludeInShoppingList:[item includeInShoppingListByDefault]];
+        else
+            [itemsToRemove addObject:item];
+    }
+
+    for (HGGSGroceryItem * itemToRemove in itemsToRemove)
+        [itemList  removeItem:itemToRemove];
+    
 }
 
 -(bool)isPopulated:(NSString *)stringToTest
 {
     return ![NSString isEmptyOrNil:stringToTest];
 }
--(void)createShoppingList
+-(NSMutableArray *)createShoppingList:(bool)resetShoppingCart
 {
     HGGSGrocerySection* grocerySection = nil;
     HGGSGroceryItem *shoppingItem;
     NSMutableArray *shoppingList = [[self getGroceryAisles] copyOfList];
-    HGGSStoreAisles * shoppingStoreList = [[self storeLists] objectForKey:[NSNumber numberWithInt:SHOPPING_LIST]];
-    HGGSStoreItems *currentList = [self getCurrentList];
+    HGGSStoreItems *currentList = [self getGroceryList];
     
-    [shoppingStoreList setList:shoppingList];
-    if (![currentList exists])
-        currentList = [self getMasterList];
-
-    
+    HGGSGroceryAisle* unknownSectionAisle = [shoppingList  objectAtIndex:0];
     for (HGGSGroceryItem *item in [currentList list])
     {
         if ([item includeInShoppingList])
         {
-            HGGSGroceryAisle* unknownSectionAisle = [shoppingStoreList itemAt:0 ];
             if  ([self isPopulated:[item section]])
             {
                 grocerySection = [self findGrocerySection:[item section] inAisles:shoppingList];
@@ -222,16 +204,17 @@
             else
                 grocerySection = [[unknownSectionAisle grocerySections] objectAtIndex:0];
             
-            shoppingItem =[item copy];
-            [shoppingItem setIsInShoppingCart:NO];
+            //shoppingItem =[item copy];
+            shoppingItem =item;
+            if (resetShoppingCart)
+                [shoppingItem setIsInShoppingCart:NO];
             if ([grocerySection groceryItems] == nil)
                 [grocerySection setGroceryItems:[[NSMutableArray alloc ] initWithObjects:shoppingItem, nil]];
             else
                 [[grocerySection groceryItems ] addObject:shoppingItem];
         }
     }
-  
-//    [self setItems:shoppingList listType:SHOPPING_LIST];
+    return shoppingList;
 }
 -(HGGSGrocerySection*)findGrocerySection:(NSString*)sectionName inAisles:(NSArray*)aisles
 {
@@ -315,11 +298,13 @@
     
     if (storeFileType == STORE)
         fileNameWithoutPath = STORE_INFO_FILE;
-    else
+    else if (storeFileType == AISLE_CONFIG)
     {
-        HGGSStoreList* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:storeFileType]];
-        fileNameWithoutPath = [storeList fileName];
+        fileNameWithoutPath = AISLE_CONFIG_FILE;
     }
+    else
+        fileNameWithoutPath = [_storeList fileName];
+
     return [[self localFolder] stringByAppendingPathComponent:fileNameWithoutPath];
 }
 
@@ -327,13 +312,11 @@
 -(NSArray*) getGroceryListsFileNames
 {
     NSMutableArray* fileNames = [[NSMutableArray alloc] init];
-    NSEnumerator *enumerator = [_storeLists keyEnumerator];
-    id key;
     
-    while ((key = [enumerator nextObject])) {
-        /* code that acts on the dictionary’s values */
-        [fileNames addObject:[self getFileName:[key intValue]]];
-    }
+    /* code that acts on the dictionary’s values */
+    [fileNames addObject:STORE_INFO_FILE];
+    [fileNames addObject:AISLE_CONFIG_FILE];
+    [fileNames addObject:GROCERY_LIST_FILE];
     return fileNames;
 }
 -(NSArray*) grocerySections
@@ -347,23 +330,10 @@
     return sections;
     
 }
--(NSArray *) getSharedFileNameComponents
-{
-    NSMutableArray* fileNameComponents = [[NSMutableArray alloc] init];
-    NSEnumerator *enumerator = [_storeLists objectEnumerator];
-    HGGSStoreList* storeList;
-    
-    while (storeList = [enumerator nextObject])
-    {
-        /* code that acts on the dictionary’s values */
-        [fileNameComponents addObject:[storeList fileName]];
-    }
-    return fileNameComponents;
-}
 
 -(HGGSStoreAisles*)getGroceryAisles
 {
-    HGGSStoreAisles* storeAisles = [_storeLists objectForKey:[NSNumber numberWithInt:AISLE_CONFIG]];
+    HGGSStoreAisles* storeAisles = [self aisles];
     if (![storeAisles exists])
     {
         [storeAisles load];
@@ -380,55 +350,31 @@
     return storeAisles;
 }
 
--(HGGSStoreItems*)getCurrentList
+-(HGGSStoreItems*)getGroceryList
 {
-    HGGSStoreItems* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:CURRENT_LIST]];
-    if (![storeList exists])
+    if (![_storeList exists])
     {
-        [storeList load];
+        [_storeList load];
+        
+        if ([_storeList itemCount] == 0)
+            [_storeList loadFromPreviousMasterFile];
     }
-    return storeList;
+    return _storeList;
 }
-
--(HGGSStoreAisles*)getShoppingList
+-(BOOL)noItemsLeftToShopFor
 {
-    HGGSStoreAisles* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:SHOPPING_LIST]];
-    if (![storeList exists])
-    {
-        [storeList load];
-    }
-    return storeList;
-}
-
--(HGGSStoreItems*)getMasterList
-{
-    HGGSStoreItems* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:MASTER_LIST]];
-    if (![storeList exists])
-    {
-        [storeList load ];
-    }
-    return storeList;
-}
-
-
--(void)setItems:(NSMutableArray*)items listType:(storeFileType)listType
-{
-    HGGSStoreList* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:listType]];
-    [storeList setList:items];
+    NSArray *items = [[self storeList] list];
     
+    for (HGGSGroceryItem *item in items) {
+        if ([item includeInShoppingList] && ![item isInShoppingCart]  )
+            return false;
+    }
+    return true;
 }
-
 
 -(void)reloadLists
 {
-    HGGSStoreList* storeList = [_storeLists objectForKey:[NSNumber numberWithInt:MASTER_LIST]];
-    [storeList reload];
-    storeList = [_storeLists objectForKey:[NSNumber numberWithInt:CURRENT_LIST]];
-    [storeList reload];
-    storeList = [_storeLists objectForKey:[NSNumber numberWithInt:SHOPPING_LIST]];
-    [storeList reload];
-    storeList = [_storeLists objectForKey:[NSNumber numberWithInt:AISLE_CONFIG]];
-    [storeList reload];
+    [_storeList reload];
 }
 -(void)removeGrocerySection:(HGGSGrocerySection*)grocerySection fromAisle:(HGGSGroceryAisle *)aisle
 {
@@ -450,23 +396,22 @@
 
 -(bool)saveCurrentList
 {
-    bool ret = [[self getCurrentList] save];
-    [self deleteShoppingList];
+    bool ret = [[self getGroceryList] save];
+    [self resetShoppingCart];
     return ret;
 }
--(void) deleteShoppingList
-{
-    [[self getShoppingList] deleteList];
-}
 
--(bool)saveMasterList
+-(bool)saveGroceryList
 {
-    return [[self getMasterList] save];
+    return [[self getGroceryList] save];
 }
-
--(bool)saveShoppingList
+-(void) resetShoppingCart
 {
-    return [[self getShoppingList] save];
+    HGGSStoreItems * groceryItems = [self getGroceryList];
+
+    for (HGGSGroceryItem *item in [groceryItems list]) {
+        item.isInShoppingCart = NO;
+    }
 }
 
 -(bool)saveGroceryAisles
@@ -474,29 +419,25 @@
     return [[self getGroceryAisles] save];
 }
 
--(bool)shoppingListIsMoreRecentThanCurrentList
-{
-    HGGSStoreList *currentList = [self getCurrentList];
-    if (![currentList fileExists])
-        return YES;
-    
-    HGGSStoreList *shoppingList = [self getShoppingList];
-    if (![shoppingList fileExists])
-        return NO;
-    
-    return [[shoppingList lastModificationDate] compare:[currentList lastModificationDate]] == NSOrderedDescending;
-}
+//-(bool)shoppingListIsMoreRecentThanCurrentList
+//{
+//    HGGSStoreList *currentList = [self getCurrentList];
+//    if (![currentList fileExists])
+//        return YES;
+//    
+//    HGGSStoreList *shoppingList = [self getShoppingList];
+//    if (![shoppingList fileExists])
+//        return NO;
+//    
+//    return [[shoppingList lastModificationDate] compare:[currentList lastModificationDate]] == NSOrderedDescending;
+//}
 
--(void)unloadLists
+-(void)unload
 {
-    NSEnumerator *enumerator = [_storeLists objectEnumerator];
-    HGGSStoreList *storeList;
-    
     [self saveStoreInfo];
-    while ((storeList = [enumerator nextObject])) {
-        [storeList unload];
-    }
-    
+    if ([[self storeList] exists])
+        [[self storeList] unload];
+    [[self aisles] unload];
 }
 
 #pragma mark HGGSGrocerySectionDelegate
@@ -540,14 +481,17 @@
 -(id)copyWithZone:(NSZone *)zone
 {
     HGGSGroceryStore *copyOfSelf = [[HGGSGroceryStore alloc] init];
-    NSEnumerator *enumerator = [_storeLists keyEnumerator];
-    id key;
+    //NSEnumerator *enumerator = [_storeLists keyEnumerator];
+    //id key;
     
+    [[copyOfSelf storeList] setList:[[self storeList] copy] ] ;
+    [[copyOfSelf aisles] setList:[[self aisles] copy]];
     
-    while ((key = [enumerator nextObject]))
-    {
-        [copyOfSelf setItems:[[_storeLists objectForKey:key] copy] listType:[key intValue]];
-    }
+//    while ((key = [enumerator nextObject]))
+//    {
+//        [copyOfSelf setItems:[[_storeLists objectForKey:key] copy] listType:[key intValue]];
+//    }
+    
     
     [copyOfSelf setName:[self name]];
     [copyOfSelf setShareLists:[self shareLists]];
@@ -622,14 +566,10 @@
         [self setName:[storeAttributes objectForKey:@"Name"]];
         if (shareLists)
         {
-            date = [HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_MasterList"]];
-            [[self getMasterList] setLastSyncDate:date];
+            date = [HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_GroceryList"]];
+            [[self getGroceryList] setLastSyncDate:date];
             date = [HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_GroceryAisles"]];
             [[self getGroceryAisles] setLastSyncDate:date];
-            date = [HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_CurrentList"]];
-            [[self getCurrentList] setLastSyncDate:date];
-            [self setLastImagesSyncDate:[HGGSDate stringAsDate:[storeAttributes objectForKey:@"LastSyncDate_Images"]]];
-            
         }
     }
 }
@@ -682,9 +622,8 @@
 }
 -(void)saveLists
 {
-    [self saveMasterList];
+    [self saveGroceryList];
     [self saveGroceryAisles];
-    [self saveCurrentList];
 }
 
 -(NSString*)serializeStoreInfo
@@ -692,9 +631,8 @@
     NSError* error;
     
     NSMutableDictionary * storeProperties = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[self name],@"Name",[NSNumber numberWithBool:[self shareLists]],@"ShareLists",
-                [HGGSDate dateAsString:[[self getMasterList] lastSyncDate]], @"LastSyncDate_MasterList",
+                [HGGSDate dateAsString:[[self getGroceryList] lastSyncDate]], @"LastSyncDate_GroceryList",
                 [HGGSDate dateAsString:[[self getGroceryAisles] lastSyncDate]], @"LastSyncDate_GroceryAisles",
-                [HGGSDate dateAsString:[[self getCurrentList] lastSyncDate]], @"LastSyncDate_CurrentList",
                 [HGGSDate dateAsString:[self lastImagesSyncDate]], @"LastSyncDate_Images",
             nil ];
     

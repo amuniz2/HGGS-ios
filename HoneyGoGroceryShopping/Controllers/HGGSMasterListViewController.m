@@ -12,13 +12,15 @@
 #import "HGGSEditGroceryItemViewController.h"
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSStoreItems.h"
+#import "NSString+SringExtensions.h"
 
 @interface HGGSMasterListViewController ()
 {
-    //NSArray* _searchResults;
     bool _changesToSave;
-    HGGSStoreItems* _masterGroceryList;
-    NSArray* _listItems;
+    NSMutableArray * _pantryItems;
+    NSMutableArray * _itemsDisplayed;
+    HGGSStoreItems* _groceryList;
+    NSString *_filter;
 }
 
 @end
@@ -37,6 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _groceryList = [_store getGroceryList];
 
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
@@ -55,19 +58,18 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
-//    self.searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonCountry",@"Item"),
-//                                                          NSLocalizedString(@"ScopeButtonCapital",@"Section")];
+
+    [self prepareList];
     self.searchController.searchBar.delegate = self;
-    self.tableView.tableHeaderView = self.searchController.searchBar;
     self.definesPresentationContext = YES;
-    [self.searchController.searchBar sizeToFit];
+    [self.searchController.searchBar sizeToFit];   
  }
 -(void)dealloc
 {
     if (_changesToSave)
     {
         HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveMasterList:[self store]];
+        [storeManager saveGroceryList:[self store]];
         _changesToSave =NO;
     }
 }
@@ -77,7 +79,7 @@
     if (_changesToSave)
     {
         HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveMasterList:[self store]];
+        [storeManager saveGroceryList:[self store]];
         _changesToSave =NO;
     }
     [super viewWillDisappear:animated];
@@ -108,7 +110,8 @@
             groceryItem = [[HGGSGroceryItem alloc] init];
             
             [editItemController setInEditMode:YES];
-            [editItemController setExistingItems:_masterGroceryList];
+            [editItemController setExistingItems:_groceryList];
+            [editItemController setItemType:pantryItem];
             
             _addNewItem = NO;
             [editItemController setGroceryItem:groceryItem];
@@ -124,7 +127,7 @@
 //            if (_searchResults)
 //                groceryItem = [_listItems objectAtIndex:[activeTableView indexPathForSelectedRow].row];
 //            else
-                groceryItem = [_listItems objectAtIndex:[activeTableView indexPathForSelectedRow].row];
+                groceryItem = [_itemsDisplayed objectAtIndex:[activeTableView indexPathForSelectedRow].row];
         
             [editItemController setGroceryItem:groceryItem];
             [editItemController setItemType:pantryItem];
@@ -144,13 +147,14 @@
 }
 
 #pragma mark UITableViewDataSource Methods
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (_masterGroceryList == nil) {
-        _masterGroceryList = [[self store] getMasterList];
-        _listItems = [_masterGroceryList list];
-    }
-    return [_listItems count];
+    return [_itemsDisplayed count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(nonnull NSString *)title atIndex:(NSInteger)index
@@ -166,7 +170,7 @@
 {
     
     //check for cell that can be reused:
-    HGGSGroceryItem * groceryItem = [_listItems objectAtIndex:[indexPath row]];
+    HGGSGroceryItem * groceryItem = [_itemsDisplayed objectAtIndex:[indexPath row]];
     
     HGGSMasterItemCellView* cell = [[self tableView] dequeueReusableCellWithIdentifier:@"MasterItemCell"];
     [cell setGroceryItem:groceryItem];
@@ -204,7 +208,9 @@
 #pragma mark UISearchBarDelegate Methods
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    _listItems = [_masterGroceryList list];
+    //[_pantryItems removeAllObjects]; //forces reload of all
+    _filter = nil;
+    [self prepareList];
     [self.tableView reloadData];
 }
 
@@ -217,7 +223,7 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     NSString *searchString = searchController.searchBar.text;
-    //[self searchForText:searchString scope:searchController.searchBar.selectedScopeButtonIndex];
+
     [self searchForText:searchString];
     [self.tableView reloadData];
 }
@@ -225,13 +231,14 @@
 #pragma mark Private
 - (void)searchForText:(NSString *)searchText
 {
-    _listItems = [_masterGroceryList findItems:searchText];
+    _filter = searchText;
+    [self prepareList];
     
 }
 
 -(HGGSGroceryItem *)groceryItemAt:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
-    return [_listItems objectAtIndex:[indexPath row]];
+    return [_itemsDisplayed objectAtIndex:[indexPath row]];
     
 }
 
@@ -243,14 +250,22 @@
     
     if (editController.actionTaken == deleteItem)
     {
-        [_masterGroceryList remove:[[editController groceryItem] name] ];
-        _listItems = [_masterGroceryList list];
+        [_groceryList remove:[[editController groceryItem] name] ];
+//        [_itemsDisplayed removeObject:[editController groceryItem]];
+        [_pantryItems removeObject:[editController groceryItem]];
+        [self prepareList];
     }
     else if (editController.actionTaken == replaceItem)
     {
-        [_masterGroceryList remove:[editController originalGroceryItemName]];
-        [_masterGroceryList addItem:[editController groceryItem]];
-        _listItems = [_masterGroceryList list];        
+        HGGSGroceryItem *originalItem = [_groceryList itemWithKey:[editController originalGroceryItemName]];
+        
+        [_groceryList remove:[editController originalGroceryItemName]];
+        [_pantryItems removeObject:originalItem];
+        
+        [_groceryList addItem:[editController groceryItem]];
+        [_pantryItems addObject:[editController groceryItem]];
+        
+        [self prepareList];
     }
     if (itemHasChanged)
     {
@@ -268,20 +283,18 @@
     {
         /* todo: delete if addItem works after allowing name change
         */
-        NSInteger lastRow = [_masterGroceryList addItem:[editController groceryItem]];
+        NSInteger lastRow = [_groceryList addItem:[editController groceryItem]];
+        [_pantryItems addObject:[editController groceryItem]];
         
         if (lastRow < 0)
         {
             //todo: display alert that item could not be added
             return;
         }
-        _listItems = [_masterGroceryList list];
-//        NSIndexPath *ip = [NSIndexPath indexPathForRow:lastRow inSection:0];
-//        
-//        [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:ip ] withRowAnimation:UITableViewRowAnimationTop];
+        [self prepareList];
         
         // filter...
-        [[self tableView] reloadData ];
+        [[self tableView] reloadData ]; // TODO: is this necessary?
     }
     
 }
@@ -294,5 +307,31 @@
     
 }
 
+-(void) prepareList
+{
+    if (_pantryItems == nil)
+    {
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+        _pantryItems = [[NSMutableArray alloc] init];
+        for (HGGSGroceryItem* item in [_groceryList list])
+        {
+            if([item isPantryItem])
+                [_pantryItems addObject:item];
+        }
+    }
+    if ([NSString isEmptyOrNil:_filter])
+        _itemsDisplayed = _pantryItems;
+    else
+    {
+        NSString * upperCaseFilter = [_filter uppercaseString];
+        _itemsDisplayed = [[NSMutableArray alloc] init];
+        
+        for (HGGSGroceryItem *item in _pantryItems)
+        {
+            if ([[item.name uppercaseString] containsString:upperCaseFilter] ||[[item.notes uppercaseString] containsString:upperCaseFilter])
+                [_itemsDisplayed addObject:item];
+        }
+    }
+}
 
 @end

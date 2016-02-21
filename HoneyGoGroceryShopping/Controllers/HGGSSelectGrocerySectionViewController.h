@@ -10,17 +10,19 @@
 @class HGGSGrocerySection;
 @class HGGSStoreAisles;
 
-@interface HGGSSelectGrocerySectionViewController : UIViewController
+@interface HGGSSelectGrocerySectionViewController : UIViewController <UISearchResultsUpdating, UISearchBarDelegate>
 {
     
 }
+//@property IBOutlet UISearchBar *searchBar;
+@property IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UISearchController *searchController;
+
 @property (nonatomic, strong)HGGSStoreAisles * groceryAisles;
 //@property (nonatomic, strong)NSArray* grocerySections;
 @property (nonatomic, copy) NSString* selectedSectionName;
 @property (nonatomic, strong) HGGSGrocerySection* selectedSection;
 @property (nonatomic, copy) void(^dismissBlock)(void);
-@property IBOutlet UISearchBar *searchBar;
-@property IBOutlet UITableView *tableView;
 - (IBAction)addNewSection:(id)sender;
 
 @end

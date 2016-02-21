@@ -57,9 +57,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
                    {
                        [self doCopyImagesFromDropbox:store notifyCopyCompleted:nil];
-                       [self doCopyFromDropbox:[store getMasterList] notifyCopyCompleted:nil];
+                       [self doCopyFromDropbox:[store getGroceryList] notifyCopyCompleted:nil];
                        [self doCopyFromDropbox:[store getGroceryAisles] notifyCopyCompleted:nil];
-                       [self doCopyFromDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted];
                        [store setLastImagesSyncDate:[NSDate date]];
                    });
     
@@ -98,8 +97,7 @@
                    {
                        [self doCopyFilesInDirectory:[store imagesFolder] toDropboxFolder:[self dbFolderForStoreImages:store] lastSyncDate:[store lastImagesSyncDate]];
                        [self doCopyToDropbox:[store getGroceryAisles] notifyCopyCompleted:nil copyImages:NO];
-                       [self doCopyToDropbox:[store getMasterList] notifyCopyCompleted:nil copyImages:NO];
-                       [self doCopyToDropbox:[store getCurrentList] notifyCopyCompleted:notifyCopyCompleted copyImages:NO];
+                       [self doCopyToDropbox:[store getGroceryList] notifyCopyCompleted:nil copyImages:NO];
                        [store setLastImagesSyncDate:[NSDate date]];
                    });
     
@@ -144,8 +142,7 @@
     
     [self notifyOfChangesToStoreImages:store inStoreFolder:dbStoreFolder];
     [self notifyOfChangesToStoreList:[store getGroceryAisles] inFolder:dbStoreFolder];
-    [self notifyOfChangesToStoreList:[store getMasterList]  inFolder:dbStoreFolder];
-    [self notifyOfChangesToStoreList:[store getCurrentList]  inFolder:dbStoreFolder];
+    [self notifyOfChangesToStoreList:[store getGroceryList]  inFolder:dbStoreFolder];
 }
 
 -(void) notifyOfChangesToStoreList:(HGGSStoreList*)storeList inFolder:(DBPath *)inFolder

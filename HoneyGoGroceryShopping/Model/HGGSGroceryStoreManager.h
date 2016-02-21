@@ -26,10 +26,9 @@
 -(HGGSGroceryStore *)createDefaultStore;
 -(void)saveChanges;
 //-(void)saveStoreList:(HGGSGroceryStore*)store listType:(storeFileType)listType;
--(void)saveCurrentList:(HGGSGroceryStore*)store;
 -(void)saveGroceryAisles:(HGGSGroceryStore*)store;
--(void)saveMasterList:(HGGSGroceryStore*)store;
--(void)saveShoppingList:(HGGSGroceryStore*)store;
+-(void)saveGroceryList:(HGGSGroceryStore*)store;
+//-(void)saveShoppingList:(HGGSGroceryStore*)store;
 -(HGGSGroceryStore *)store:(NSString *)name;
 -(void)prepareStore:(HGGSGroceryStore*)store;
 

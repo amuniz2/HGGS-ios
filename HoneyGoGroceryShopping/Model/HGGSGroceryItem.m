@@ -19,29 +19,65 @@
 #pragma mark Initialization Methods
 -(id)initFromDictionary:(NSDictionary*)itemAttributes imagesFolder:(NSString*)imagesFolder
 {
-    double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
-    NSString * itemName = [itemAttributes objectForKey:@"name"];
-    
-
     _imagesFolder = imagesFolder;
+
     
- //   _imageFileName = [[imagesFolder stringByAppendingPathComponent:itemName] stringByAppendingPathExtension:@"jpg"];
+    if (!itemAttributes[@"isPantryItem"])
+        self = [self initFromOldItemAttributes:itemAttributes];
+    else
+    {
+        double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
+        NSString * itemName = [itemAttributes objectForKey:@"name"];
     
-    self = [self initWithDetails:itemName
+        self = [self initWithDetails:itemName
                         quantity:quantity
                         unit:[itemAttributes objectForKey:@"unit"]
                         section:[itemAttributes objectForKey:@"section"]
                         notes:[itemAttributes objectForKey:@"notes"]
-                 includeInPantry:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"includeInPantry"]]
+                 includeInPantry:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"isPantryItem"]]
                  selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selectByDefault"]]
                         lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
 //                        sectionId:[itemAttributes objectForKey:@"category"]
 //                        image:[itemAttributes objectForKey:@"image"]
             ];
     
-;
+    }
     return self;
 }
+
+-(id)initFromOldItemAttributes:(NSDictionary*)itemAttributes
+{
+ /*
+  {
+		"unit": "",
+		"selected": true,
+		"lastPurchasedDate": "Sat Jul 04 10:24:36 EDT 2015",
+		"name": "Cinnamon Sugar Pita Chips",
+		"image": "1934971443",
+		"quantity": 1,
+		"notes": "Stacy's, Pita Chips, Cinnamon Sugar, 8oz Bag ",
+		"section": "deli"
+  },
+  */
+    double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
+    NSString * itemName = [itemAttributes objectForKey:@"name"];
+    
+    self = [self initWithDetails:itemName
+                        quantity:quantity
+                            unit:[itemAttributes objectForKey:@"unit"]
+                         section:[itemAttributes objectForKey:@"section"]
+                           notes:[itemAttributes objectForKey:@"notes"]
+                 includeInPantry:YES
+                 selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selected"]]
+                 lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
+            //                        sectionId:[itemAttributes objectForKey:@"category"]
+            //                        image:[itemAttributes objectForKey:@"image"]
+            ];
+    
+    
+    return self;
+}
+
 
 //-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString *)sectionId image:(NSString*)imageName
 //{
@@ -71,7 +107,7 @@
         [self setIsPantryItem:includeInPantry];
         [self setIncludeInShoppingListByDefault:selectByDefault];
         [self setIsInShoppingCart:NO];
-        [self setIncludeInShoppingList:YES];
+        [self setIncludeInShoppingList:selectByDefault];
         //[self setSelected:selected];
         [self setLastPurchasedDate:lastPurchasedDate];
         //[self setImage:image];
@@ -104,7 +140,7 @@
                     (_unit == nil) ? @"" : _unit, @"unit",
                     (_notes == nil) ? @"" : _notes, @"notes",
                     [HGGSBool boolAsString:_isPantryItem], @"isPantryItem",
-                        [HGGSBool boolAsString:_includeInShoppingListByDefault], @"_includeInShoppingListByDefault",
+                        [HGGSBool boolAsString:_includeInShoppingListByDefault], @"includeInShoppingListByDefault",
                         [HGGSBool boolAsString:_includeInShoppingList], @"includeInShoppingList",
                         [HGGSBool boolAsString:_isInShoppingCart], @"isInShoppingCart",
                     (_section == nil) ? @"" : _section, @"section",

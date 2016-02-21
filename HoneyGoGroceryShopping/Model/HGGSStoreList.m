@@ -105,6 +105,13 @@
     NSString *fileContents = [_delegate loadFile:filePath];
     [self loadListFromString:fileContents ];
 }
+-(void)loadFromPreviousMasterFile
+{
+    NSString *filePath = [[[self store  ]localFolder] stringByAppendingPathComponent:@"master_list.json"];
+    NSString *fileContents = [_delegate loadFile:filePath];
+    [self loadListFromString:fileContents ];
+}
+
 -(void)reload
 {
     if ([self exists])

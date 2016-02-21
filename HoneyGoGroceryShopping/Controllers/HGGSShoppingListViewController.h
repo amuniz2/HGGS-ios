@@ -15,4 +15,5 @@
 @interface HGGSShoppingListViewController : UITableViewController<HGGSShowGroceryItemPictureDelegate>
 {}
 @property (nonatomic, strong) HGGSGroceryStore* store;
+@property BOOL startNewShoppingList;
 @end

@@ -31,7 +31,7 @@
                                     <color key="titleColor" white="0.032846715329999998" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Gwz-pQ-mQl" kind="push" identifier="toEditShoppingList" id="sIG-QO-VjT"/>
+                                    <action selector="promptIfNewListShouldBeStarted:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="LQN-sk-w80"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="center" verticalHuggingPriority="249" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="J46-v3-2zp">
@@ -111,6 +111,7 @@
                     <connections>
                         <outlet property="storeSelector" destination="Wje-Qx-WxC" id="5fK-lv-uKd"/>
                         <segue destination="tfK-Of-rbO" kind="push" identifier="toEditStore" id="VRd-g9-nsL"/>
+                        <segue destination="Gwz-pQ-mQl" kind="push" identifier="toEditShoppingList" id="SUC-dV-ICq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -263,14 +264,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="#.###" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xAw-rg-aZQ">
-                                <rect key="frame" x="6" y="190" width="58" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="#.###" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xAw-rg-aZQ">
+                                <rect key="frame" x="6" y="190" width="60" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Quantity"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Units" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k9P-EI-6pv">
-                                <rect key="frame" x="68" y="190" width="246" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Units" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k9P-EI-6pv">
+                                <rect key="frame" x="70" y="190" width="244" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Quantity Unit"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
@@ -575,14 +576,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="24" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="shj-Fi-tMS">
                                 <rect key="frame" x="16" y="12" width="288" height="544"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="f7Y-Sp-Q2K">
-                                    <rect key="frame" x="0.0" y="0.0" width="288" height="0.0"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="3dN-I1-mtL" id="WCJ-SX-MKb"/>
-                                    </connections>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SectionCell" textLabel="UFp-Yf-JVe" rowHeight="30" style="IBUITableViewCellStyleDefault" id="eK3-2D-jeI">
                                         <rect key="frame" x="0.0" y="22" width="288" height="30"/>
@@ -671,7 +664,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="searchBar" destination="f7Y-Sp-Q2K" id="NW7-aH-gJf"/>
                         <outlet property="searchDisplayController" destination="5zc-7m-pyS" id="dlI-pT-hkg"/>
                         <outlet property="tableView" destination="shj-Fi-tMS" id="RGR-WX-rfc"/>
                     </connections>
@@ -680,7 +672,6 @@
                 <searchDisplayController id="5zc-7m-pyS">
                     <connections>
                         <outlet property="delegate" destination="3dN-I1-mtL" id="hi3-ay-lXi"/>
-                        <outlet property="searchBar" destination="f7Y-Sp-Q2K" id="Jk2-1b-eXh"/>
                         <outlet property="searchContentsController" destination="3dN-I1-mtL" id="ewo-NR-KEG"/>
                         <outlet property="searchResultsDataSource" destination="3dN-I1-mtL" id="wKW-X1-WCk"/>
                         <outlet property="searchResultsDelegate" destination="3dN-I1-mtL" id="yWT-jH-u8I"/>
@@ -707,8 +698,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWv-Q0-bUb">
-                                <rect key="frame" x="210" y="129" width="85" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWv-Q0-bUb">
+                                <rect key="frame" x="211" y="129" width="84" height="30"/>
                                 <accessibility key="accessibilityConfiguration" label="Add Section Button"/>
                                 <state key="normal" title="Add Section">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -785,17 +776,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="aO4-hI-i8w">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="Gwz-pQ-mQl" id="5KJ-nw-exl"/>
-                            </connections>
-                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CurrentItemCell" editingAccessoryType="disclosureIndicator" rowHeight="83" id="sCs-ur-JGA" customClass="HGGSShoppingItemCellView">
-                                <rect key="frame" x="0.0" y="130" width="320" height="83"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="83"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sCs-ur-JGA" id="vEs-sE-eKQ">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="82"/>
@@ -859,14 +842,13 @@
                 <searchDisplayController id="2Eh-Vr-vW1">
                     <connections>
                         <outlet property="delegate" destination="Gwz-pQ-mQl" id="7YS-e8-ktt"/>
-                        <outlet property="searchBar" destination="aO4-hI-i8w" id="h2Q-1n-8BS"/>
                         <outlet property="searchContentsController" destination="Gwz-pQ-mQl" id="Lcg-sS-qvT"/>
                         <outlet property="searchResultsDataSource" destination="Gwz-pQ-mQl" id="PjA-8g-W2v"/>
                         <outlet property="searchResultsDelegate" destination="Gwz-pQ-mQl" id="IfS-u0-Pcf"/>
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2129" y="622"/>
+            <point key="canvasLocation" x="2127" y="872"/>
         </scene>
         <!--Bar Code Scanner View Controller-->
         <scene sceneID="hHz-HG-BsB">
@@ -880,11 +862,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HOp-ic-ww9" userLabel="Scanner">
-                                <rect key="frame" x="0.0" y="2" width="320" height="335"/>
+                            <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="HOp-ic-ww9" userLabel="Scanner">
+                                <rect key="frame" x="0.0" y="2" width="320" height="281"/>
                                 <subviews>
-                                    <view clipsSubviews="YES" contentMode="scaleAspectFit" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gxa-Sg-4pX" userLabel="Image View">
-                                        <rect key="frame" x="2" y="2" width="316" height="331"/>
+                                    <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Gxa-Sg-4pX" userLabel="Image View">
+                                        <rect key="frame" x="2" y="2" width="316" height="277"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -896,8 +878,8 @@
                                     <constraint firstAttribute="bottom" secondItem="Gxa-Sg-4pX" secondAttribute="bottom" constant="2" id="rDo-jn-IK0"/>
                                 </constraints>
                             </view>
-                            <button contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yjt-2W-xko">
-                                <rect key="frame" x="0.0" y="339" width="320" height="30"/>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yjt-2W-xko">
+                                <rect key="frame" x="0.0" y="285" width="320" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.74509803919999995" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Cancel">
@@ -908,17 +890,17 @@
                                     <action selector="Cancel:" destination="08B-Q3-i6Z" eventType="touchUpInside" id="kMb-wE-315"/>
                                 </connections>
                             </button>
-                            <view autoresizesSubviews="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fPC-tS-djj" userLabel="Product Selector View">
-                                <rect key="frame" x="0.0" y="371" width="320" height="196"/>
+                            <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fPC-tS-djj" userLabel="Product Selector View">
+                                <rect key="frame" x="0.0" y="317" width="320" height="250"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Select the desired item:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="162" translatesAutoresizingMaskIntoConstraints="NO" id="inh-RL-kWU">
-                                        <rect key="frame" x="2" y="8" width="162" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the desired item:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="162" translatesAutoresizingMaskIntoConstraints="NO" id="inh-RL-kWU">
+                                        <rect key="frame" x="2" y="8" width="163" height="24"/>
                                         <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mFG-0k-0kK">
-                                        <rect key="frame" x="186" y="2" width="133" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mFG-0k-0kK">
+                                        <rect key="frame" x="187" y="2" width="132" height="30"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Done">
                                             <color key="titleColor" white="0.032846715329999998" alpha="1" colorSpace="calibratedWhite"/>
@@ -928,8 +910,8 @@
                                             <action selector="ProductSelected:" destination="08B-Q3-i6Z" eventType="touchUpInside" id="Slr-FW-dG4"/>
                                         </connections>
                                     </button>
-                                    <pickerView contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i3F-r2-84r">
-                                        <rect key="frame" x="1" y="33" width="318" height="162"/>
+                                    <pickerView contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="i3F-r2-84r">
+                                        <rect key="frame" x="1" y="33" width="318" height="216"/>
                                         <color key="backgroundColor" red="0.74509803919999995" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" red="0.43675866790000001" green="0.58633667879999996" blue="0.84118385039999999" alpha="1" colorSpace="calibratedRGB"/>
                                     </pickerView>
@@ -1534,6 +1516,6 @@
         <image name="ic_launcher.png" width="72" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="68A-MH-8Ig"/>
+        <segue reference="prG-FL-0JR"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -10,11 +10,13 @@
 
 @class HGGSGroceryStore;
 
-@interface HGGSEditShoppingListViewController : UITableViewController
+@interface HGGSEditShoppingListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
 {
     __weak IBOutlet UISearchBar *_searchBar;
     
 }
 @property (nonatomic, strong) HGGSGroceryStore* store;
+@property bool startNewList;
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end

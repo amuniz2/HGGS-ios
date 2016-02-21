@@ -117,20 +117,15 @@
         [self saveStore:store];
     }
 }
--(void)saveMasterList:(HGGSGroceryStore*)store
+-(void)saveGroceryList:(HGGSGroceryStore*)store
 {
-    [store saveMasterList];
-    [self synchWithDb:store storeList:[store getMasterList] copyImages:YES];
+    [store saveGroceryList];
+    [self synchWithDb:store storeList:[store getGroceryList] copyImages:YES];
 }
--(void)saveCurrentList:(HGGSGroceryStore*)store
-{
-    [store saveCurrentList];
-    [self synchWithDb:store storeList:[store getCurrentList] copyImages:YES];
-}
--(void)saveShoppingList:(HGGSGroceryStore*)store
-{
-    [store saveShoppingList];
-}
+//-(void)saveShoppingList:(HGGSGroceryStore*)store
+//{
+//    [store saveShoppingList];
+//}
 
 -(void)saveGroceryAisles:(HGGSGroceryStore*)store
 {
@@ -196,9 +191,8 @@
     
     [[HGGSDbGroceryFilesStore sharedDbStore] copyImagesFromDropbox:store  notifyCopyCompleted:^void(BOOL succeeded)
      {
-         [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:AISLE_CONFIG]]];
-         [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:MASTER_LIST]]];
-         [self fetchNewDbStoreList:[[store storeLists] objectForKey:[NSNumber numberWithInt:CURRENT_LIST]]];
+         [self fetchNewDbStoreList:[store aisles]];
+         [self fetchNewDbStoreList:[store storeList]];
      }];
     
     
