@@ -12,7 +12,6 @@
 
 @interface HGGSEditShoppingListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
 {
-    __weak IBOutlet UISearchBar *_searchBar;
     
 }
 @property (nonatomic, strong) HGGSGroceryStore* store;

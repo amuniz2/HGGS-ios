@@ -10,12 +10,14 @@
 
 @class HGGSGroceryStore;
 
-@interface HGGSGrocerySectionsViewController : UITableViewController 
+@interface HGGSGrocerySectionsViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
+
 {
     
 }
 @property (nonatomic, strong) HGGSGroceryStore* store;
-@property IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchController *searchController;
+
 -(IBAction) toggleDeleteMode:(id)sender;
 -(IBAction) toggleEditMode:(id)sender;
 //-(IBAction)addGrocerySection:(id)sender;

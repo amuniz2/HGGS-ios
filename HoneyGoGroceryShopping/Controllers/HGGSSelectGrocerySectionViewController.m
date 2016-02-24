@@ -285,23 +285,6 @@
     else
     {
         _aislesDisplayed = [_groceryAisles findItems:_filter];
-//        NSString * upperCaseFilter = [_filter uppercaseString];
-//        _aislesDisplayed = [[NSMutableArray alloc] init];
-//        bool aisleDisplayed = NO;
-//        
-//        for (HGGSGroceryAisle *aisle in _aisles)
-//        {
-//            aisleDisplayed = NO;
-//            
-//            for(HGGSGrocerySection *section in [aisle grocerySections])
-//            {
-//                if ([[section.name uppercaseString] containsString:upperCaseFilter] && !aisleDisplayed)
-//                {
-//                    [_aislesDisplayed addObject:aisle];
-//                    break;
-//                }
-//            }
-//        }
     }
 }
 

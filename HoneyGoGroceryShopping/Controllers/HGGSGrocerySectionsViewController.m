@@ -13,19 +13,24 @@
 #import "HGGSGrocerySection.h"
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSStoreAisles.h"
+#import "NSString+SringExtensions.h"
+
 //#IMPORT "HGGSAisleHeaderCellViewTableViewCell.h"
 
 #define EDIT_CELL_ID  @"EditGrocerySectionCell"
 
 @interface HGGSGrocerySectionsViewController  ()<UISearchBarDelegate, UISearchDisplayDelegate, HGGSGroceryStoreDelegate>
 {
-    NSArray* _searchResults;
     HGGSGrocerySection *_currentGrocerySection;
     NSIndexPath *_ipBeingEdited;
     UITableViewCell *_cellBeingEdited;
     bool _editIsDeleting;
     bool _changesToSave;
 
+    NSString *_filter;
+    NSMutableArray *_aisles;
+    NSMutableArray *_aislesDisplayed;
+    
 }
 
 @end
@@ -63,6 +68,17 @@
 
     // Register the class for a header view reuse.
     [[self tableView] registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"GroceryAisleHeaderViewIdentifier"];
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    
+    [self prepareList:YES];
+    self.searchController.searchBar.delegate = self;
+    self.definesPresentationContext = YES;
+    [self.searchController.searchBar sizeToFit];
+    
  
 }
 
@@ -71,11 +87,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     if (_changesToSave)
     {
-        
         HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
         [storeManager saveGroceryAisles:_store ];
         _changesToSave =NO;
@@ -111,7 +127,7 @@
         _changesToSave = YES;
     _editIsDeleting = NO;
     [tv setEditing:!isCurrentlyEditing];
-    [self reloadDataForTableView:tv];
+    [tv reloadData];
  
     
 }
@@ -161,7 +177,7 @@
     else
     {
         
-        [_store removeGrocerySection:_currentGrocerySection fromAisle:[self aisleAt:ipOfCellEdited inTableView:tv]];
+        [_store removeGrocerySection:_currentGrocerySection fromAisle:[self aisleAt:ipOfCellEdited]];
         
         [self endEditingOfCell];
         [tv reloadData];
@@ -173,7 +189,8 @@
 
 -(UITableView*)activeTableView
 {
-    return (_searchResults ? [[self searchDisplayController] searchResultsTableView] : [self tableView]);
+//    return (_searchResults ? [[self searchDisplayController] searchResultsTableView] : [self tableView]);
+    return [self tableView];
 }
 -(IBAction) toggleDeleteMode:(id)sender
 {
@@ -187,17 +204,13 @@
 {
     _editIsDeleting = on;
     [tv setEditing:on];
-    [self reloadDataForTableView:tv];
-
+    [tv reloadData];
 }
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (tableView == self.tableView)
-        return [[_store getGroceryAisles] itemCount];
-    else
-        return [_searchResults count];
+    return [_aislesDisplayed count];
 }
 
 //NOTE / TODO: IF CHANGING TO SWIPE BEHAVIOR, THIS METHOD NEEDS TO BE CHANGED AND POSSIBLY REMOVED
@@ -216,18 +229,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     @try {
-        if (tableView == self.tableView)
-        {
-           
-            NSArray* aisles = [[[self store] getGroceryAisles] list];
-            HGGSGroceryAisle* aisle = [aisles objectAtIndex:section];
-            return [[aisle grocerySections ] count];
-        }
-        else if (_searchResults)
-        {
-            return [[[_searchResults objectAtIndex:section] grocerySections] count];
-        }
+        HGGSGroceryAisle * aisle = [_aislesDisplayed objectAtIndex:section];
         
+        return [[aisle grocerySections] count];
+       
     }
     @catch (NSException *exception) {
         NSLog(@"Exception in numberOfRowsInSection:");
@@ -240,10 +245,10 @@
     NSString *cellIdentifier = @"GrocerySectionCell";
     HGGSGrocerySection * grocerySection;
     
-    grocerySection = [self grocerySectionAt:indexPath inTableView:tableView];
+    grocerySection = [self grocerySectionAt:indexPath];
     if ([self isCellBeingEdited:indexPath])
     {
-        if ([tableView isEditing] || _searchResults)
+        if ([tableView isEditing])
             cellIdentifier = EDIT_CELL_ID;
         else
         {
@@ -261,7 +266,7 @@
         [sectionField setText:name];
         [aisleField setText:[NSString stringWithFormat:@"%li",(long)[grocerySection aisle]]];
         [stepper setValue:[grocerySection aisle]];
-        [self editGrocerySectionAt:indexPath inTableView:tableView];
+        [self editGrocerySectionAt:indexPath];
         _cellBeingEdited = cell;
         if ( name == nil || [name length] == 0)
         {
@@ -280,7 +285,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    HGGSGrocerySection * section=[self grocerySectionAt:indexPath inTableView:[self activeTableView]];
+    HGGSGrocerySection * section=[self grocerySectionAt:indexPath];
     int fieldWidth = (_editIsDeleting) ? 200 : 290;
     int heightForSectionName = MAX(44, [self heightNeededForText:[section name] font:[UIFont systemFontOfSize:17] fieldWidth:fieldWidth]);
     
@@ -296,15 +301,8 @@
 -(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {    
     NSString *cellIdentifier;
-    HGGSGroceryAisle* aisle;
-    if (tableView == [self tableView])
-    {
-        aisle = [[_store getGroceryAisles] itemAt:section];
-    }
-    else
-    {
-        aisle = [_searchResults objectAtIndex:section];
-    }
+    HGGSGroceryAisle* aisle = [_aislesDisplayed objectAtIndex:section];
+    
     NSString *aisleLabelText = [NSString stringWithFormat:@"Aisle %li",(long)[aisle number]];
     
     if ((tableView == [self tableView]) && (section == 0))
@@ -363,11 +361,11 @@
     if ((tableView == [[self searchDisplayController] searchResultsTableView]) ||
         ([tableView isEditing]))
     {
-        HGGSGrocerySection * section = [self grocerySectionAt:indexPath inTableView:tableView];
+        HGGSGrocerySection * section = [self grocerySectionAt:indexPath];
         
         if  (![[section name] isEqualToString:DEFAULT_GROCERY_SECTION_NAME] )
         {
-            [self editGrocerySectionAt:indexPath inTableView:tableView];
+            [self editGrocerySectionAt:indexPath];
             [self reloadDataAtIndexPaths:[NSArray arrayWithObject:indexPath ] forTableView:tableView];
         }
     }
@@ -388,8 +386,9 @@
     _changesToSave = YES;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        
-        [_store removeGrocerySection:[self grocerySectionAt:indexPath inTableView:tableView] fromAisle:[self aisleAt:indexPath inTableView:tableView]];
+        [_store removeGrocerySection:[self grocerySectionAt:indexPath] fromAisle:[self aisleAt:indexPath]];
+ 
+//        HGGSGroceryAisle * aisle = [_aislesDisplayed objectAtIndex:indexPath.section];
         
         [tableView reloadData];
         
@@ -399,13 +398,13 @@
         NSInteger precedingRow = [indexPath row];
         NSInteger currentSectionIndex = [indexPath section];
         
-        HGGSGrocerySection *precedingGrocerySection = [self grocerySectionAt:[NSIndexPath indexPathForRow:precedingRow inSection:indexPath.section] inTableView:tableView];
+        HGGSGrocerySection *precedingGrocerySection = [self grocerySectionAt:[NSIndexPath indexPathForRow:precedingRow inSection:indexPath.section]];
         HGGSStoreAisles *storeAisles = [[self store] getGroceryAisles];
         
         _currentGrocerySection = [storeAisles insertNewGrocerySection:@"" inAisle:[precedingGrocerySection aisle] atSectionIndex:(precedingRow +1)];
         NSIndexPath *ip = [NSIndexPath indexPathForRow:(precedingRow + 1) inSection:currentSectionIndex];
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ip] withRowAnimation:UITableViewRowAnimationTop];
-        [self editGrocerySectionAt:ip inTableView:tableView];
+        [self editGrocerySectionAt:ip];
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:ip] withRowAnimation:UITableViewRowAnimationAutomatic];
 
     }
@@ -439,18 +438,17 @@
 
  */
 
-#pragma mark - UISearchDisplayController Delegate Methods
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-    _searchResults = [_store findGrocerySections:searchString inAisles:YES];
-    
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
-}
-
 
 #pragma mark UISearchBarDelegate Methods
+//- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+//{
+//    _searchResults = [_store findGrocerySections:searchString inAisles:YES];
+//    
+//    // Return YES to cause the search result table view to be reloaded.
+//    return YES;
+//}
+
+
 - (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar
 {
     [self endEditingOfCell];
@@ -463,43 +461,42 @@
     [self exitSearchMode];
 }
 
+#pragma mark UISearchResultsUpdatingDelegate Methods
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    _filter = searchController.searchBar.text;
+    [self prepareList:NO];
+    [self.tableView reloadData];
+}
+
+
 #pragma mark HGGSGroceryStoreDelegegate
 -(void)didHaveAisleChange:(HGGSGrocerySection*)section fromAisle:(HGGSGroceryAisle*)fromAisle toAisle:(HGGSGroceryAisle*)toAisle
 {
-    if (_searchResults)
-    {
-        _searchResults = [_store findGrocerySections:[[[self searchDisplayController] searchBar] text] inAisles:true];
-        [self reloadDataForTableView:[[self searchDisplayController] searchResultsTableView]];
-    }
-    [self reloadDataForTableView:[self tableView]];
+    [self prepareList:YES];
+    [self.tableView reloadData];
 }
 -(void)didRemoveGroceryAisle:(HGGSGroceryAisle*)aisle
 {
-    if (_searchResults)
-    {
-        _searchResults = [_store findGrocerySections:[[[self searchDisplayController] searchBar] text] inAisles:true];
-        [self reloadDataForTableView:[[self searchDisplayController] searchResultsTableView]];
-    }
-    [self reloadDataForTableView:[self tableView]];
+    
+    [self prepareList:NO];
+    [self.tableView reloadData];
 }
 
 #pragma mark Private Methods
--(HGGSGroceryAisle *)aisleAt:(NSIndexPath*)indexPath inTableView:(UITableView*)tableView
+-(HGGSGroceryAisle *)aisleAt:(NSIndexPath*)indexPath
 {
     @try {
-        if (tableView == self.tableView)
-            return [[_store getGroceryAisles] itemAt:indexPath.section];
-        else
-            return [_searchResults objectAtIndex:indexPath.section];
+        return [_aislesDisplayed objectAtIndex:indexPath.section];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception caught in aisleAt:inTableView:");
     }
 }
 
--(void) editGrocerySectionAt:(NSIndexPath*)indexPath inTableView:(UITableView*)tableView
+-(void) editGrocerySectionAt:(NSIndexPath*)indexPath
 {
-    _currentGrocerySection = [self grocerySectionAt:indexPath inTableView:tableView];
+    _currentGrocerySection = [self grocerySectionAt:indexPath];
     
     _ipBeingEdited = [indexPath copy];
     
@@ -513,13 +510,16 @@
 }
 -(void)exitSearchMode
 {
-    _searchResults = nil;
+    _filter = nil;
+    [self prepareList:NO];
+    [self.tableView reloadData];
 }
--(HGGSGrocerySection*)grocerySectionAt:(NSIndexPath*)indexPath inTableView:(UITableView*)tableView
+-(HGGSGrocerySection*)grocerySectionAt:(NSIndexPath*)indexPath
 {
     @try
     {
-        HGGSGroceryAisle* aisle = [self aisleAt:indexPath inTableView:tableView];
+        HGGSGroceryAisle* aisle = [self aisleAt:indexPath];
+        
         return [[aisle grocerySections]  objectAtIndex:indexPath.row];
         //DEFAULT_GROCERY_SECTION_NAME
     }
@@ -554,18 +554,30 @@
     /*
     [[self activeTableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     */
-    [self reloadDataForTableView:[self activeTableView]];
+    [self.tableView reloadData];
 }
 
--(void)reloadDataForTableView:(UITableView*)tableView
-{
-    [tableView reloadData];
-}
 
 -(void)reloadDataAtIndexPaths:(NSArray*)indexPaths forTableView:(UITableView*)tableView
 {
     [tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+-(void) prepareList:(bool)reloadAisles
+{
+    if (_aisles == nil)
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+    if (_aisles == nil || reloadAisles)
+    {
+        _aisles = [[NSMutableArray alloc] init];
+        [_aisles addObjectsFromArray:[[_store getGroceryAisles] list]];
+    }
+    if ([NSString isEmptyOrNil:_filter])
+        _aislesDisplayed = _aisles;
+    else
+    {
+        _aislesDisplayed = [[_store getGroceryAisles] findItems:_filter];
+    }
+}
 
 @end
