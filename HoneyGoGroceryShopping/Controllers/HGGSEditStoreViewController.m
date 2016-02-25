@@ -5,7 +5,7 @@
 //  Created by Ana Muniz on 11/9/13.
 //  Copyright (c) 2013 Ana Muniz. All rights reserved.
 //
-#import <Dropbox/Dropbox.h>
+#import <DropboxSDK/DropboxSDK.h>
 #import "HGGSAppDelegate.h"
 #import "HGGSEditStoreViewController.h"
 #import "HGGSMasterListViewController.h"
@@ -25,7 +25,9 @@
 #define SEGUE_TO_CHOOSE_SYNCH_OPTION @"toSynchWithDropbox"
 
 @interface HGGSEditStoreViewController ()
-
+{
+    BOOL _gettingDropboxFolderInfo;
+}
 @end
 
 @implementation HGGSEditStoreViewController
@@ -43,11 +45,6 @@
     // Do any additional setup after loading the view from its nib.
     [[self groceryStoreName] setText:[[self groceryStore] name ] ];
     
-    DBAccountManager* accountManager = [DBAccountManager sharedManager];
-    
-    _isLinked =  (accountManager && [accountManager linkedAccount]);
-    _unlinkAlertView = nil;
-    
     [_groceryStoreName setDelegate:self];
     [self updateDropboxActionButton];
     
@@ -56,16 +53,14 @@
     
     [self toggleEditMode:NO];
     
-    
-    
 }
 
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self showEditStoreButtons:(_groceryStore != nil)];
-   
+    [self showEditStoreButtons:(self.groceryStore != nil)];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -73,7 +68,7 @@
     
     if (_inEditMode)
     {
-       [self renameStore];
+        [self renameStore];
     }
     [[self groceryStore] unload];
     [super viewWillDisappear:animated];
@@ -88,35 +83,35 @@
 
 #pragma mark Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- 
+    
     if ([segue.identifier isEqualToString:@"toMasterList"])
     {
         HGGSMasterListViewController *masterListController = segue.destinationViewController;
         
-        [masterListController setStore:_groceryStore];
-        [_groceryStore setName:[[self groceryStoreName] text]];
+        [masterListController setStore:self.groceryStore];
+        [self.groceryStore setName:[[self groceryStoreName] text]];
         
     }
     else if ([segue.identifier isEqualToString:SEGUE_TO_CHOOSE_SYNCH_OPTION])
     {
         HGGSSynchronizeDropboxFilesViewController *synchController = segue.destinationViewController;
-        [synchController setGroceryStore:_groceryStore];
+        [synchController setGroceryStore:self.groceryStore];
         [synchController setDismissBlock:^{[self updateDropboxActionButton];}];
-
+        
     }
     else if ([segue.identifier isEqualToString:@"toAisleConfiguration"])
     {
         HGGSAisleConfigurationControllerViewController *aisleConfigViewController = segue.destinationViewController;
         
-        [aisleConfigViewController setStore:_groceryStore];
-        [_groceryStore setName:[[self groceryStoreName] text]];
+        [aisleConfigViewController setStore:self.groceryStore];
+        [self.groceryStore setName:[[self groceryStoreName] text]];
     }
     else if ([segue.identifier isEqualToString:@"toGrocerySections"])
     {
         HGGSGrocerySectionsViewController *grocerySectionsViewController = segue.destinationViewController;
         
-        [grocerySectionsViewController setStore:_groceryStore];
-        [_groceryStore setName:[[self groceryStoreName] text]];
+        [grocerySectionsViewController setStore:self.groceryStore];
+        [self.groceryStore setName:[[self groceryStoreName] text]];
         
     }
     else
@@ -133,11 +128,11 @@
 -(void)confirmDeleteStore
 {
     NSString* promptMessage = [NSString stringWithFormat:@"All store informaiton, including grocery lists pertaining to %@ will be deleted.  Are you sure you want to delete this store?", [[self groceryStore] name]];
-
+    
     if (_confirmDeleteStoreAlertView == nil)
         _confirmDeleteStoreAlertView = [[UIAlertView alloc]
-     initWithTitle:@"Delete Store" message:promptMessage delegate:self
-     cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                                        initWithTitle:@"Delete Store" message:promptMessage delegate:self
+                                        cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     _confirmDeleteStoreAlertView.alertViewStyle = UIAlertViewStyleDefault;
     [_confirmDeleteStoreAlertView show];
     
@@ -146,16 +141,29 @@
 {
     if ((newStoreName != nil) && (![newStoreName isEqualToString:@""]))
     {
-        _groceryStore = [[HGGSGroceryStoreManager sharedStoreManager] addStore:newStoreName];
-        [_groceryStore setName:newStoreName];
+        [self setGroceryStore:[[HGGSGroceryStoreManager sharedStoreManager] addStore:newStoreName]];
+        [self.groceryStore setName:newStoreName];
         [self showEditStoreButtons:YES];
     }
+}
+-(void)linkDropbox
+{
+    //    DBAccountManager* accountManager = [DBAccountManager sharedManager];
+    //    _isLinked =  (accountManager && [accountManager linkedAccount]);
+    
+    
+    _unlinkAlertView = nil;
 }
 
 -(void) linkWithDropbox
 {
-    if (_isLinked)
+    
+    if ([[DBSession sharedSession] isLinked])
         return;
+    
+    _unlinkAlertView = nil;
+    
+    [[DBSession sharedSession] linkFromController:self];
     
     HGGSAppDelegate * appDelegate  = (HGGSAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate setDropboxViewController:self];
@@ -166,9 +174,6 @@
         [_activityIndicator setHidesWhenStopped:YES];
     }
     [_activityIndicator startAnimating];
-    
-    [[DBAccountManager sharedManager] linkFromController:self];
-    
 }
 
 -(void) showEditStoreButtons:(bool)show
@@ -180,54 +185,38 @@
 }
 
 
--(void) unlinkFromDropbox
-{
-    if (!_isLinked)
-        return;
-    
-    [[[DBAccountManager sharedManager] linkedAccount] unlink];
-    _isLinked = false;
-    [self updateDropboxActionButton];
-    
-}
+//-(void) unlinkFromDropbox
+//{
+//    if (!_isLinked)
+//        return;
+//
+//    [[[DBAccountManager sharedManager] linkedAccount] unlink];
+//    _isLinked = false;
+//    [self updateDropboxActionButton];
+//
+//}
 -(void) stopSharing
 {
-    [_groceryStore setShareLists:NO];
+    [self.groceryStore setShareLists:NO];
     
-    if (![[HGGSGroceryStoreManager sharedStoreManager] groceryListsAreBeingShared])
-    {
-        NSString* promptMessage = @"You are not sharing any grocery lists - do you want to disconnect from Dropbox?";
-        
-        // no stores are sharing their grocery lists - prompt the user if they would like to unlink from dropbox
-        if (_unlinkAlertView == nil)
-            _unlinkAlertView = [[UIAlertView alloc]
-                                            initWithTitle:@"Stop sharing" message:promptMessage delegate:self
-                                            cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        _unlinkAlertView.alertViewStyle = UIAlertViewStyleDefault;
-        [_unlinkAlertView show];
-        
-    }
+    //    if (![[HGGSGroceryStoreManager sharedStoreManager] groceryListsAreBeingShared])
+    //    {
+    //        NSString* promptMessage = @"You are not sharing any grocery lists - do you want to disconnect from Dropbox?";
+    //
+    //        if (_unlinkAlertView == nil)
+    //            _unlinkAlertView = [[UIAlertView alloc]
+    //                                            initWithTitle:@"Stop sharing" message:promptMessage delegate:self
+    //                                            cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    //        _unlinkAlertView.alertViewStyle = UIAlertViewStyleDefault;
+    //        [_unlinkAlertView show];
+    //
+    //    }
     [self updateDropboxActionButton];
 }
 -(void)startSharing
 {
     HGGSDbGroceryFilesStore *dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-    [dbStore groceryFilesExistForStore:[_groceryStore name] returnResult:
-     ^void(BOOL filesExistInDropbox)
-     {
-         if (filesExistInDropbox)
-             [self presentSynchOptionsToUser:dbStore];
-         else
-         {
-             [_groceryStore setShareLists:YES];
-             [self updateDropboxActionButton];
-             [dbStore copyStoreToDropbox:_groceryStore notifyCopyCompleted:nil];
-             //[dbStore copyToDropbox:[_groceryStore getMasterList]  notifyCopyCompleted:nil];
-             //[dbStore copyToDropbox:[_groceryStore getGroceryAisles]  notifyCopyCompleted:nil];
-             //[dbStore copyToDropbox:[_groceryStore getCurrentList]  notifyCopyCompleted:nil];
-             
-         }
-     }];
+    [dbStore groceryFilesExistForStore:[self.groceryStore name] ];
 }
 #pragma mark Actions
 -(void)renameStore
@@ -274,9 +263,10 @@
     //(3) start sharing files through dropbox
     //(4) unlink from droptbox
     
-    if (!_isLinked)
-        [self linkWithDropbox];
-    else if (![_groceryStore shareLists])
+    //if (!_isLinked)
+    //    [self linkWithDropbox];
+    ///else
+    if (![self.groceryStore shareLists])
         [self startSharing];
     else
         [self stopSharing];
@@ -292,25 +282,25 @@
 {
     
     [self performSegueWithIdentifier:SEGUE_TO_CHOOSE_SYNCH_OPTION sender:self];
-
+    
     //[self presentViewController:synchController animated:YES completion:nil];
 }
 
 -(void)updateDropboxActionButton
 {
     NSString *dropboxMessage = LINK_DROPBOX_MESSAGE;
-    if ([_groceryStore shareLists])
+    if ([self.groceryStore shareLists])
     {
         dropboxMessage = STOP_SHARING_GROCERY_LISTS;
     }
-    else if (_isLinked)
+    else //if (_isLinked)
     {
         dropboxMessage = SHARE_GROCERY_LISTS;
     }
-    else
-    {
-        dropboxMessage = LINK_DROPBOX_MESSAGE;
-    }
+    //    else
+    //    {
+    //        dropboxMessage = LINK_DROPBOX_MESSAGE;
+    //    }
     [_dropboxButton setTitle:dropboxMessage forState:UIControlStateNormal];
     [_dropboxButton setNeedsDisplay];
 }
@@ -344,7 +334,7 @@
     
     newItems = [[NSMutableArray alloc] initWithArray:items];
     [newItems setObject:button atIndexedSubscript:0];
-        
+    
     [_editToolbar setItems:newItems];
     
 }
@@ -358,18 +348,18 @@
         _activityIndicator = nil;
     }
     
-    DBAccountManager * accountManager = [DBAccountManager sharedManager];
-    _isLinked =  (accountManager && [accountManager linkedAccount]);
-    
-    [self updateDropboxActionButton];
- }
+    //    DBAccountManager * accountManager = [DBAccountManager sharedManager];
+    //    _isLinked =  (accountManager && [accountManager linkedAccount]);
+    //
+    //    [self updateDropboxActionButton];
+}
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (alertView == _unlinkAlertView)
-    {
-        if (buttonIndex != alertView.cancelButtonIndex)
-            [self unlinkFromDropbox];
-    }
+    //    if (alertView == _unlinkAlertView)
+    //    {
+    //        if (buttonIndex != alertView.cancelButtonIndex)
+    //            [self unlinkFromDropbox];
+    //    }
     if (alertView == _confirmDeleteStoreAlertView)
     {
         if (buttonIndex != alertView.cancelButtonIndex)
@@ -377,13 +367,15 @@
     }
     else
         [self onSharingStatusUpdate];
-  
+    
 }
 -(void)onDeleteStoreConfirmed
 {
     NSLog(@"onDeleteStoreConfirmed called");
     [[HGGSGroceryStoreManager sharedStoreManager] deleteStore:[[self groceryStore] name]];
     [[self navigationController] popViewControllerAnimated:YES];
-
+    
 }
+
+#pragma mark DBRestClientDelegate methods
 @end

@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		A70B1CCE19CA64DA0024D5AF /* HGGSGroceryItemPictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70B1CCD19CA64DA0024D5AF /* HGGSGroceryItemPictureViewController.m */; };
+		A70D7A021C7EA70A0061831B /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70D7A011C7EA70A0061831B /* DropboxSDK.framework */; };
 		A70E86EB1833223800222EFF /* HGGSSaveAisleConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70E86EA1833223800222EFF /* HGGSSaveAisleConfigurationTest.m */; };
 		A70E86EE183327F100222EFF /* HGGSLoadGrocerySectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70E86ED183327F100222EFF /* HGGSLoadGrocerySectionTests.m */; };
 		A714858B1837B1280026BE5E /* HGGSGrocerySectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A714858A1837B1280026BE5E /* HGGSGrocerySectionsViewController.m */; };
+		A71801631C7EAB31006F110A /* HGGSDropboxClientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71801621C7EAB31006F110A /* HGGSDropboxClientViewController.m */; };
 		A7244E3318B5A623007A3D12 /* HGGSStoreListManagementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7244E3218B5A623007A3D12 /* HGGSStoreListManagementTests.m */; };
 		A72F78F6195364DB0061E917 /* HGGSDate.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78E5195364DB0061E917 /* HGGSDate.m */; };
 		A72F78F7195364DB0061E917 /* HGGSGroceryAisle.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F78E7195364DB0061E917 /* HGGSGroceryAisle.m */; };
@@ -65,7 +67,6 @@
 		A7C58145182EEEBA00866FAB /* HGGSLoadGroceryStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C5813C182EEEBA00866FAB /* HGGSLoadGroceryStoreTests.m */; };
 		A7C58146182EEEBA00866FAB /* HGGSSaveGroceryStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C5813E182EEEBA00866FAB /* HGGSSaveGroceryStoreTests.m */; };
 		A7C58147182EEEBA00866FAB /* HGGSDbGrocyeryStoreFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C58141182EEEBA00866FAB /* HGGSDbGrocyeryStoreFilesTests.m */; };
-		A7C58148182EEFC300866FAB /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C5810E182EE79400866FAB /* Dropbox.framework */; };
 		A7C5814F182F196100866FAB /* HGGSMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C5814E182F196100866FAB /* HGGSMainViewController.m */; };
 		A7C58152182F1F1300866FAB /* HGGSEditStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C58151182F1F1300866FAB /* HGGSEditStoreViewController.m */; };
 		A7C58155182F31E800866FAB /* HGGSMasterListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C58154182F31E800866FAB /* HGGSMasterListViewController.m */; };
@@ -97,12 +98,15 @@
 /* Begin PBXFileReference section */
 		A70B1CCC19CA64DA0024D5AF /* HGGSGroceryItemPictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGroceryItemPictureViewController.h; sourceTree = "<group>"; };
 		A70B1CCD19CA64DA0024D5AF /* HGGSGroceryItemPictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGroceryItemPictureViewController.m; sourceTree = "<group>"; };
+		A70D7A011C7EA70A0061831B /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		A70E86E91833223800222EFF /* HGGSSaveAisleConfigurationTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSSaveAisleConfigurationTest.h; sourceTree = "<group>"; };
 		A70E86EA1833223800222EFF /* HGGSSaveAisleConfigurationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSSaveAisleConfigurationTest.m; sourceTree = "<group>"; };
 		A70E86EC183327F100222EFF /* HGGSLoadGrocerySectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSLoadGrocerySectionTests.h; sourceTree = "<group>"; };
 		A70E86ED183327F100222EFF /* HGGSLoadGrocerySectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSLoadGrocerySectionTests.m; sourceTree = "<group>"; };
 		A71485891837B1280026BE5E /* HGGSGrocerySectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSGrocerySectionsViewController.h; sourceTree = "<group>"; };
 		A714858A1837B1280026BE5E /* HGGSGrocerySectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSGrocerySectionsViewController.m; sourceTree = "<group>"; };
+		A71801611C7EAB31006F110A /* HGGSDropboxClientViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSDropboxClientViewController.h; sourceTree = "<group>"; };
+		A71801621C7EAB31006F110A /* HGGSDropboxClientViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSDropboxClientViewController.m; sourceTree = "<group>"; };
 		A7244E3118B5A623007A3D12 /* HGGSStoreListManagementTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSStoreListManagementTests.h; sourceTree = "<group>"; };
 		A7244E3218B5A623007A3D12 /* HGGSStoreListManagementTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSStoreListManagementTests.m; sourceTree = "<group>"; };
 		A72F78E4195364DB0061E917 /* HGGSDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSDate.h; sourceTree = "<group>"; };
@@ -176,7 +180,6 @@
 		A7C58108182EE77100866FAB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7C5810A182EE77900866FAB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A7C5810C182EE78200866FAB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		A7C5810E182EE79400866FAB /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dropbox.framework; path = "../3rdParty/dropbox-ios-sync-sdk-2.0.1 2/Dropbox.framework"; sourceTree = "<group>"; };
 		A7C58110182EE7AC00866FAB /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		A7C58132182EEEBA00866FAB /* HGGSLoadGroceryItemTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGGSLoadGroceryItemTests.h; sourceTree = "<group>"; };
 		A7C58133182EEEBA00866FAB /* HGGSLoadGroceryItemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGGSLoadGroceryItemTests.m; sourceTree = "<group>"; };
@@ -227,10 +230,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C58148182EEFC300866FAB /* Dropbox.framework in Frameworks */,
 				A7C58111182EE7AC00866FAB /* libc++.dylib in Frameworks */,
 				A7C5810D182EE78200866FAB /* CFNetwork.framework in Frameworks */,
 				A7C5810B182EE77900866FAB /* Security.framework in Frameworks */,
+				A70D7A021C7EA70A0061831B /* DropboxSDK.framework in Frameworks */,
 				A7C58109182EE77100866FAB /* SystemConfiguration.framework in Frameworks */,
 				A7C58107182EE76800866FAB /* QuartzCore.framework in Frameworks */,
 				A7C580BD182EE68A00866FAB /* CoreGraphics.framework in Frameworks */,
@@ -329,8 +332,8 @@
 		A7C580B9182EE68A00866FAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A70D7A011C7EA70A0061831B /* DropboxSDK.framework */,
 				A7C58110182EE7AC00866FAB /* libc++.dylib */,
-				A7C5810E182EE79400866FAB /* Dropbox.framework */,
 				A7C5810C182EE78200866FAB /* CFNetwork.framework */,
 				A7C5810A182EE77900866FAB /* Security.framework */,
 				A7C58108182EE77100866FAB /* SystemConfiguration.framework */,
@@ -474,6 +477,8 @@
 		A7C5814C182F196100866FAB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A71801611C7EAB31006F110A /* HGGSDropboxClientViewController.h */,
+				A71801621C7EAB31006F110A /* HGGSDropboxClientViewController.m */,
 				A7AD91011858211100785342 /* HGGSShoppingListViewController.h */,
 				A7AD91021858211100785342 /* HGGSShoppingListViewController.m */,
 				A7DF0A341830876200E1277A /* HGGSSynchronizeDropboxFilesViewController.h */,
@@ -673,6 +678,7 @@
 				A72F78FE195364DB0061E917 /* HGGSStoreList.m in Sources */,
 				A793709119AAC1C500D93F9B /* HGGSCommon.m in Sources */,
 				A72F78FA195364DB0061E917 /* HGGSGroceryStore.m in Sources */,
+				A71801631C7EAB31006F110A /* HGGSDropboxClientViewController.m in Sources */,
 				A7517EBE19F5E158008D9401 /* HGGSZoomGroceryItemPictureViewController.m in Sources */,
 				A7C580CB182EE68B00866FAB /* HGGSAppDelegate.m in Sources */,
 				A7EB1D46184D839300198EC6 /* HGGSShoppingItemCellView.m in Sources */,
@@ -824,7 +830,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/anam/iosApps/3rdParty/dropbox-ios-sync-sdk-2.0.1\\ 2",
+					"/Users/anam/iosApps/3rdParty/dropbox-ios-sync-sdk-2.0.1",
+					2,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HoneyGoGroceryShopping/HoneyGoGroceryShopping-Prefix.pch";
@@ -847,7 +855,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/anam/iosApps/3rdParty/dropbox-ios-sync-sdk-2.0.1\\ 2",
+					"/Users/anam/iosApps/3rdParty/dropbox-ios-sync-sdk-2.0.1",
+					2,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HoneyGoGroceryShopping/HoneyGoGroceryShopping-Prefix.pch";

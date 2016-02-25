@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HGGSDropboxClientViewController.H"
+
 @class HGGSGroceryStore;
 
-@interface HGGSEditStoreViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
+@interface HGGSEditStoreViewController : HGGSDropboxClientViewController <UITextFieldDelegate, UIAlertViewDelegate>
 {
     IBOutlet UIButton *_dropboxButton;
     IBOutlet UIButton *_editMasterListButton;

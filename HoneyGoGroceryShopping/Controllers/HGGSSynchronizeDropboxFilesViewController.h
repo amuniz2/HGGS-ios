@@ -7,27 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HGGSDropboxClientViewController.h"
+
 @class HGGSGroceryStore;
 
-typedef enum DbFileSynchOptions
-{
-    ShareDropboxFile,
-    ShareLocalFile,
-    DoNotShareFile
-} DbFileSynchOption;
 
 typedef void (^dismissBlock)(DbFileSynchOption);
 
-@interface HGGSSynchronizeDropboxFilesViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface HGGSSynchronizeDropboxFilesViewController : HGGSDropboxClientViewController <UIPickerViewDataSource, UIPickerViewDelegate>
+
 {
-    UIActivityIndicatorView *_activityIndicator;
-     __weak IBOutlet UILabel *synchInstructionsLabel;
+    __weak IBOutlet UILabel *synchInstructionsLabel;
     __weak IBOutlet UIButton *actionButton;
     __weak IBOutlet UIPickerView *synchOptionSelector;
- }
+}
 @property DbFileSynchOption synchOptionSelected;
-@property (strong,nonatomic) HGGSGroceryStore * groceryStore;
 @property (nonatomic, copy) void(^dismissBlock)(void);
+@property (nonatomic, strong) DBRestClient *restClient;
 
 - (IBAction)SynchronizeWithDropbox:(id)sender;
 

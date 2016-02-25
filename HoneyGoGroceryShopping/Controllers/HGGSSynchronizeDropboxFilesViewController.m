@@ -12,9 +12,6 @@
 #import "HGGSGroceryStore.h"
 
 @interface HGGSSynchronizeDropboxFilesViewController ()
-{
-}
-
 @end
 
 @implementation HGGSSynchronizeDropboxFilesViewController
@@ -47,11 +44,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [synchOptionSelector setDelegate:self];
     [synchOptionSelector setDataSource:self];
     
-	// Do any additional setup after loading the view.
-    [synchInstructionsLabel setText:[NSString stringWithFormat:@"There are existing files for %@.  Select what you would like to do:", [_groceryStore name]]];
+    // Do any additional setup after loading the view.
+    [synchInstructionsLabel setText:[NSString stringWithFormat:@"There are existing files for %@.  Select what you would like to do:", [self.groceryStore name]]];
+    
+    [self setActivityIndicatorCenter:CGPointMake(actionButton.center.x, actionButton.frame.origin.y + actionButton.frame.size.height + 20)];
+    
+    self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+    self.restClient.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,40 +91,41 @@
 #pragma mark Private Methods
 -(void) displayError
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"An error occurred copying a file to/from Dropbox server."
-                                                       delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
+                                                                   message:@"An error occurred copying a file to/from the Dropbox server."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertView show];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)doSynch:(DbFileSynchOption) synchOptionSelected
 {
     HGGSDbGroceryFilesStore *dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
+    [dbStore setDropboxClient:self];
     switch(synchOptionSelected)
     {
         case ShareLocalFile:
         {
-            [self showActivityIndicator];
-            [dbStore copyStoreToDropbox:_groceryStore  notifyCopyCompleted:^void(BOOL succeeded)
-             { [self synchActivityCompleted:succeeded];}];
+            [super copyStoreToDropbox];
         }
-        break;
+            break;
             
         case ShareDropboxFile:
         {
-            [self showActivityIndicator];
-            [dbStore copyStoreFromDropbox:_groceryStore notifyCopyCompleted:^void(BOOL succeeded)
-             { [self synchActivityCompleted:succeeded];}];
+            [super copyStoreFromDropbox];
         }
-        break;
+            break;
             
         case DoNotShareFile:
         {
             //_sharingStatus = linked;
             [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
         }
-        break;
+            break;
             
     }
 }
@@ -136,27 +140,9 @@
     return optionDescriptions;
 }
 
--(void)showActivityIndicator
-{
-    if (!_activityIndicator)
-    {
-        _activityIndicator  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [_activityIndicator setHidesWhenStopped:YES];
-        _activityIndicator.center = CGPointMake(actionButton.center.x, actionButton.frame.origin.y + actionButton.frame.size.height + 20);
-        [self.view addSubview:_activityIndicator];
-        
-    }
-    [_activityIndicator startAnimating];
-}
--(void) hideActivityIndicator
-{
-    [_activityIndicator stopAnimating];
-    _activityIndicator = nil;
-}
 
 -(void)synchActivityCompleted:(BOOL) succeeded
 {
-    [self hideActivityIndicator];
     if (!succeeded)
     {
         [self displayError];
@@ -164,14 +150,13 @@
     else
     {
         // if file was copied from db...
-        [_groceryStore reloadLists];
-        [_groceryStore setShareLists:YES];
+        [self.groceryStore reloadLists];
+        [self.groceryStore setShareLists:YES];
         HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-        [dbStore notifyOfChangesToStore:_groceryStore];
+        [dbStore notifyOfChangesToStore:self.groceryStore];
     }
     [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
     
 }
-
 
 @end

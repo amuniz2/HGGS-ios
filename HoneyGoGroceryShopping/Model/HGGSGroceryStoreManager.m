@@ -120,7 +120,8 @@
 -(void)saveGroceryList:(HGGSGroceryStore*)store
 {
     [store saveGroceryList];
-    [self synchWithDb:store storeList:[store getGroceryList] copyImages:YES];
+    //todo:?
+    //[self synchWithDb:store storeList:[store getGroceryList] copyImages:YES];
 }
 //-(void)saveShoppingList:(HGGSGroceryStore*)store
 //{
@@ -130,7 +131,8 @@
 -(void)saveGroceryAisles:(HGGSGroceryStore*)store
 {
     [store saveGroceryAisles];
-    [self synchWithDb:store storeList:[store getGroceryAisles] copyImages:NO];
+    //todo:?
+    //[self synchWithDb:store storeList:[store getGroceryAisles] copyImages:NO];
 }
 
 #pragma mark private methods
@@ -156,7 +158,7 @@
     if (([store shareLists]) && (![store preparedForWork]))
     {
         // copy any files that have been updated in dropbox
-        [self fetchAnyNewDbFilesForStore:store];
+        // todo: [self fetchAnyNewDbFilesForStore:store];
         [[HGGSDbGroceryFilesStore sharedDbStore] notifyOfChangesToStore:store];
         [store setPreparedForWork:YES];
     }
@@ -184,35 +186,35 @@
 
 }
 
--(void)fetchAnyNewDbFilesForStore:(HGGSGroceryStore*) store
-{
-    if([store anyListsLoaded])
-        [store saveStoreInfo];
-    
-    [[HGGSDbGroceryFilesStore sharedDbStore] copyImagesFromDropbox:store  notifyCopyCompleted:^void(BOOL succeeded)
-     {
-         [self fetchNewDbStoreList:[store aisles]];
-         [self fetchNewDbStoreList:[store storeList]];
-     }];
-    
-    
-}
--(void)fetchNewDbStoreList:(HGGSStoreList*) storeList
-{
-    
-    [storeList unload];
-    [[HGGSDbGroceryFilesStore sharedDbStore] copyFromDropbox:storeList  notifyCopyCompleted:nil];
-}
-
--(void)synchWithDb:(HGGSGroceryStore*) store storeList:(HGGSStoreList*)storeList copyImages:(BOOL)copyImages
-{
-    if ([store shareLists])
-    {
-        //[storeList unload];
-        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
-        [dbStore copyToDropbox:storeList  notifyCopyCompleted:nil copyImages:copyImages];
-    }
-}
+//-(void)fetchAnyNewDbFilesForStore:(HGGSGroceryStore*) store
+//{
+//    if([store anyListsLoaded])
+//        [store saveStoreInfo];
+//    
+//    [[HGGSDbGroceryFilesStore sharedDbStore] copyImagesFromDropbox:store  notifyCopyCompleted:^void(BOOL succeeded)
+//     {
+//         [self fetchNewDbStoreList:[store aisles]];
+//         [self fetchNewDbStoreList:[store storeList]];
+//     }];
+//    
+//    
+//}
+//-(void)fetchNewDbStoreList:(HGGSStoreList*) storeList
+//{
+//    
+//    [storeList unload];
+//    [[HGGSDbGroceryFilesStore sharedDbStore] copyFromDropbox:storeList  notifyCopyCompleted:nil];
+//}
+//
+//-(void)synchWithDb:(HGGSGroceryStore*) store storeList:(HGGSStoreList*)storeList copyImages:(BOOL)copyImages
+//{
+//    if ([store shareLists])
+//    {
+//        //[storeList unload];
+//        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];;
+//        [dbStore copyToDropbox:storeList  notifyCopyCompleted:nil copyImages:copyImages];
+//    }
+//}
 
 -(NSString *)getGroceryStoresFolder
 {
