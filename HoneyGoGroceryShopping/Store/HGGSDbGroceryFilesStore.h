@@ -7,7 +7,7 @@
 //
 #import <DropboxSDK/DropboxSDK.h>
 
-@class HGGSStoreList;
+//@class HGGSStoreList;
 @class HGGSGroceryStore;
 
 @interface HGGSDbGroceryFilesStore : NSObject
@@ -16,18 +16,14 @@
 }
 +(HGGSDbGroceryFilesStore*) sharedDbStore;
 @property (nonatomic, weak) id  DropboxClient;
+@property (nonatomic, strong) DBRestClient * restClient;
 
 -(void)groceryFilesExistForStore:(NSString *)storeName;
-//-(void) copyFromDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
-//-(void) copyStoreFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
-//-(void) copyStoreToDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
-//-(void) copyToDropbox:(HGGSStoreList *)storeList notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted copyImages:(BOOL)copyImages;
-//-(void) deleteFromDropbox:(HGGSStoreList *)storeList notifyDeleteCompleted:(void(^)(BOOL))notifyDeleteCompleted;
--(void)notifyOfChangesToStore:(HGGSGroceryStore*)store;
-//-(void) copyImagesFromDropbox:(HGGSGroceryStore *)store notifyCopyCompleted:(void(^)(BOOL))notifyCopyCompleted;
+-(void)existingGroceryStores;
+
 -(void)copyFileFromDropbox:(NSString *)fileName fromFolder:storeFolder intoFolder:(NSString *)localPath;
--(BOOL)copyFileToDropbox:(NSString *)fileName  fromFolder:(NSString *)localFolder intoFolder:(NSString *)dbFilePath;
+-(BOOL)copyFileToDropbox:(NSString *)fileName  fromFolder:(NSString *)localFolder intoFolder:(NSString *)dbFilePath parentRevision:(NSString*)parentRevision;
 -(void) getListOfImagesFromDropboxFolder:(NSString *)subFolder;
 -(void)deleteFileFromDropbox:(NSString *)dbFilePath;
-
+-(void)getFileMetadata:(NSString *)fileName forStore:(NSString *)storeName;
 @end

@@ -10,7 +10,7 @@
 @class HGGSGrocerySection;
 @class HGGSStoreAisles;
 
-@interface HGGSSelectGrocerySectionViewController : UIViewController <UISearchResultsUpdating, UISearchBarDelegate>
+@interface HGGSSelectGrocerySectionViewController : UIViewController <UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     
 }

@@ -17,10 +17,10 @@
 
 @interface HGGSShoppingListViewController ()
 {
-    NSArray* _searchResults;
+    //NSArray* _searchResults;
     NSMutableArray* _shoppingList;
     HGGSGroceryItem *_currentGroceryItem;
-    
+    HGGSStoreItems* _groceryItems;
 }
 
 @end
@@ -44,7 +44,7 @@
     UINavigationItem *navItem = [self navigationItem];
     
     [navItem setTitle:[NSString stringWithFormat:@"%@ Shopping List",[_store name]]];
- 
+    _groceryItems = [_store getGroceryList];
     _shoppingList = [_store createShoppingList:_startNewShoppingList];
 }
 
@@ -59,6 +59,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self saveChangedCellsStillDisplayed];
+    
     HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
     [storeManager saveGroceryList:[self store]];
     //_changesToSave = NO;
@@ -92,24 +93,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (tableView == self.tableView)
-        return [_shoppingList count];
-    else
-        return [_searchResults count];
+    return [_shoppingList count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     @try {
-        if (tableView == self.tableView)
-        {
             HGGSGroceryAisle* aisle = [_shoppingList objectAtIndex:section];
             return [aisle  groceryItemCount];
-        }
-        else if (_searchResults)
-        {
-            return [[[_searchResults objectAtIndex:section] grocerySections] count];
-        }
         
     }
     @catch (NSException *exception) {
@@ -121,22 +112,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @try
-    {
         HGGSGroceryItem * groceryItem = [self groceryItemAt:indexPath inTableView:tableView];
         NSString *cellIdentifier = ([groceryItem image] == nil) ? @"ShoppingItemCell" : @"ShoppingItemCellWithImage";
         HGGSShoppingItemCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
  
-        [cell setGroceryItem:groceryItem];
+        //todo: distinguish between shopping item and grocery item?
+        [cell bindGroceryItem:groceryItem tableView:tableView indexPath:indexPath];
         [cell setDelegate:self];
   
         //set text...
         return cell;
-    }
-    @catch (NSException *e)
-    {
-        NSLog(@"exception in cellForRowAtIndexPath:%@", e);
-    }
 
 }
 
@@ -148,23 +133,10 @@
     
     UITableViewCell *cell= [[self tableView] dequeueReusableCellWithIdentifier:cellIdentifier];
     UILabel *aisleLabel = (UILabel*)[cell viewWithTag:1] ;
-    @try
-    {
-        if (tableView == [self tableView])
-        {
-            aisle = [[_store getGroceryAisles] itemAt:section];
-        }
-        else
-        {
-            aisle = [_searchResults objectAtIndex:section];
-        }
-        [aisleLabel setText:[NSString stringWithFormat:@"Aisle %li",(long)[aisle number]]];
+
+    aisle = [[_store getGroceryAisles] itemAt:section];
+    [aisleLabel setText:[NSString stringWithFormat:@"Aisle %li",(long)[aisle number]]];
         
-    }
-    @catch (NSException *e)
-    {
-        NSLog(@"exception in viewForHeaderInSection: %@", e);
-    }
     return cell.contentView;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -207,8 +179,6 @@
 #pragma mark Private
 -(HGGSGroceryItem*)groceryItemAt:(NSIndexPath*)indexPath inTableView:(UITableView*)tableView
 {
-    @try
-    {
         HGGSGroceryAisle* aisle = [_shoppingList objectAtIndex:[indexPath section]];
         HGGSGroceryItem *item = nil;
         int currentIndex = 0;
@@ -227,12 +197,6 @@
         }
         return item;
         
-    }
-    @catch (NSException *e)
-    {
-        NSLog(@"exception in groceryItemAt:inTableView:%@", e);
-    }
-    
 }
 
 

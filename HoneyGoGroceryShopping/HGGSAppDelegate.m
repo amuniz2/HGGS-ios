@@ -18,9 +18,12 @@
 {
     // Override point for customization after application launch.
     // enable dropbox...
-    DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:APP_KEY secret:APP_SECRET];
+    DBSession *dbSession = [[DBSession alloc]
+                            initWithAppKey:APP_KEY
+                            appSecret:APP_SECRET
+                            root:kDBRootAppFolder]; // either kDBRootAppFolder or kDBRootDropbox
     
-    [DBAccountManager setSharedManager:accountManager];
+    [DBSession setSharedSession:dbSession];
 
 #if TARGET_IPHONE_SIMULATOR
     // where are you?
@@ -59,34 +62,29 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 #pragma mark Dropbox API Methods
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    
-    
-    bool returnValue = YES;
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+  sourceApplication:(NSString *)source annotation:(id)annotation {
     UIAlertView *alertView;
-    DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
-    if (account && account.linked) {
-        
-        alertView = [[UIAlertView alloc] initWithTitle:@"Successfully Linked with Dropbox."
-                                               message:@"You can now share your grocery lists across devices."
-                                              //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
-                                              delegate:[self dropboxViewController]
-                                                cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            // At this point you can start making API calls
+            alertView = [[UIAlertView alloc] initWithTitle:@"Successfully Linked with Dropbox."
+                                                   message:@"You can now share your grocery lists across devices."
+                         //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
+                                                  delegate:[self dropboxViewController]
+                                         cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+            return YES;
+        }
     }
-    else
-    {
-        alertView = [[UIAlertView alloc] initWithTitle:@"Failed to linked with Dropbox."
-                                               message:@"Please verify that you have access to the internet."
-                                              //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
-                                              delegate: [self dropboxViewController]
-                                                cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        returnValue = NO;
-    }
-    [alertView show];
+    // Add whatever other url handling code your app requires here
+    alertView = [[UIAlertView alloc] initWithTitle:@"Failed to link with Dropbox."
+                                           message:@"Please verify that you have access to the internet."
+                 //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
+                                          delegate: [self dropboxViewController]
+                                 cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
     
-    return returnValue;
+//    [alertView show];
+    return NO;
 }
 
 @end

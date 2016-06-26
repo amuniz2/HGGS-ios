@@ -26,9 +26,6 @@
 #pragma mark Xml Parser Delegate Methods
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     
-    NSString *errorString = [NSString stringWithFormat:@"Error code %li", (long)[parseError code]];
-    NSLog(@"Error parsing XML: %@", errorString);
-    
     _errorParsing=YES;
 }
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict

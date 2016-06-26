@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HGGSDropboxClient.h"
+
 @class HGGSGroceryStore;
 
-@interface HGGSMainViewController : UIViewController  <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface HGGSMainViewController : UIViewController  <UIPickerViewDataSource, UIPickerViewDelegate, HGGSDropboxControllerDelegate>
 {
     NSArray *_keys;
     bool _addNewStore;

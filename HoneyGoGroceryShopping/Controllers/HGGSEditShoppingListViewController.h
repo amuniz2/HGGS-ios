@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HGGSDropboxClient.h"
 
 @class HGGSGroceryStore;
 
-@interface HGGSEditShoppingListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
+@interface HGGSEditShoppingListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate, HGGSDropboxControllerDelegate>
 {
     
 }

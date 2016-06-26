@@ -10,11 +10,12 @@
 #import "HGGSGrocerySection.h"
 #import "HGGSStoreAisles.h"
 #import "HGGSGroceryAisle.h"
+#import "HGGSGroceryStore.h"
 #import "HGGSNewGrocerySectionViewController.h"
 #import "HGGSAisleHeaderCellView.h"
 #import "NSString+SringExtensions.h"
 
-@interface HGGSSelectGrocerySectionViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface HGGSSelectGrocerySectionViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, /*UITableViewDelegate,*/ HGGSGroceryStoreDelegate>
 {
     NSString *_filter;
     NSInteger _aisleNumberToAddSectionTo;
@@ -48,8 +49,10 @@
 
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
-    
-    [self prepareList];
+
+    [[_groceryAisles store] setDelegate:self];
+   
+    [self prepareList:YES];
     self.searchController.searchBar.delegate = self;
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
@@ -66,10 +69,6 @@
     [super viewDidAppear:animated];
     //[_tableView reloadData];
     
-    if ([self sectionIsVisible:[self selectedSection]])
-    {
-        [[self tableView] scrollToRowAtIndexPath:[self indexPathOfGrocerySection:[self selectedSection]] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
 }
 -(bool)sectionIsVisible:(HGGSGrocerySection *)section
 {
@@ -194,6 +193,15 @@
     return 46;
 }
 
+-(void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(nonnull UIView *)view forSection:(NSInteger)section
+{
+    if ([self sectionIsVisible:[self selectedSection]])
+    {
+        [[self tableView] scrollToRowAtIndexPath:[self indexPathOfGrocerySection:[self selectedSection]] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    
+}
+
 #pragma mark UISearchBarDelegate
 //- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar
 //{
@@ -202,12 +210,18 @@
 //    
 //}
 
+- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar
+{
+    //[self endEditingOfCell];
+    [self exitSearchMode];
+    
+}
+
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    _filter = nil;
-    [self prepareList];
-    [self.tableView reloadData];
+    [self exitSearchMode];
 }
+
 //- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 //{
 //    [self findGrocerySections:[searchBar text] ];
@@ -217,7 +231,20 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     _filter = searchController.searchBar.text;
-    [self prepareList];
+    [self prepareList:NO];
+    [self.tableView reloadData];
+}
+
+#pragma mark HGGSGroceryStoreDelegate
+-(void)didHaveAisleChange:(HGGSGrocerySection*)section fromAisle:(HGGSGroceryAisle*)fromAisle toAisle:(HGGSGroceryAisle*)toAisle
+{
+    [self prepareList:YES];
+    [self.tableView reloadData];
+}
+-(void)didRemoveGroceryAisle:(HGGSGroceryAisle*)aisle
+{
+    
+    [self prepareList:NO];
     [self.tableView reloadData];
 }
 
@@ -237,15 +264,10 @@
 
 -(HGGSGrocerySection*) grocerySectionAt:(NSIndexPath *)indexPath
 {
-    @try
-    {
-        HGGSGroceryAisle *aisle = [_aislesDisplayed objectAtIndex:[indexPath section]];
+
+    HGGSGroceryAisle *aisle = [_aislesDisplayed objectAtIndex:[indexPath section]];
         return [[aisle grocerySections] objectAtIndex:[indexPath row]];
         //return [_sectionsDisplayed objectAtIndex:[indexPath row]];
-    }
-    @catch (NSException *ex) {
-        NSLog(@"Exception getting section at: %@", indexPath);
-    }
 }
 -(NSIndexPath *) indexPathOfGrocerySection:(HGGSGrocerySection *)section
 {
@@ -272,11 +294,19 @@
     }
 }
 
--(void) prepareList
+-(void)exitSearchMode
+{
+    _filter = nil;
+    [self prepareList:NO];
+    [self.tableView reloadData];
+}
+
+-(void) prepareList:(bool)reloadAisles
 {
     if (_aisles == nil)
-    {
         self.tableView.tableHeaderView = self.searchController.searchBar;
+    if (_aisles == nil || reloadAisles)
+    {
         _aisles = [[NSMutableArray alloc] init];
         [_aisles addObjectsFromArray:[_groceryAisles list]];
     }

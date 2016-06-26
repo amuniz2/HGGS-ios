@@ -13,6 +13,7 @@
 #import "HGGSStoreItems.h"
 #import "HGGSEditGroceryItemViewController.h"
 #import "NSString+SringExtensions.h"
+#import "HGGSDropboxClient.h"
 
 @interface HGGSEditShoppingListViewController () 
 {
@@ -23,7 +24,7 @@
     NSMutableArray * _currentItems;
     HGGSStoreItems* _groceryList;
     NSString *_filter;
-    
+    HGGSDropboxClient *_dropboxClient;
     
 }
 @end
@@ -39,10 +40,20 @@
     }
     return self;
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([_store shareLists])
+        [_dropboxClient copyListFromDropbox];
+    
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _groceryList = [_store getGroceryList];
 
     // Do any additional setup after loading the view.
     UINavigationItem *navItem = [self navigationItem];
@@ -58,6 +69,7 @@
         [_store resetCurrentList];
         _changesToSave = YES;
     }
+    _groceryList = [_store getGroceryList];
 
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -69,23 +81,38 @@
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
     
+    if (![[self store] shareLists])
+        return;
+    
+    _dropboxClient = [HGGSDropboxClient CreateFromController:self forStore:_store];
+    [_dropboxClient setDelegate:self];
+    [_dropboxClient setActivityIndicatorCenter:CGPointMake(self.view.center.x, self.view.frame.origin.y + self.view.frame.size.height + 20)];
+
 }
--(void)dealloc
-{
-    if (_changesToSave)
-    {
-        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveGroceryList:[self store]];
-      
-        _changesToSave = NO;
-        
-    }
-}
+//-(void)dealloc
+//{
+//    if (_changesToSave)
+//    {
+//        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+//        [storeManager saveGroceryList:[self store]];
+//         
+//        _changesToSave = NO;
+//        
+//    }
+//}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self saveChangedCellsStillDisplayed:[self tableView]];
 
+    if (_changesToSave)
+    {
+        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+        [storeManager saveGroceryList:[self store]];
+        
+        _changesToSave =NO;
+    }
+    
     [super viewWillDisappear:animated];
 
 }
@@ -238,8 +265,34 @@
 #pragma mark Actions
 - (IBAction)setQuantity:(id)sender {
 }
+#pragma mark HGGSDropboxControllerDelegate methods
+-(void)synchActivityCompleted:(BOOL) succeeded error:(NSString*)errorMessage
+{
+    if (!succeeded)
+    {
+        [self displayDropboxError:errorMessage];
+    }
+    [_dropboxClient setDelegate:nil];
+}
 
 #pragma mark Private
+
+-(void) displayDropboxError:(NSString*)error
+{
+    NSString *message;
+    
+    if (error == nil)
+        message = @"An error occurred copying a file to/from the Dropbox server.";
+    else
+        message = error;
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Dropbox Error"
+                                                    message:message
+                                                   delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    [alert show];
+}
+
 - (void)searchForText:(NSString *)searchText
 {
     _filter = searchText;

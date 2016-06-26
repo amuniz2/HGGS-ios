@@ -12,7 +12,7 @@
 
 @class HGGSGroceryStore;
 
-@interface HGGSShoppingListViewController : UITableViewController<HGGSShowGroceryItemPictureDelegate>
+@interface HGGSShoppingListViewController : UITableViewController<HGGSShowGroceryItemPictureDelegate>//<UISearchResultsUpdating, UISearchBarDelegate,HGGSShowGroceryItemPictureDelegate>
 {}
 @property (nonatomic, strong) HGGSGroceryStore* store;
 @property BOOL startNewShoppingList;

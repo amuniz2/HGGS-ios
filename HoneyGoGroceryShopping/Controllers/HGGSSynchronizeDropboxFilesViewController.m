@@ -11,10 +11,13 @@
 #import "HGGSDbGroceryFilesStore.h"
 #import "HGGSGroceryStore.h"
 
-@interface HGGSSynchronizeDropboxFilesViewController ()
+@interface HGGSSynchronizeDropboxFilesViewController  ()
+{
+    HGGSDropboxClient *_dropboxClient;
+}
 @end
 
-@implementation HGGSSynchronizeDropboxFilesViewController
+@implementation HGGSSynchronizeDropboxFilesViewController 
 
 #pragma mark Initialization Methods
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,11 +53,12 @@
     
     // Do any additional setup after loading the view.
     [synchInstructionsLabel setText:[NSString stringWithFormat:@"There are existing files for %@.  Select what you would like to do:", [self.groceryStore name]]];
+    _dropboxClient = [HGGSDropboxClient  CreateFromController:self forStore:[self groceryStore]];
+    [_dropboxClient setDelegate:self];
+    [_dropboxClient setActivityIndicatorCenter:CGPointMake(actionButton.center.x, actionButton.frame.origin.y + actionButton.frame.size.height + 20)];
     
-    [self setActivityIndicatorCenter:CGPointMake(actionButton.center.x, actionButton.frame.origin.y + actionButton.frame.size.height + 20)];
-    
-    self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-    self.restClient.delegate = self;
+    //self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+    //self.restClient.delegate = _dropboxClient;
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,43 +92,71 @@
     return 3;
 }
 
-#pragma mark Private Methods
--(void) displayError
+#pragma mark HGGSDropboxControllerDelegate methods
+-(void)synchActivityCompleted:(BOOL) succeeded error:(NSString*)errorMessage
 {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                   message:@"An error occurred copying a file to/from the Dropbox server."
-                                                            preferredStyle:UIAlertControllerStyleAlert];
+    if (!succeeded)
+    {
+        [self displayDropboxError:errorMessage];
+        [self.groceryStore setShareLists:NO];
+    }
+    else
+    {
+        // if file was copied from db...
+        [self.groceryStore reloadLists];
+        [self.groceryStore setShareLists:YES];
+    }
+    [_dropboxClient setDelegate:nil];
+    [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
     
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
+}
+
+
+#pragma mark Private Methods
+-(void) displayDropboxError:(NSString*)error
+{
+    NSString *message;
     
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
+    if (error == nil)
+        message = @"An error occurred copying a file to/from the Dropbox server.";
+    else
+        message = error;
+        
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Dropbox Error"
+                               message:message
+                           delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    [alert show];
+}
+-(void)copyFromDropbox
+{
+    [[self groceryStore] setShareLists:YES];
+
+    [_dropboxClient copyStoreFromDropbox];
 }
 
 -(void)doSynch:(DbFileSynchOption) synchOptionSelected
 {
     HGGSDbGroceryFilesStore *dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-    [dbStore setDropboxClient:self];
+    [dbStore setDropboxClient:_dropboxClient]; //?
     switch(synchOptionSelected)
     {
         case ShareLocalFile:
-        {
-            [super copyStoreToDropbox];
-        }
+            {
+                [_dropboxClient copyStoreToDropbox];
+            }
             break;
             
         case ShareDropboxFile:
-        {
-            [super copyStoreFromDropbox];
-        }
+            {
+                [self copyFromDropbox];
+            }
             break;
-            
         case DoNotShareFile:
-        {
-            //_sharingStatus = linked;
-            [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
-        }
+            {
+                //_sharingStatus = linked;
+                [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
+            }
             break;
             
     }
@@ -138,25 +170,6 @@
         optionDescriptions = [[NSArray alloc] initWithObjects:@"Copy files from dropbox",@"Copy local files to dropbox",@"Cancel",nil];
     }
     return optionDescriptions;
-}
-
-
--(void)synchActivityCompleted:(BOOL) succeeded
-{
-    if (!succeeded)
-    {
-        [self displayError];
-    }
-    else
-    {
-        // if file was copied from db...
-        [self.groceryStore reloadLists];
-        [self.groceryStore setShareLists:YES];
-        HGGSDbGroceryFilesStore * dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-        [dbStore notifyOfChangesToStore:self.groceryStore];
-    }
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:_dismissBlock];
-    
 }
 
 @end

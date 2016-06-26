@@ -14,12 +14,13 @@
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSStoreAisles.h"
 #import "NSString+SringExtensions.h"
+#import "HGGSDropboxClient.h"
 
 //#IMPORT "HGGSAisleHeaderCellViewTableViewCell.h"
 
 #define EDIT_CELL_ID  @"EditGrocerySectionCell"
 
-@interface HGGSGrocerySectionsViewController  ()<UISearchBarDelegate, UISearchDisplayDelegate, HGGSGroceryStoreDelegate>
+@interface HGGSGrocerySectionsViewController  ()<HGGSGroceryStoreDelegate>
 {
     HGGSGrocerySection *_currentGrocerySection;
     NSIndexPath *_ipBeingEdited;
@@ -30,6 +31,7 @@
     NSString *_filter;
     NSMutableArray *_aisles;
     NSMutableArray *_aislesDisplayed;
+    HGGSDropboxClient * _dropboxClient;
     
 }
 
@@ -79,6 +81,9 @@
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
     
+    _dropboxClient = [HGGSDropboxClient CreateFromController:self forStore:_store];
+    [_dropboxClient setDelegate:self];
+    [_dropboxClient setActivityIndicatorCenter:CGPointMake(self.view.center.x, self.view.frame.origin.y + self.view.frame.size.height + 20)];
  
 }
 
@@ -86,6 +91,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([_store shareLists])
+        [_dropboxClient copySetupOnlyFromDropbox];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -101,12 +113,13 @@
 
 -(void)dealloc
 {
-    if (_changesToSave)
-    {
-        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveGroceryAisles:_store];
-        _changesToSave =NO;
-    }
+//    if (_changesToSave)
+//    {
+//        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+//        [storeManager saveGroceryAisles:_store];
+//        _changesToSave =NO;
+//    }
+    _dropboxClient = nil;
 }
 
 #pragma mark Actions
@@ -228,17 +241,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    @try {
         HGGSGroceryAisle * aisle = [_aislesDisplayed objectAtIndex:section];
         
         return [[aisle grocerySections] count];
        
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Exception in numberOfRowsInSection:");
-    }
-    
-    return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -358,8 +364,7 @@
     if ((_ipBeingEdited) || (_editIsDeleting))
         return;
     
-    if ((tableView == [[self searchDisplayController] searchResultsTableView]) ||
-        ([tableView isEditing]))
+    if ([tableView isEditing])
     {
         HGGSGrocerySection * section = [self grocerySectionAt:indexPath];
         
@@ -470,7 +475,7 @@
 }
 
 
-#pragma mark HGGSGroceryStoreDelegegate
+#pragma mark HGGSGroceryStoreDelegate
 -(void)didHaveAisleChange:(HGGSGrocerySection*)section fromAisle:(HGGSGroceryAisle*)fromAisle toAisle:(HGGSGroceryAisle*)toAisle
 {
     [self prepareList:YES];
@@ -479,20 +484,40 @@
 -(void)didRemoveGroceryAisle:(HGGSGroceryAisle*)aisle
 {
     
-    [self prepareList:NO];
+    [self prepareList:YES];
     [self.tableView reloadData];
+}
+#pragma mark HGGSDropboxControllerDelegate methods
+-(void)synchActivityCompleted:(BOOL) succeeded error:(NSString *)errorMessage
+{
+    if (!succeeded)
+    {
+        [self displayDropboxError:errorMessage];
+    }
+    [_dropboxClient setDelegate:nil];
 }
 
 #pragma mark Private Methods
 -(HGGSGroceryAisle *)aisleAt:(NSIndexPath*)indexPath
 {
-    @try {
-        return [_aislesDisplayed objectAtIndex:indexPath.section];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Exception caught in aisleAt:inTableView:");
-    }
+    return [_aislesDisplayed objectAtIndex:indexPath.section];
 }
+-(void) displayDropboxError:(NSString*)error
+{
+    NSString *message;
+    
+    if (error == nil)
+        message = @"An error occurred copying a file to/from the Dropbox server.";
+    else
+        message = error;
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Dropbox Error"
+                                                    message:message
+                                                   delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    [alert show];
+}
+
 
 -(void) editGrocerySectionAt:(NSIndexPath*)indexPath
 {
@@ -516,17 +541,10 @@
 }
 -(HGGSGrocerySection*)grocerySectionAt:(NSIndexPath*)indexPath
 {
-    @try
-    {
         HGGSGroceryAisle* aisle = [self aisleAt:indexPath];
         
         return [[aisle grocerySections]  objectAtIndex:indexPath.row];
         //DEFAULT_GROCERY_SECTION_NAME
-    }
-    @catch (NSException *e)
-    {
-        NSLog(@"exception in grocerySectionAt:inTableView:%@", e);
-    }
 
 }
 -(int)heightNeededForText:(NSString*)text font:(UIFont *)font fieldWidth:(float)fieldWidth

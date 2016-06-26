@@ -13,14 +13,16 @@
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSStoreItems.h"
 #import "NSString+SringExtensions.h"
+#import "HGGSDropboxClient.h"
 
-@interface HGGSMasterListViewController ()
+@interface HGGSMasterListViewController () //<HGGSDropboxControllerDelegate>
 {
     bool _changesToSave;
     NSMutableArray * _pantryItems;
     NSMutableArray * _itemsDisplayed;
     HGGSStoreItems* _groceryList;
     NSString *_filter;
+    HGGSDropboxClient * _dropboxClient;
 }
 
 @end
@@ -62,17 +64,36 @@
     [self prepareList];
     self.searchController.searchBar.delegate = self;
     self.definesPresentationContext = YES;
-    [self.searchController.searchBar sizeToFit];   
+    [self.searchController.searchBar sizeToFit];
+    
+    if (![[self store] shareLists])
+        return;
+    
+    _dropboxClient = [HGGSDropboxClient CreateFromController:self forStore:_store];
+    [_dropboxClient setDelegate:self];
+    [_dropboxClient setActivityIndicatorCenter:CGPointMake(self.view.center.x, self.view.frame.origin.y + self.view.frame.size.height + 20)];
  }
 -(void)dealloc
 {
-    if (_changesToSave)
-    {
-        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
-        [storeManager saveGroceryList:[self store]];
-        _changesToSave =NO;
-    }
+//    if (_changesToSave)
+//    {
+//        HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
+//        [storeManager saveGroceryList:[self store]];
+//        
+//        _changesToSave =NO;
+//    }
+    _dropboxClient = nil;
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([_store shareLists])
+        [_dropboxClient copyListFromDropbox];
+    
+
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     
@@ -80,6 +101,9 @@
     {
         HGGSGroceryStoreManager* storeManager = [HGGSGroceryStoreManager sharedStoreManager];
         [storeManager saveGroceryList:[self store]];
+//        if ([_store shareLists])
+//            [_dropboxClient copyListToDropbox];
+        
         _changesToSave =NO;
     }
     [super viewWillDisappear:animated];
@@ -164,8 +188,8 @@
     [self.tableView scrollRectToVisible:searchBarFrame animated:NO];
     return NSNotFound;
 }
-#pragma mark UITableViewDelegate Methods
 
+#pragma mark UITableViewDelegate Methods
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -227,8 +251,34 @@
     [self searchForText:searchString];
     [self.tableView reloadData];
 }
+#pragma mark HGGSDropboxControllerDelegate methods
+-(void)synchActivityCompleted:(BOOL) succeeded error:(NSString*)errorMessage
+{
+    if (!succeeded)
+    {
+        [self displayDropboxError:errorMessage];
+    }
+    [_dropboxClient setDelegate:nil];
+}
+
 
 #pragma mark Private
+-(void) displayDropboxError:(NSString*)error
+{
+    NSString *message;
+    
+    if (error == nil)
+        message = @"An error occurred copying a file to/from the Dropbox server.";
+    else
+        message = error;
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Dropbox Error"
+                                                    message:message
+                                                   delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    [alert show];
+}
+
 - (void)searchForText:(NSString *)searchText
 {
     _filter = searchText;

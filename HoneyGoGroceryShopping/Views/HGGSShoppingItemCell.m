@@ -21,7 +21,7 @@
     return self;
 }
 #pragma mark Property Overrides
--(void) setGroceryItem:(HGGSGroceryItem *)groceryItem
+-(void) bindGroceryItem:(HGGSGroceryItem *)groceryItem tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath
 {
     _groceryItem = groceryItem;
     
@@ -29,19 +29,54 @@
     [_quantity setText:[NSString stringWithFormat:@"%g %@", [groceryItem quantity], [groceryItem unit]]];
     [_notes setText:[groceryItem notes]];
     [_completed setSelected:[groceryItem isInShoppingCart]];
-    UIImage *itemImage = [groceryItem image];
-    if (itemImage == nil)
+
+    if (_itemPictureView == nil)
         return;
     
-    if ([groceryItem smallImage]== nil)
-    {
-        [groceryItem setSmallImage:[itemImage resize:[_itemPictureView bounds].size origin:[_itemPictureView bounds].origin]];
-    }
     _itemPictureView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
-    [_itemPictureView setImage:[groceryItem smallImage]];
-    [_itemPictureView setContentMode:UIViewContentModeScaleAspectFit];
-    [_itemPictureView setClipsToBounds:YES];
+
+    static UIImage * placeHolder;
     
+    if (placeHolder == nil)
+    {
+        UIImage* placeHolderImage = [UIImage imageNamed:@"groceryItemPicturePlaceHolder.jpg"];
+        placeHolder = [placeHolderImage
+                       resize:[_itemPictureView bounds].size origin:[_itemPictureView bounds].origin];
+
+    }
+    if ([_groceryItem smallImage] != nil)
+    {
+        [_itemPictureView setImage:[groceryItem smallImage]];
+        [_itemPictureView setContentMode:UIViewContentModeScaleAspectFit];
+        [_itemPictureView setClipsToBounds:YES];
+        return;
+    }
+    
+    if ([_groceryItem smallImage] == nil)
+    {
+        _itemPictureView.image = placeHolder;
+    
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            UIImage *itemImage = [groceryItem image];
+            if (itemImage == nil)
+                return;
+        
+     
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [groceryItem setSmallImage:[itemImage resize:[_itemPictureView bounds].size origin:[_itemPictureView bounds].origin]];
+                
+                if ([groceryItem smallImage] == nil)
+                    return;
+                
+                HGGSShoppingItemCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
+                cell.itemPictureView.image = [groceryItem smallImage];
+                cell.itemPictureView.contentMode = UIViewContentModeScaleAspectFit;
+                cell.itemPictureView.clipsToBounds = YES;
+            });                
+        });
+    }
 }
 
 #pragma mark Actions

@@ -26,8 +26,8 @@
 
 //@property (weak, nonatomic, readonly) IBOutlet UIImageView *imageView;
 
-@property (nonatomic) HGGSGroceryItem *groceryItem;
-
+@property (nonatomic, readonly) HGGSGroceryItem *groceryItem;
+-(void)bindGroceryItem:(HGGSGroceryItem *)groceryItem tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 - (IBAction)toggleSelectState:(id)sender;
 -(void) saveUserValuesEnteredByUser;
 -(IBAction)zoomPicture:(id)sender;

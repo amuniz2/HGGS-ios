@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HGGSDropboxClient.h"
+
 @class HGGSGroceryStore;
 
-@interface HGGSMasterListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate>
+@interface HGGSMasterListViewController : UITableViewController <UISearchResultsUpdating, UISearchBarDelegate, HGGSDropboxControllerDelegate>
 {
     //__weak IBOutlet UISearchBar *_searchBar;
     bool _addNewItem;

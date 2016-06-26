@@ -14,7 +14,7 @@
 
 @implementation HGGSDbGroceryFilesStore
 {
-    DBRestClient *_restClient;
+    //DBRestClient *_restClient;
 }
 
 #pragma mark Class Methods
@@ -101,6 +101,11 @@
  
  }
  */
+-(void)getFileMetadata:(NSString *)fileName forStore:(NSString*)storeName
+{
+    NSString *dbPath = [NSString stringWithFormat:@"/%@/%@", storeName, fileName];
+    [_restClient loadMetadata:dbPath];
+}
 -(void)groceryFilesExistForStore:(NSString *)storeName
 {
     NSString *dbFolder = [NSString stringWithFormat:@"/%@", storeName];
@@ -119,6 +124,76 @@
      */
 }
 
+-(void)existingGroceryStores
+{
+    NSString *dbFolder = @"/";
+    [_restClient loadMetadata:dbFolder];
+    
+    /*    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^()
+     {
+     BOOL result = [self doFilesExistInStore:storeName];
+     dispatch_async(dispatch_get_main_queue(), ^{
+     // This will be called on the main thread, so that
+     // you can update the UI, for example.
+     //[self longOperationDone];
+     returnResult( result);
+     });
+     });
+     */
+}
+
+-(void)copyFileFromDropbox:(NSString *)fileName fromFolder:storeFolder intoFolder:(NSString *)localPath
+{
+    NSString *dbFilePath = [NSString stringWithFormat:@"/%@/%@", storeFolder, fileName];
+    NSString *localFilepath = [localPath stringByAppendingPathComponent:fileName ];
+    [_restClient loadFile:dbFilePath intoPath:localFilepath];
+}
+
+-(BOOL)copyFileToDropbox:(NSString *)fileName  fromFolder:(NSString *)localFolder intoFolder:(NSString *)dbPath parentRevision:(NSString*)parentRevision
+{
+    NSString *localFilePath = [localFolder stringByAppendingPathComponent:fileName];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:localFilePath])
+        return NO;
+    
+    // Upload file to Dropbox
+    [_restClient uploadFile:fileName toPath:dbPath withParentRev:parentRevision fromPath:localFilePath];
+    
+    //    DBFile * dbFile = [_fs openFile:dbFilePath error:&error];
+    //    if (error)
+    //        dbFile = [_fs createFile:dbFilePath error:&error];
+    //
+    //    if (dbFile)
+    //    {
+    //        error = nil;
+    //        fileCopied =[dbFile writeContentsOfFile:localFilePath shouldSteal:NO error:&error];
+    //        [dbFile close];
+    //    }
+    //
+    //    if (error)
+    //    {
+    //        NSLog(@"Error opening file %@: %@", dbFilePath, error);
+    //    }
+    return YES;
+    
+}
+
+-(void)deleteFileFromDropbox:(NSString *)dbFilePath
+{
+    //DBError *error;
+    
+    [_restClient deletePath:dbFilePath];
+    
+    /*   if ([_fs deletePath:[dbFileInfo path] error:&error])
+     return YES;
+     
+     else if (error)
+     {
+     NSLog(@"Error deleting file %@: %@", [dbFileInfo path], error);
+     }
+     return NO;
+     */
+}
+
 /*
  -(void) notifyOfChangesToStore:(HGGSGroceryStore*)store
  {
@@ -130,29 +205,6 @@
  [self notifyOfChangesToStoreList:[store getCurrentList]  inFolder:dbStoreFolder];
  }
  */
-//-(void) notifyOfChangesToStoreList:(HGGSStoreList*)storeList inFolder:(DBPath *)inFolder
-//{
-//    __weak id weakSelfRef = self;
-//
-//    [_fs addObserver:self forPath:[inFolder childPath:[storeList fileName]] block:^{
-//        if (![storeList exists])
-//            [weakSelfRef doCopyFromDropbox:storeList notifyCopyCompleted:nil];
-//    }];
-//
-//
-//}
-//
-//-(void) notifyOfChangesToStoreImages:(HGGSGroceryStore*)store inStoreFolder:(DBPath *)inStoreFolder
-//{
-//    __weak id weakSelfRef = self;
-//
-//    [_fs addObserver:self forPath:[inStoreFolder childPath:@"images"] block:^{
-//
-//        // todo: copy image files from dropbox to local
-//        [weakSelfRef doCopyFilesInDBFolder:inStoreFolder toLocalFolder:[store imagesFolder] lastSyncDate:[store lastImagesSyncDate]];
-//    }];
-//
-//}
 
 #pragma mark Property Overrides
 -(id)DropboxClient
@@ -198,56 +250,6 @@
  */
 
 #pragma mark Private Methods
-/*-(void)copyFileFromDropbox:(NSString *)fileName fromFolder:storeFolder intoFolder:(NSString *)localPath
- {
- NSString *dbFilePath = [NSString stringWithFormat:@"/%@/%@", storeFolder, fileName];
- [_restClient loadFile:dbFilePath intoPath:intoFolder];
- }*/
-
--(BOOL)copyFileToDropbox:(NSString *)fileName  fromFolder:(NSString *)localFolder intoFolder:(NSString *)dbFilePath
-{
-    NSString *localFilePath = [localFolder stringByAppendingPathComponent:fileName];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:localFilePath])
-        return NO;
-    
-    // Upload file to Dropbox
-    [_restClient uploadFile:fileName toPath:dbFilePath withParentRev:nil fromPath:localFilePath];
-    
-    //    DBFile * dbFile = [_fs openFile:dbFilePath error:&error];
-    //    if (error)
-    //        dbFile = [_fs createFile:dbFilePath error:&error];
-    //
-    //    if (dbFile)
-    //    {
-    //        error = nil;
-    //        fileCopied =[dbFile writeContentsOfFile:localFilePath shouldSteal:NO error:&error];
-    //        [dbFile close];
-    //    }
-    //
-    //    if (error)
-    //    {
-    //        NSLog(@"Error opening file %@: %@", dbFilePath, error);
-    //    }
-    return YES;
-    
-}
-
--(void)deleteFileFromDropbox:(NSString *)dbFilePath
-{
-    //DBError *error;
-    
-    [_restClient deletePath:dbFilePath];
-    
-    /*   if ([_fs deletePath:[dbFileInfo path] error:&error])
-     return YES;
-     
-     else if (error)
-     {
-     NSLog(@"Error deleting file %@: %@", [dbFileInfo path], error);
-     }
-     return NO;
-     */
-}
 
 /*
  -(bool)doFilesExistInStore:(NSString*) storeName
@@ -337,9 +339,9 @@
     return ((otherFileDate == nil) || ([localFileDate compare:otherFileDate] == NSOrderedDescending));
     
 }
--(void) getListOfImagesFromDropboxFolder:(NSString *)storeName
+-(void) getListOfImagesFromDropboxFolder:(NSString *)dbFolder
 {
-    NSString *dbFolder = [NSString stringWithFormat:@"/%@/images",storeName];
+    //NSString *dbFolder = [NSString stringWithFormat:@"/%@/images",storeName];
     [_restClient loadMetadata:dbFolder];
 }
 

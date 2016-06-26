@@ -404,13 +404,17 @@ finishedSavingWithError:(NSError *)error
     {
         // new grocery item must be created, as an existing one cannot have its name changed
         _groceryItem = [[HGGSGroceryItem alloc] initWithDetails:[name text]
-                                                        quantity:[[quantity text] doubleValue]
-                                                        unit:[units text]
-                                                        section:[grocerySection text]
-                                                        notes:[_additionalNotes text]
-                                                includeInPantry:YES
-                                                        selectByDefault:[select isOn]
-                                                lastPurchasedOn:[NSDate date] ];
+                        quantity:[[quantity text] doubleValue]
+                        unit:[units text]
+                        section:[grocerySection text]
+                        notes:[_additionalNotes text]
+                        includeInPantry:(_itemType == newShoppingItem) ? [select isOn] : YES
+                        selectByDefault:((_itemType == pantryItem) || (_itemType == newShoppingItem)) ? [select isOn] : NO
+                        lastPurchasedOn:[NSDate date]
+                        includeInShoppingList:((_itemType == pantryItem) || (_itemType == newShoppingItem)) ? [select isOn] : NO
+                        isInShoppingCart:NO
+                        image:nil];
+        
                                                          // image:[_imageView image]] ;
         [_groceryItem setImage:[_imageView image]];
         _actionTaken = (_isNewItem ? saveChanges : replaceItem);

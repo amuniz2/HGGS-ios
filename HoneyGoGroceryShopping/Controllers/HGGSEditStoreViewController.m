@@ -24,9 +24,10 @@
 
 #define SEGUE_TO_CHOOSE_SYNCH_OPTION @"toSynchWithDropbox"
 
-@interface HGGSEditStoreViewController ()
+@interface HGGSEditStoreViewController ()//<HGGSDropboxControllerDelegate >
 {
     BOOL _gettingDropboxFolderInfo;
+    HGGSDropboxClient *_dropboxClient;
 }
 @end
 
@@ -52,6 +53,11 @@
     [[self navigationItem] setRightBarButtonItem:delButton];
     
     [self toggleEditMode:NO];
+ 
+    _dropboxClient = [HGGSDropboxClient  CreateFromController:self forStore:[self groceryStore]];
+    [_dropboxClient setDelegate:self];
+    [_dropboxClient setActivityIndicatorCenter:CGPointMake(_dropboxButton.center.x, _dropboxButton.frame.origin.y + _dropboxButton.frame.size.height + 20)];
+    
     
 }
 
@@ -215,9 +221,34 @@
 }
 -(void)startSharing
 {
+    
     HGGSDbGroceryFilesStore *dbStore = [HGGSDbGroceryFilesStore sharedDbStore];
-    [dbStore groceryFilesExistForStore:[self.groceryStore name] ];
+    [dbStore setDropboxClient:self];
+    
+//    if (![[DBSession sharedSession] isLinked])
+//    {
+//        [[DBSession sharedSession] linkFromController:self];
+//    }
+//    [dbStore setDropboxClient:self];
+    
+     [dbStore existingGroceryStores];
 }
+-(void) displayDropboxError:(NSString*)error
+{
+    NSString *message;
+    
+    if (error == nil)
+        message = @"An error occurred copying a file to/from the Dropbox server.";
+    else
+        message = error;
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Dropbox Error"
+                                                    message:message
+                                                   delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    [alert show];
+}
+
 #pragma mark Actions
 -(void)renameStore
 {
@@ -278,7 +309,7 @@
      */
     
 }
--(void) presentSynchOptionsToUser:(HGGSDbGroceryFilesStore *)dbStore
+-(void) presentSynchOptionsToUser
 {
     
     [self performSegueWithIdentifier:SEGUE_TO_CHOOSE_SYNCH_OPTION sender:self];
@@ -371,11 +402,68 @@
 }
 -(void)onDeleteStoreConfirmed
 {
-    NSLog(@"onDeleteStoreConfirmed called");
     [[HGGSGroceryStoreManager sharedStoreManager] deleteStore:[[self groceryStore] name]];
     [[self navigationController] popViewControllerAnimated:YES];
     
 }
+#pragma mark HGGSDropboxControllerDelegate methods
+-(void)synchActivityCompleted:(BOOL) succeeded error:(NSString*)errorMessage
+{
+    if (!succeeded)
+    {
+        [self displayDropboxError:errorMessage];
+        [self.groceryStore setShareLists:NO];
+    }
+    else
+    {
+        // if file was copied from db...
+        [self.groceryStore setShareLists:YES];
+        [self updateDropboxActionButton];
+    }
+    
+}
 
 #pragma mark DBRestClientDelegate methods
+-(bool)storeExists:(DBMetadata*) metadata
+{
+    if (metadata.contents.count == 0)
+        return NO;
+    
+    for (DBMetadata * item in metadata.contents) {
+        
+        if (item.isDirectory && [item.path isEqualToString:[NSString stringWithFormat:@"/%@", _groceryStoreName.text]] )
+            return YES;
+    }
+    return NO;
+    
+}
+- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+    [[HGGSDbGroceryFilesStore sharedDbStore] setDropboxClient:_dropboxClient];
+
+    if ((metadata.isDirectory) && [self storeExists:metadata])
+    {
+        [self presentSynchOptionsToUser];
+    }
+    else
+    {
+        //[_groceryStore setShareLists:YES];
+        //[dropboxClient setDelegate:self];
+        [[HGGSDbGroceryFilesStore sharedDbStore] setDropboxClient:_dropboxClient];
+
+        [_dropboxClient copyStoreToDropbox];
+       // [self updateDropboxActionButton];
+    }
+}
+
+- (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error {
+    [[HGGSDbGroceryFilesStore sharedDbStore] setDropboxClient:_dropboxClient];
+    UIAlertView *errorAlert = [[UIAlertView alloc]
+                               initWithTitle:@"Dropbox Error" message:[NSString stringWithFormat:@"%@", error] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
+    
+    [errorAlert show];
+    
+    return;
+    
+}
+
 @end

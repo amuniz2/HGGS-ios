@@ -40,6 +40,7 @@ UIPickerViewDelegate, UIPickerViewDataSource>
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        //[_tableView set]
     }
     return self;
 }
