@@ -13,6 +13,7 @@
 #import "HGGSStoreAisles.h"
 
 @class HGGSGroceryAisle;
+@class HGGSDropboxFileRevisions;
 
 typedef enum storeFileType
 {
@@ -42,6 +43,8 @@ typedef enum storeFileType
 @property (nonatomic, copy, readonly) NSString* localFolder;
 @property (nonatomic, copy, readonly) NSString* imagesFolder;
 @property (nonatomic, copy) NSDate* lastImagesSyncDate;
+@property (nonatomic, strong) HGGSDropboxFileRevisions *dropboxFileRevisions;
+@property (nonatomic, copy) NSDate* saveImagesSavedAfter;
 
 +(HGGSGroceryStore *)createStore:(NSString*)storeName;
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete;
@@ -71,4 +74,5 @@ typedef enum storeFileType
 //-(bool) shoppingListIsMoreRecentThanCurrentList;
 -(void)unload;
 -(BOOL)noItemsLeftToShopFor;
+-(void)converToNewStorage;
 @end

@@ -12,6 +12,17 @@
 #import "HGGSGroceryItem.h"
 #import "HGGSDate.h"
 
+#define k_includeInShoppingListByDefault @"includeInShoppingListByDefault"
+#define k_quantity @"quantity"
+#define k_unit @"unit"
+#define k_notes @"notes"
+#define k_isPantryItem @"isPantryItem"
+#define k_includeInShoppingList @"includeInShoppingList"
+#define k_isInShoppingCart @"isInShoppingCart"
+#define k_section @"section"
+#define k_image @"image"
+#define k_lastPurchasedDate @"lastPurchasedDate"
+
 @implementation HGGSGroceryItem
 {
     UIImage *_image;
@@ -26,19 +37,21 @@
         self = [self initFromOldItemAttributes:itemAttributes];
     else
     {
-        double quantity =(double)[[itemAttributes objectForKey:@"quantity" ] doubleValue];
+        double quantity =(double)[[itemAttributes objectForKey:k_quantity ] doubleValue];
         NSString * itemName = [itemAttributes objectForKey:@"name"];
     
         self = [self initWithDetails:itemName
-                        quantity:quantity
-                        unit:[itemAttributes objectForKey:@"unit"]
-                        section:[itemAttributes objectForKey:@"section"]
-                        notes:[itemAttributes objectForKey:@"notes"]
-                 includeInPantry:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"isPantryItem"]]
-                 selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selectByDefault"]]
-                        lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
+                quantity:quantity
+                unit:[itemAttributes objectForKey:k_unit]
+                section:[itemAttributes objectForKey:k_section]
+                notes:[itemAttributes objectForKey:k_notes]
+                includeInPantry:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_isPantryItem]]
+                selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_includeInShoppingListByDefault]]
+                lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:k_lastPurchasedDate] ]
+                includeInShoppingList:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_includeInShoppingList]]
+                isInShoppingCart:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_isInShoppingCart]]
 //                        sectionId:[itemAttributes objectForKey:@"category"]
-//                        image:[itemAttributes objectForKey:@"image"]
+                        image:[itemAttributes objectForKey:@"image"]
             ];
     
     }
@@ -64,14 +77,17 @@
     
     self = [self initWithDetails:itemName
                         quantity:quantity
-                            unit:[itemAttributes objectForKey:@"unit"]
-                         section:[itemAttributes objectForKey:@"section"]
-                           notes:[itemAttributes objectForKey:@"notes"]
+                            unit:[itemAttributes objectForKey:k_unit]
+                         section:[itemAttributes objectForKey:k_section]
+                           notes:[itemAttributes objectForKey:k_notes]
                  includeInPantry:YES
-                 selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:@"selected"]]
+                 selectByDefault:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_includeInShoppingListByDefault]]
                  lastPurchasedOn:[HGGSDate stringAsDate:[itemAttributes objectForKey:@"lastPurchasedDate"]]
+                 includeInShoppingList:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_includeInShoppingList]]
+                 isInShoppingCart:[HGGSBool stringAsBool:[itemAttributes objectForKey:k_isInShoppingCart]]
+                                                   image:[itemAttributes objectForKey:@"image"]
+                                   
             //                        sectionId:[itemAttributes objectForKey:@"category"]
-            //                        image:[itemAttributes objectForKey:@"image"]
             ];
     
     
@@ -92,7 +108,7 @@
 //    return self;
 //}
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate includeInShoppingList:(bool) includeInShoppingList isInShoppingCart:(bool) isInShoppingCart image:(NSString*)imageName
 {
     
     self = [super init];
@@ -106,11 +122,10 @@
         [self setSection:grocerySection];
         [self setIsPantryItem:includeInPantry];
         [self setIncludeInShoppingListByDefault:selectByDefault];
-        [self setIsInShoppingCart:NO];
-        [self setIncludeInShoppingList:selectByDefault];
+        [self setIsInShoppingCart:isInShoppingCart];
+        [self setIncludeInShoppingList:includeInShoppingList];
         //[self setSelected:selected];
-        [self setLastPurchasedDate:lastPurchasedDate];
-        //[self setImage:image];
+        [self setImageName:imageName];
         
     }
     return self;
@@ -118,7 +133,7 @@
 -(id)init
 {
     NSString* emptyString = @"";
-    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString includeInPantry:YES selectByDefault:NO lastPurchasedOn:nil ];
+    self = [self initWithDetails:emptyString quantity:1 unit:emptyString section:emptyString notes:emptyString includeInPantry:YES selectByDefault:NO lastPurchasedOn:nil includeInShoppingList:YES isInShoppingCart:NO image:emptyString];
     if (self)
     {
         [self setSectionId:emptyString];
@@ -136,16 +151,16 @@
     
     NSDictionary *ret =[[NSDictionary alloc] initWithObjectsAndKeys:
                     _name, @"name",
-                    [NSNumber numberWithDouble:_quantity], @"quantity",
-                    (_unit == nil) ? @"" : _unit, @"unit",
-                    (_notes == nil) ? @"" : _notes, @"notes",
-                    [HGGSBool boolAsString:_isPantryItem], @"isPantryItem",
-                        [HGGSBool boolAsString:_includeInShoppingListByDefault], @"includeInShoppingListByDefault",
-                        [HGGSBool boolAsString:_includeInShoppingList], @"includeInShoppingList",
-                        [HGGSBool boolAsString:_isInShoppingCart], @"isInShoppingCart",
-                    (_section == nil) ? @"" : _section, @"section",
-                        (_imageName == nil) ? @"" : imageName, @"image",
-                        [HGGSDate dateAsString:_lastPurchasedDate], @"lastPurchasedDate",
+                    [NSNumber numberWithDouble:_quantity], k_quantity,
+                    (_unit == nil) ? @"" : _unit, k_unit,
+                    (_notes == nil) ? @"" : _notes, k_notes,
+                    [HGGSBool boolAsString:_isPantryItem], k_isPantryItem,
+                        [HGGSBool boolAsString:_includeInShoppingListByDefault], k_includeInShoppingListByDefault,
+                        [HGGSBool boolAsString:_includeInShoppingList], k_includeInShoppingList,
+                        [HGGSBool boolAsString:_isInShoppingCart], k_isInShoppingCart,
+                    (_section == nil) ? @"" : _section, k_section,
+                        (_imageName == nil) ? @"" : imageName, k_image,
+                        [HGGSDate dateAsString:_lastPurchasedDate], k_lastPurchasedDate,
                     nil];
     
     return ret;
@@ -209,17 +224,20 @@
 -(id)copyWithZone:(NSZone *)zone
 {
     HGGSGroceryItem *copy = [[HGGSGroceryItem alloc] initWithDetails:[self name]
-                                                            quantity:[self quantity]
-                                                                unit:[self unit]
-                                                             section:[self section]
-                                                               notes:[self notes]
-                                                    includeInPantry:[self  isPantryItem]
-                                                     selectByDefault:[self includeInShoppingListByDefault]
-                                                     lastPurchasedOn:[self lastPurchasedDate]];
+                quantity:[self quantity]
+                unit:[self unit]
+                section:[self section]
+                notes:[self notes]
+                includeInPantry:[self  isPantryItem]
+                selectByDefault:[self includeInShoppingListByDefault]
+                lastPurchasedOn:[self lastPurchasedDate]
+                includeInShoppingList:[self includeInShoppingList]
+                isInShoppingCart:[self isInShoppingCart]
+                                                               image:[self imageName]];
     
-    [copy setIsInShoppingCart:[self isInShoppingCart]];
-    [copy setIncludeInShoppingList:[self includeInShoppingList]];
-    [copy setImageName:[self imageName]];
+   // [copy setIsInShoppingCart:[self isInShoppingCart]];
+   // [copy setIncludeInShoppingList:[self includeInShoppingList]];
+   // [copy setImageName:[self imageName]];
     [copy setImage:[self image]];
     [copy setSectionId:[self sectionId]];
     [copy setImagesFolder:[self imagesFolder]];

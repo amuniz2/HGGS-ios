@@ -22,5 +22,5 @@
 -(bool) itemExists:(NSString *)key;
 //-(HGGSGroceryItem*) itemWithkey:(NSString *)key;
 -(void)remove:(NSString *)key;
-
+-(void)load;
 @end

@@ -9,6 +9,7 @@
 #import "HGGSGroceryStoreManager.h"
 #import "HGGSGroceryStore.h"
 #import "HGGSDbGroceryFilesStore.h"
+#import "HGGSDropboxFileRevisions.h"
 
 @interface HGGSGroceryStoreManager()
     -(NSString *)getGroceryStoresFolder;
@@ -81,8 +82,6 @@
 #pragma mark Public Methods
 -(void)deleteStore:(NSString *)storeName
 {
-    NSLog(@"store manager deleteStore called");
-
     HGGSGroceryStore *storeToDelete = [_allStores objectForKey:storeName];
     if (storeToDelete)
     {
@@ -111,7 +110,6 @@
 }
 -(void)saveChanges
 {
-    
     for(HGGSGroceryStore *store in [_allStores objectEnumerator])
     {
         [self saveStore:store];
@@ -148,6 +146,8 @@
 -(HGGSGroceryStore *)loadStore:(NSString*)storeName
 {
     HGGSGroceryStore *storeToLoad = [[HGGSGroceryStore alloc] initWithStoreName:storeName];
+    [storeToLoad converToNewStorage];
+    
     // todo: initial load should only load store names!! 
     [_allStores setObject:storeToLoad forKey:storeName];
     
@@ -155,12 +155,15 @@
 }
 -(void)prepareStore:(HGGSGroceryStore*)store
 {
-    if (([store shareLists]) && (![store preparedForWork]))
+    if  (![store preparedForWork])
     {
+        HGGSDropboxFileRevisions *fileRevisions = [[HGGSDropboxFileRevisions alloc] initFromFolder:[store localFolder]];
         // copy any files that have been updated in dropbox
         // todo: [self fetchAnyNewDbFilesForStore:store];
-        [[HGGSDbGroceryFilesStore sharedDbStore] notifyOfChangesToStore:store];
+        [fileRevisions loadLocalFileRevisions];
+        [store setDropboxFileRevisions:fileRevisions];
         [store setPreparedForWork:YES];
+        [store setSaveImagesSavedAfter:[NSDate date]];
     }
 }
 -(void)saveStore:(HGGSGroceryStore*) store

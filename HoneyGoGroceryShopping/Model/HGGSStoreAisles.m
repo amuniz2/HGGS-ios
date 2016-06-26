@@ -18,7 +18,7 @@
     NSMutableArray *_list;
 }
 #pragma mark Class Methods
-+(HGGSStoreList*) createList:(NSString *)fileName store:(id)store  list:(NSMutableArray*)list
++(HGGSStoreAisles*) createList:(NSString *)fileName store:(id)store  list:(NSMutableArray*)list
 {
     return [[HGGSStoreAisles alloc] initWithList:list fileName:fileName store:store ];
 }
@@ -133,6 +133,7 @@
         {
             aisleWithMatchingSections = [[HGGSGroceryAisle alloc] init];
             [aisleWithMatchingSections setGrocerySections:matchingSectionsInAisle];
+            [aisleWithMatchingSections setNumber:[aisle number]];
             [searchResults addObject:aisleWithMatchingSections];
             
         }

@@ -30,13 +30,13 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) NSString* imagesFolder;
 @property(nonatomic, copy) NSString* imageName;
-@property(nonatomic, weak) UIImage *smallImage;
+@property(nonatomic, strong) UIImage *smallImage;
 @property bool imageModified;
 
 -(id)initFromDictionary:(NSDictionary *)itemAttributes imagesFolder:(NSString*)imagesFolder;
 @property(nonatomic,strong, readonly) NSDictionary *asDictionary;
 
--(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate;
+-(id)initWithDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes includeInPantry:(bool)includeInPantry selectByDefault:(bool)selectByDefault lastPurchasedOn:(NSDate*)lastPurchasedDate includeInShoppingList:(bool) includeInShoppingList isInShoppingCart:(bool) isInShoppingCart image:(NSString*)imageName;
 
 //-(id)initWithOldDetails:(NSString*)name quantity:(double)amount unit:(NSString *)unitDescription section:(NSString *)grocerySection notes:(NSString*)notes select:(bool)selected lastPurchasedOn:(NSDate*)lastPurchasedDate sectionId:(NSString*)sectionId image:(NSString*)imageName;
 

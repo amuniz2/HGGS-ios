@@ -170,7 +170,11 @@
     [self remove:[item name]];
 }
 
-
+-(void)load
+{
+    [super load];
+    _sortedList = nil;
+}
 
 -(void)loadListFromString:(NSString*)fileContents
 {

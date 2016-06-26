@@ -15,6 +15,7 @@
 #import "HGGSStoreAisles.h"
 #import "HGGSStoreItems.h"
 #import "NSString+SringExtensions.h"
+#import "HGGSDropboxFileRevisions.h"
 
 #define STORE_INFO_FILE @"StoreInfo.json"
 #define GROCERY_LIST_FILE @"grocery_list.json"
@@ -22,7 +23,6 @@
 
 @interface HGGSGroceryStore () <NSCopying>
 {
-    
 }
 
 @end
@@ -30,14 +30,30 @@
 @implementation HGGSGroceryStore
 
 #pragma mark Class Methods
+
 +(HGGSGroceryStore *)createStore:(NSString *)storeName
 {
     NSError *error;
     HGGSGroceryStore* newStore = [[HGGSGroceryStore alloc] initWithStoreName:storeName];
     
-    if (![[NSFileManager defaultManager] createDirectoryAtPath:[newStore localFolder] withIntermediateDirectories:YES attributes:nil error:&error])
+    NSString *localFolder = [newStore localFolder];
+    NSString *imagesFolder = [newStore imagesFolder];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:localFolder])
     {
-        NSLog(@"Error creating store %@ folder: %@", storeName, error);
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:localFolder withIntermediateDirectories:YES attributes:nil error:&error])
+        {
+            NSLog(@"Error creating store %@ folder: %@", storeName, error);
+        }
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:imagesFolder])
+    {
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:imagesFolder withIntermediateDirectories:YES attributes:nil error:&error])
+        {
+            NSLog(@"Error creating store images older: %@", error);
+        }
+        
     }
     else
     {
@@ -51,8 +67,6 @@
 }
 +(void)deleteStore:(HGGSGroceryStore *)storeToDelete
 {
-    NSLog(@"store deleteStore called");
-
     NSError *error;
     if ([[NSFileManager defaultManager] fileExistsAtPath:[storeToDelete localFolder]] )
     {
@@ -69,6 +83,11 @@
                                                               
         if (![[NSFileManager defaultManager] removeItemAtPath:[storeToDelete localFolder] error:&error])
             NSLog(@"Error deleting store's grocery list: %@.  Error: %@", storeToDelete, error);
+        
+        if ([storeToDelete dropboxFileRevisions] != nil)
+        {
+            [[storeToDelete dropboxFileRevisions] deleteDoc];
+        }
     }
     
 }
@@ -107,7 +126,7 @@
     if (self)
     {
         [self setPreparedForWork:NO];
-        [self setName:storeName];
+        [self setName:[storeName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
         [self loadStoreInfo];
         
         _storeList = [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:LIST] store:self list:nil ];
@@ -116,6 +135,40 @@
     }
     return self;
 }
+-(void)converToNewStorage
+{
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSString *oldFileNamePath = [[self localFolder] stringByAppendingPathComponent:@"master_list.json"];
+   
+    if ([fileManager fileExistsAtPath:oldFileNamePath] )
+    {
+        NSString *newFileNamePath = [[self localFolder] stringByAppendingPathComponent:[HGGSGroceryStore getFileNameComponent:LIST]];
+        if (![fileManager fileExistsAtPath:newFileNamePath])
+        {
+            [[self storeList] loadFromPreviousMasterFile];
+            [[self storeList] save];
+        }
+        if ([[[self storeList] list] count] > 0)
+            [fileManager removeItemAtPath:oldFileNamePath error:&error];
+    }
+
+    oldFileNamePath = [[self localFolder] stringByAppendingPathComponent:@"current_list.json"];
+    
+    if ([fileManager fileExistsAtPath:oldFileNamePath])
+    {
+        [fileManager removeItemAtPath:oldFileNamePath error:&error];
+    }
+    
+    oldFileNamePath = [[self localFolder] stringByAppendingPathComponent:@"shopping_list.json"];
+    
+    if ([fileManager fileExistsAtPath:oldFileNamePath])
+    {
+        [fileManager removeItemAtPath:oldFileNamePath error:&error];
+    }
+}
+
 #pragma mark Property Overrides
 -(void)setName:(NSString*)name
 {
@@ -142,10 +195,11 @@
 
 -(NSString *)imagesFolder
 {
-    NSString *folder = [[self localFolder] stringByAppendingPathComponent:@"images"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:folder])
-        [[NSFileManager defaultManager] createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:nil];
-    return folder;
+//    NSError *error;
+    return [[self localFolder] stringByAppendingPathComponent:@"images"];
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:folder])
+//        [[NSFileManager defaultManager] createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:&error];
+//    return folder;
 
 }
 
@@ -163,7 +217,10 @@
     for (HGGSGroceryItem *item in [itemList list])
     {
         if ([item isPantryItem])
+        {
             [item setIncludeInShoppingList:[item includeInShoppingListByDefault]];
+            [item setIsInShoppingCart:NO];
+        }
         else
             [itemsToRemove addObject:item];
     }
@@ -177,7 +234,7 @@
 {
     return ![NSString isEmptyOrNil:stringToTest];
 }
--(NSMutableArray *)createShoppingList:(bool)resetShoppingCart
+-(NSMutableArray *)createShoppingList:(BOOL)resetShoppingCart
 {
     HGGSGrocerySection* grocerySection = nil;
     HGGSGroceryItem *shoppingItem;
@@ -185,7 +242,8 @@
     HGGSStoreItems *currentList = [self getGroceryList];
     
     HGGSGroceryAisle* unknownSectionAisle = [shoppingList  objectAtIndex:0];
-    for (HGGSGroceryItem *item in [currentList list])
+    NSEnumerator *itemEnumerator = [[currentList list] objectEnumerator];
+    for (HGGSGroceryItem *item in itemEnumerator)
     {
         if ([item includeInShoppingList])
         {
@@ -352,6 +410,10 @@
 
 -(HGGSStoreItems*)getGroceryList
 {
+    if (_storeList == nil)
+    {
+        _storeList = [HGGSStoreItems createList:[HGGSGroceryStore getFileNameComponent:LIST] store:self list:nil];
+    }
     if (![_storeList exists])
     {
         [_storeList load];
@@ -392,13 +454,6 @@
 {
     NSString *fileContents = [self serializeStoreInfo];
     [self saveFile:[[self localFolder] stringByAppendingPathComponent:STORE_INFO_FILE] contents:fileContents ];
-}
-
--(bool)saveCurrentList
-{
-    bool ret = [[self getGroceryList] save];
-    [self resetShoppingCart];
-    return ret;
 }
 
 -(bool)saveGroceryList
@@ -521,10 +576,14 @@
 
 -(NSString *) loadFile:(NSString *)fileName
 {
+    //NSString *fileNamePath = [[NSURL URLWithString:fileName] path];
     
+    //if (![[NSFileManager defaultManager] fileExistsAtPath:fileNamePath])
+    //    return nil;
+
     if (![[NSFileManager defaultManager] fileExistsAtPath:fileName])
         return nil;
- 
+    
     NSError *error;
     NSMutableString* stringContents = [[NSMutableString alloc] initWithContentsOfFile:fileName encoding:NSUTF8StringEncoding error:&error];
     [stringContents replaceOccurrencesOfString:@":true," withString:@":\"true\"," options:NSLiteralSearch range:NSMakeRange(0, [stringContents length])];
@@ -588,26 +647,25 @@
 -(bool)saveFile:(NSString*)fileName contents:(NSString *) fileContents
 {
     NSError *error  = nil;
+    BOOL isFolder;
+ 
+    //NSString *fileNamePath = [[NSURL URLWithString:fileName] path];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:fileName])
+    if (![[NSFileManager defaultManager] fileExistsAtPath:fileName isDirectory: &isFolder])
     {
         NSFileManager *fm = [NSFileManager defaultManager];
         
-        NSString *storeFolder = [self localFolder];
-        if (![fm fileExistsAtPath:storeFolder])
+        NSString *storeFolder = [self localFolder]; //[[NSURL URLWithString:[self localFolder]] path];
+        if (![fm fileExistsAtPath:storeFolder isDirectory:&isFolder] || !isFolder)
         {
             [fm createDirectoryAtPath:storeFolder withIntermediateDirectories:YES attributes:nil error:nil];
         }
               
     }
+    
     if ([fileContents writeToFile:fileName atomically:NO encoding:NSUTF8StringEncoding error:&error])
         return YES;
-    
-    if (error)
-        NSLog(@"error writing to file: %@", error);
-    else
-        NSLog(@"failed to save file, but no error reported");
-    
+        
     return NO;
 }
 -(bool) saveSerializedListInFile:(NSString*)serializedListToSave fileName:(NSString*)fileName

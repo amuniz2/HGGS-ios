@@ -18,6 +18,7 @@
 }
 @property (readonly, nonatomic, strong) NSDictionary *allStores;
 @property (readonly, nonatomic) BOOL groceryListsAreBeingShared;
+@property (nonatomic, weak) HGGSGroceryStore * storeBeingWorkedOn;
 
 +(HGGSGroceryStoreManager *)sharedStoreManager;
 
