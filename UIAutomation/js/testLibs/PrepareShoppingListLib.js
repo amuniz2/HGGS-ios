@@ -12,8 +12,11 @@ function createOrSelectTestStoreForPrepareShoppingList(target, app, storeName)
 		var editStoreWindow = createStore(target, app, storeName);	
 		var dataWithNonExistingSections = new testMasterListForGroceryStoreWithUnknownGrocerySections();	
 
-		createGrocerySections(target, app, storeName, new Hash(1, ['produce', 'new grocery section in new aisle'], 5, ['first item in aisle 5']));
+		createGrocerySections(target, app, storeName, new Hash(1, ['produce', 'new grocery section in new aisle'], 5, ['first item in aisle 5']));		
 		createMasterListItems(target, app, storeName, [data.groceryItem2InNewSection, data.groceryItemInProduceSection]);
+
+		editStoreWindow.BackButton().tap();
+		editStoreWindow.BackButton().waitForInvalid();
 
 		testStoreWithNonExistingGrocerySections = createStoreWithNonExistingGrocerySectionAssignedToGroceryItem(target, app)
 
@@ -31,8 +34,10 @@ function setupPrepareShoppingListTest(target, app)
 		return;
 
 	var mainWindow = createOrSelectTestStoreForPrepareShoppingList(target, app, testStoreName);
+
+	expectedAlertMessage = "Prepare Shopping List";
 	
-	mainWindow.PrepareGroceryListButton().tap();
+	mainWindow.PrepareGroceryListButton().tap();	
 	mainWindow.PrepareGroceryListButton().waitForInvalid();
 
 	prepareShoppingListTestHasBeenSetup = true;
@@ -55,22 +60,30 @@ function testAddShoppingItem(target, app)
 	setupPrepareShoppingListTest(target, app)
 	var data = new testCurrentListData();
 	
+	var yesButton = app.alert().buttons()["Yes"];
+	yesButton.tap();
+	yesButton.waitForInvalid();
+	
 	var prepareShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.groceryItem2InNewSection, data.groceryItemInProduceSection] );
 	
 	prepareShoppingListWindow.AddItemButton().tap();
 	prepareShoppingListWindow.AddItemButton().waitForInvalid();
+	UIALogger.logDebug("Adding item");
 	 
 	var editItemWindow = new EditGroceryItemWindow(target, app);
 	testEditCurrentItemWindowValidity(editItemWindow, data.defaultGroceryItem );
 	
 	editItemWindow.NameTextView().setValue(data.shoppingGroceryItem1.Name );
+	UIALogger.logDebug("Settig values for item added");
 	editWithShoppingItemValues(app, editItemWindow, data.shoppingGroceryItem1);
 
+	UIALogger.logDebug("getting shopingGroceryitem1");
 	var itemCell = prepareShoppingListWindow.GroceryItemCell(data.shoppingGroceryItem1);
-	if (itemCell.IncludeSwitch().value() != data.shoppingGroceryItem1.Selected)
+	if (itemCell.IncludeSwitch().value() != data.shoppingGroceryItem1.IncludeInShoppingList)
 		itemCell.IncludeSwitch().tap();
 	 
+	UIALogger.logDebug("Testing list after actions completed");
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.groceryItem2InNewSection, data.groceryItemInProduceSection, data.shoppingGroceryItem1] );
 }
 
@@ -125,16 +138,16 @@ function testSelectItemsAndSetQuantities(target, app)
 	
 	var itemCell = prepareShoppingListWindow.GroceryItemCell(data.shoppingGroceryItem1);	
 	itemCell.IncrementQuantityButton().tap();
-	if (itemCell.IncludeSwitch().value() != data.shoppingListItem1.Selected)
+	if (itemCell.IncludeSwitch().value() != data.shoppingListItem1.IncludeInShoppingList)
 		itemCell.IncludeSwitch().tap();
 	 
 	itemCell = prepareShoppingListWindow.GroceryItemCell(data.groceryItemInProduceSection);
 	itemCell.DecrementQuantityButton().tap();
-	if (itemCell.IncludeSwitch().value() != data.shoppingListItem3.Selected)
+	if (itemCell.IncludeSwitch().value() != data.shoppingListItem3.IncludeInShoppingList)
 		itemCell.IncludeSwitch().tap();
 
 	itemCell = prepareShoppingListWindow.GroceryItemCell(data.groceryItem2InNewSection);
-	if (itemCell.IncludeSwitch().value() != data.shoppingListItem2.Selected)
+	if (itemCell.IncludeSwitch().value() != data.shoppingListItem2.IncludeInShoppingList)
 		itemCell.IncludeSwitch().tap();
 	 
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem6] );	
@@ -264,7 +277,11 @@ function testSaveAndLoadPreparedShoppingList(target, app)
 
 	exitPrepareShoppingListTest(target, app); // saves ...
  	setupPrepareShoppingListTest(target, app) // loads...
-	
+
+	var noButton = app.alert().buttons()["No"];
+	noButton.tap();
+	noButton.waitForInvalid();
+		
 	var prepareShoppingListWindow = new PrepareShoppingListWindow(target, app, testStoreName);
 	testPrepareShoppingListWindowValidity(prepareShoppingListWindow, [data.shoppingListItem2_updated, data.shoppingListItem3, data.shoppingListItem1, data.shoppingListItem4, data.shoppingListItem5_NotAddedToMaster, data.shoppingListItem6] );
 

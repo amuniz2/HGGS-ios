@@ -64,26 +64,13 @@
 #pragma mark Dropbox API Methods
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
   sourceApplication:(NSString *)source annotation:(id)annotation {
-    UIAlertView *alertView;
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
             // At this point you can start making API calls
-            alertView = [[UIAlertView alloc] initWithTitle:@"Successfully Linked with Dropbox."
-                                                   message:@"You can now share your grocery lists across devices."
-                         //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
-                                                  delegate:[self dropboxViewController]
-                                         cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             return YES;
         }
     }
-    // Add whatever other url handling code your app requires here
-    alertView = [[UIAlertView alloc] initWithTitle:@"Failed to link with Dropbox."
-                                           message:@"Please verify that you have access to the internet."
-                 //delegate:[[[[self window] rootViewController] navigationController] visibleViewController]
-                                          delegate: [self dropboxViewController]
-                                 cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-    
-//    [alertView show];
+    // Add whatever other url handling code your app requires here    
     return NO;
 }
 

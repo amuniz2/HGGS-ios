@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSBarCodeScannerViewController.m"
-            timestampString = "438150496.912678"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
+            timestampString = "487367155.087641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "-captureOutput:didOutputMetadataObjects:fromConnection:"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
+            timestampString = "487367172.017707"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "-tableView:numberOfRowsInSection:"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "-viewDidAppear:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
+            timestampString = "488063255.458506"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
-            landmarkName = "-handleReturnFromEditItemController:"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "-indexPathOfGrocerySection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
-            timestampString = "473568724.798987"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
+            timestampString = "487369092.065097"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
-            landmarkName = "-saveOrReturn:"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
+            timestampString = "487369131.275929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "-handleReturnFromAddItemController:"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,189 +89,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
+            filePath = "HoneyGoGroceryShopping/Views/HGGSAisleHeaderCellView.m"
+            timestampString = "487371959.90063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "-tableView:numberOfRowsInSection:"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "-setAisleNumber:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "-searchForText:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
-            landmarkName = "-handleReturnFromAddItemController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
-            landmarkName = "-handleReturnFromAddItemController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
-            landmarkName = "-handleReturnFromEditItemController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryStore.m"
-            timestampString = "477289403.575277"
+            timestampString = "488063255.458506"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
-            landmarkName = "-getGroceryAisles"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryStore.m"
-            timestampString = "477289403.575277"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "556"
-            endingLineNumber = "556"
-            landmarkName = "-loadStoreInfo"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Views/HGGSShoppingItemCellView.m"
-            timestampString = "477160295.787209"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "-setGroceryItem:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477160341.562968"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "-loadListFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMainViewController.m"
-            timestampString = "477289403.575277"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "-promptIfNewListShouldBeStarted:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMainViewController.m"
-            timestampString = "477289403.575277"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "-alertView:didDismissWithButtonIndex:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMainViewController.m"
-            timestampString = "477256276.813423"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "-prepareForSegue:sender:"
+            startingLineNumber = "445"
+            endingLineNumber = "445"
+            landmarkName = "-removeGrocerySection:fromAisle:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,27 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
+            timestampString = "487457061.787939"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-prepareForSegue:sender:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "-prepareList"
             landmarkType = "5">
          </BreakpointContent>
@@ -313,29 +137,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
-            timestampString = "477273193.467859"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
+            timestampString = "487457093.444973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "-asDictionary"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
-            timestampString = "477273193.467859"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "-copyWithZone:"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
+            landmarkName = "-prepareList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -345,13 +153,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
+            timestampString = "487457303.320639"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
-            landmarkName = "-handleReturnFromEditItemController:"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "-handleReturnFromAddItemController:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -362,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
-            timestampString = "477266369.317913"
+            timestampString = "487457332.532243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "-save"
             landmarkType = "5">
          </BreakpointContent>
@@ -377,13 +185,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
+            timestampString = "487457482.534926"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "-searchBarCancelButtonClicked:"
+            startingLineNumber = "406"
+            endingLineNumber = "406"
+            landmarkName = "-save"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -393,13 +201,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryStore.m"
+            timestampString = "488063255.458506"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
-            landmarkName = "-prepareList"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "-resetCurrentList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -409,13 +217,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
+            timestampString = "487648968.11688"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "-prepareList"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
+            landmarkName = "-save"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -425,237 +233,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
+            timestampString = "487648974.524647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "-prepareList"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477269376.467066"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "-loadGroceryItemsFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477269615.513492"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "-loadGroceryItemsFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273031.416387"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "-loadGroceryItemsFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273260.362652"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "-loadGroceryItemsFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273410.750977"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "-setList:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273413.73222"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "-setList:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273418.367082"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "-loadListFromString:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
-            timestampString = "477273423.159557"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "-unload"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
-            landmarkName = "-prepareList"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "-numberOfSectionsInTableView:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
-            landmarkName = "-prepareList"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477369318.316873"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "-tableView:sectionForSectionIndexTitle:atIndex:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477366390.871112"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "439"
+            endingLineNumber = "439"
+            landmarkName = "-save"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -666,43 +250,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477370315.757047"
+            timestampString = "487649372.533724"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "-viewWillDisappear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreList.m"
+            timestampString = "487649416.418989"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-save"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
+            timestampString = "487649467.921455"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "-asDictionary"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
+            timestampString = "487649601.905232"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "-initWithDetails:quantity:unit:section:notes:includeInPantry:selectByDefault:lastPurchasedOn:includeInShoppingList:isInShoppingCart:image:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
+            timestampString = "487649616.496997"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "231"
             endingLineNumber = "231"
-            landmarkName = "-updateSearchResultsForSearchController:"
+            landmarkName = "-copyWithZone:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477370315.757047"
+            timestampString = "487649683.230892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
-            landmarkName = "-prepareList"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477370242.273065"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
             landmarkName = "-handleReturnFromAddItemController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -713,13 +345,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477371014.511456"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
+            timestampString = "487650126.383795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
-            landmarkName = "-prepareList"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
+            landmarkName = "-serializeList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -729,13 +361,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477370862.217717"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryStoreManager.m"
+            timestampString = "488063255.458506"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
-            landmarkName = "-prepareList"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "-saveGroceryList:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -745,13 +377,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477371268.41603"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
+            timestampString = "487650601.216702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "-prepareList"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "-serializeGroceryItemList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -761,13 +393,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477371268.41603"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSGroceryItem.m"
+            timestampString = "487650756.486398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
-            landmarkName = "-prepareList"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "-asDictionary"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -777,13 +409,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditShoppingListViewController.m"
-            timestampString = "477371268.41603"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
+            timestampString = "487650815.09836"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
-            landmarkName = "-prepareList"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "-serializeGroceryItemList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -793,29 +425,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477777999.399136"
+            filePath = "HoneyGoGroceryShopping/Model/HGGSStoreItems.m"
+            timestampString = "487650846.372701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
-            landmarkName = "-handleReturnFromEditItemController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSMasterListViewController.m"
-            timestampString = "477783453.930981"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
-            landmarkName = "-handleReturnFromEditItemController:"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
+            landmarkName = "-serializeGroceryItemList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -825,140 +441,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
-            timestampString = "477794241.728159"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSGrocerySectionsViewController.m"
+            timestampString = "488063255.458506"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "-prepareForSegue:sender:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSEditGroceryItemViewController.m"
-            timestampString = "477794563.797684"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "-prepareForSegue:sender:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477800657.007122"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477800657.007122"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477800657.007122"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "-viewDidAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477800657.007122"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "-viewDidAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "-setSelectedSectionName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "-numberOfSectionsInTableView:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -969,13 +457,61 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSynchronizeDropboxFilesViewController.m"
+            timestampString = "488063856.287914"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "252"
-            endingLineNumber = "252"
-            landmarkName = "-indexPathOfGrocerySection:"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "-doSynch:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSynchronizeDropboxFilesViewController.m"
+            timestampString = "488064158.862435"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-synchActivityCompleted:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488064228.971302"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "-endActivityWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488064243.787294"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-endActivity"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -985,13 +521,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488064600.945959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
-            landmarkName = "-updateSearchResultsForSearchController:"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
+            landmarkName = "-performActivity"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1001,13 +537,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
-            landmarkName = "-prepareList"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "-skipToNextActivity"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1017,13 +553,285 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HoneyGoGroceryShopping/Controllers/HGGSSelectGrocerySectionViewController.m"
-            timestampString = "477801306.102957"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "-indexPathOfGrocerySection:"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
+            landmarkName = "-restClient:uploadedFile:from:metadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "498"
+            endingLineNumber = "498"
+            landmarkName = "-restClient:loadedFile:contentType:metadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "541"
+            endingLineNumber = "541"
+            landmarkName = "-restClient:uploadFileFailedWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
+            landmarkName = "-restClient:loadMetadataFailedWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "440"
+            endingLineNumber = "440"
+            landmarkName = "-restClient:loadedMetadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
+            landmarkName = "-triggerCopyOfImagesFromDropbox:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "517"
+            endingLineNumber = "517"
+            landmarkName = "-restClient:loadFileFailedWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "518"
+            endingLineNumber = "518"
+            landmarkName = "-restClient:loadFileFailedWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
+            landmarkName = "-restClient:loadedMetadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488064923.567695"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-getStoreSetupMetadata"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488064924.962905"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "-getListMetadata"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "-restClient:loadedMetadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "470"
+            endingLineNumber = "470"
+            landmarkName = "-restClient:loadedMetadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488065310.538622"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
+            landmarkName = "-copyStoreSetupToDropbox"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Store/HGGSDbGroceryFilesStore.m"
+            timestampString = "488065512.416056"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "-getFileMetadata:forStore:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082117.599831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "-skipToNextActivity"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082452.538064"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "471"
+            endingLineNumber = "471"
+            landmarkName = "-restClient:loadedMetadata:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HoneyGoGroceryShopping/Controllers/HGGSDropboxClient.m"
+            timestampString = "488082580.932205"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "-skipToNextActivity"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

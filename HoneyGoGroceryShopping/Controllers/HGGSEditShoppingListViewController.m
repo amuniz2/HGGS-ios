@@ -416,14 +416,13 @@
             [_currentItems addObject:item];
         }
     }
-    NSString * upperCaseFilter = _filter;
     
     if ([NSString isEmptyOrNil:_filter])
         _itemsDisplayed = _currentItems;
         
     else
     {
-        upperCaseFilter = [_filter uppercaseString];
+        NSString * upperCaseFilter = upperCaseFilter = [_filter uppercaseString];
         _itemsDisplayed = [[NSMutableArray alloc] init];
         for (HGGSGroceryItem *item in _currentItems)
         {

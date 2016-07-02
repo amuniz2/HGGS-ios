@@ -61,3 +61,4 @@ test("GrocerySections_SaveAndLoadAisleConfig", function(target, app)
 {
 	testSaveAndLoadAisleConfig(target, app);
 });
+target.setDeviceOrientation(UIA_DEVICE_ORIENTATION_PORTRAIT);

@@ -90,9 +90,11 @@ function testChangeNameOfExistingItemInMasterList(target, app)
 	editMasterListWindow.MasterListView().cells()[data. updatedGroceryItem1.MasterItemCellName()].tap();
 	
 	var editItemWindow = new EditGroceryItemWindow(target, app);	
-	editItemWindow.NameTextView().setValue(data.item1WithChangedName.Name );
+	editItemWindow.NameTextView().tap();
+	target.delay(0.5);
+	editItemWindow.NameTextView().setValue(data.item1WithChangedName.Name);
 	
-	dismissKeyboardIfPresent(app);
+	dismissKeyboard(app);
 	
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -120,9 +122,10 @@ function testCannotAddItemWithNoNameToMasterList(target, app)
 	okayButton.tap(); 
 	okayButton.waitForInvalid(); 
 
+	editItemWindow.NameTextView().tap();
+	target.delay(0.5);
 	editItemWindow.NameTextView().setValue(data.groceryItem2.Name );
-	dismissKeyboardIfPresent(app);
-	
+	dismissKeyboard(app);	
 	
 	editItemWindow.DoneButton().tap();
 	editItemWindow.DoneButton().waitForInvalid();
@@ -167,6 +170,7 @@ function testDeleteItemFromMasterList(target, app)
 
 	var editMasterListWindow = new MasterListWindow(target, app, testStoreName);
 	editMasterListWindow.MasterListView().cells()[data.item1WithChangedName.MasterItemCellName()].tap();
+	editMasterListWindow.MasterListView().waitForInvalid();
 	
 	var editItemWindow = new EditGroceryItemWindow(target, app);
 	editItemWindow.DeleteItemButton().tap();

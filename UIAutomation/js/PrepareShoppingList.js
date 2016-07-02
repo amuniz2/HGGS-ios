@@ -15,7 +15,7 @@ test("PrepareShoppingList_AddItemInNewSection", function(target, app)
 });
 
 test("PrepareShoppingList_SelectItemsAndSetQuantities", function(target, app)
-{	
+{
 	testSelectItemsAndSetQuantities(target, app);
 });
 

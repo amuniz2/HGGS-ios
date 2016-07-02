@@ -107,14 +107,14 @@ function testEditMasterItemWindowValidity(window, expectedItem )
 {
 	testEditItemWindowValidity(window, expectedItem);
 	
-	assertEquals(expectedItem.SelectByDefault, window.SelectedSwitch().value(), "Item's SelectByDefault value is incorrect.")
+	assertEquals(expectedItem.IncludeInShoppingListByDefault, window.SelectedSwitch().value(), "Item's IncludeInShoppingListByDefault value is incorrect.")
 }
 
 function testEditCurrentItemWindowValidity(window, expectedItem )
 {
 	testEditItemWindowValidity(window, expectedItem);
 	
-	assertEquals(expectedItem.ApplyToMaster, window.SelectedSwitch().value(), "Item's ApplyToMaster value is incorrect.")
+	assertEquals(expectedItem.IsPantryItem, window.SelectedSwitch().value(), "Item's IsPantryItem value is incorrect.")
 }
 
 function testSelectGrocerySectionWindowValidity(window, expectedAisles)
@@ -155,9 +155,10 @@ function testPrepareShoppingListWindowValidity(window, expectedItems)
 	{
 		var item = expectedItems[j];
 		var expectedCellName = item.PrepareShoppingListCellName();
+		UIALogger.logDebug("Testing: '" + expectedCellName + "' cell");
 		assertNotNull(window.ShoppingListView().cells()[expectedCellName], "'" + expectedCellName + "'" + "not a valid cell name in shopping list being prepared"); 	
 		cell = new PrepareShoppingListCell(window.ShoppingListView().cells()[expectedCellName]);
-		assertEquals(item.Selected, cell.IncludeSwitch().value(), "'" + expectedCellName + "' has incorrect selection indicator");
+		assertEquals(item.IncludeInShoppingList, cell.IncludeSwitch().value(), "'" + expectedCellName + "' has incorrect selection indicator");
 	}
 	
 }

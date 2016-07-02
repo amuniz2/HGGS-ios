@@ -123,23 +123,6 @@ function MasterListWindow(target, application, storeName)
 	this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
 	
 }*/
-function GroceryItem(name, quantity, unit, notes, section, aisle, selected)
-{
-	this.Name = name;
-	this.Quantity =  quantity ;
-	this.Unit =  unit ;
-	this.Notes = notes;
-	this.Section = section;
-	this.Selected = selected;
-	this.Aisle = aisle;
-	//this.MasterItemCellName = function() { return this.Name + ', ' + this.Notes ; };
-	//this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
-	//this.ShoppingListCellName = function() { return this.Name + ', ' + this.Notes  + ', ' + this.Quantity + ' ' + this.Unit; };
-	this.MasterItemCellName = function() { return this.Name; };
-	this.PrepareShoppingListCellName = function() { return this.Name; };
-	this.ShoppingListCellName = function() { return this.Name; };
-	
-}
 //MasterGroceryItem.prototype - new GroceryItem(name, quantity, unit, notes, section, aisle, selected);
 
 
@@ -147,9 +130,9 @@ function ShoppingItem(name, quantity, unit, notes, section, aisle, selected)
 {
 	GroceryItem.apply(this, arguments);
 	
-  	this.IsCheckedOff = function()  { return this.selected; };
-	this.Check = function() { this.selected = true; } ;
-	this.Uncheck = function() { this.selected = false; }; 
+  	this.IsCheckedOff = function()  { return this.IsInShoppingCart; };
+	this.Check = function() { this.IsInShoppingCart = true; } ;
+	this.Uncheck = function() { this.IsInShoppingCart = false; }; 
 }
 
 function EditGroceryItemWindow(target, application)
@@ -246,15 +229,45 @@ function ShoppingListWindow(target, application, storeName)
 	};
 }
 
+function GroceryItem(name, quantity, unit, notes, section, aisle, selected)
+{
+	this.Name = name;
+	this.Quantity =  quantity ;
+	this.Unit =  unit ;
+	this.Notes = notes;
+	this.Section = section;
+	//this.Selected = selected;
+	this.Aisle = aisle;
+	this.IsPantryItem = false;
+	this.IncludeInShoppingList = false;
+	this.IncludeInShoppingListByDefault = selected;
+	this.IsInShoppingCart = false;
+	 
+	//this.MasterItemCellName = function() { return this.Name + ', ' + this.Notes ; };
+	//this.PrepareShoppingListCellName = function() { return this.Name + ', ' + this.Quantity + ' ' + this.Unit; };
+	//this.ShoppingListCellName = function() { return this.Name + ', ' + this.Notes  + ', ' + this.Quantity + ' ' + this.Unit; };
+	this.MasterItemCellName = function() { return this.Name; };
+	this.PrepareShoppingListCellName = function() { return this.Name; };
+	this.ShoppingListCellName = function() { return this.Name; };
+	
+}
+
+function ShoppingCartItem(name, quantity, unit, notes, section, aisle, includeInShoppingList, inShoppingCart)
+{
+    GroceryItem.apply(this, arguments);
+	this.IncludeInShoppingList = includeInShoppingList;
+  	this.IsInShoppingCart = inShoppingCart;	
+}
 
 function MasterGroceryItem(name, quantity, unit, notes, section, aisle, selected) 
 {
   	GroceryItem.apply(this, arguments);
-	this.SelectByDefault = selected;
+	this.IncludeInShoppingListByDefault = selected;
 }
 
 function CurrentGroceryItem(name, quantity, unit, notes, section, aisle, selected, applyToMaster)
 {
     GroceryItem.apply(this, arguments);
-  	this.ApplyToMaster = applyToMaster;
+	this.IncludeInShoppingList = selected;
+  	this.IsPantryItem = applyToMaster;
 }

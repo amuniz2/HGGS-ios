@@ -145,9 +145,9 @@ function setShoppingItemValuesInEditWindow(app, editWindow, item)
 	// note: select has 3 different meanings:
 	// (1) from master list, it means the item should be selected by default when preparing a shopping list
 	// (2) from current list, it means the change(s) should be applied to the corresponding item
-	if (editWindow.SelectedSwitch().value() != item.ApplyToMaster)
+	if (editWindow.SelectedSwitch().isVisible() && editWindow.SelectedSwitch().value() != item.IsPantryItem)
 	{
-		UIALogger.logDebug(item.Name + '.ApplyToMaster: ' + item.ApplyToMaster);
+		UIALogger.logDebug(item.Name + '.IsPantryItem: ' + item.IsPantryItem);
 		editWindow.SelectedSwitch().tap();		
 	}
 }
@@ -159,7 +159,7 @@ function setMasterItemValuesInEditWindow(app, editWindow, item)
 	// note: select has 3 different meanings:
 	// (1) from master list, it means the item should be selected by default when preparing a shopping list
 	// (2) from current list, it means the change(s) should be applied to the corresponding item
-	if (editWindow.SelectedSwitch().value() != item.SelectByDefault)
+	if (editWindow.SelectedSwitch().value() != item.IncludeInShoppingListByDefault)
 		editWindow.SelectedSwitch().tap();		
 }
 
@@ -185,6 +185,19 @@ function editWithMasterItemValues(app, editWindow, item)
 	editWindow.DoneButton().waitForInvalid();
 	
 	
+}
+
+function dismissKeyboard(app)
+{
+	UIATarget.localTarget().pushTimeout(30);
+	app.keyboard().isVisible() && (app.keyboard().buttons()["Return"] != null) && app.keyboard().buttons()["Return"].isEnabled();
+	UIATarget.localTarget().popTimeout();
+	
+	dismissKeyboardIfPresent(app)
+	
+	UIATarget.localTarget().pushTimeout(30);
+	!app.keyboard().isVisible();
+	UIATarget.localTarget().popTimeout();
 }
 
 function dismissKeyboardIfPresent(app)
@@ -251,9 +264,15 @@ function createMasterListItems(target, app, storeName, itemsToAdd)
 
 function prepareShoppingList(target, app, storeName, masterItemsToInclude, itemsToAdd)
 {
+	expectedAlertMessage = "Prepare Shopping List";
+	
 	var window = new MainWindow(target, app);
 	window.PrepareGroceryListButton().tap();
 	window.PrepareGroceryListButton().waitForInvalid();
+	
+	var yesButton = app.alert().buttons()["Yes"];
+	yesButton.tap();
+	yesButton.waitForInvalid();
 	
 	var editShoppingListWindow = new PrepareShoppingListWindow(target, app, storeName);
 
@@ -284,7 +303,7 @@ function prepareShoppingList(target, app, storeName, masterItemsToInclude, items
 
 function testMasterListData()
 {
-	this.defaultGroceryItem = new MasterGroceryItem(null, '1', 'Units', null, 'Grocery Section', '0', true);	
+	this.defaultGroceryItem = new MasterGroceryItem(null, '1', 'Units', null, 'Grocery Section', '0', false);	
 	this.groceryItem1 = new MasterGroceryItem('M Item 1', '3.5', 'lbs', 'M Item 1 Notes', 'Grocery Section', '0', true);	
 	this.updatedGroceryItem1 = new MasterGroceryItem('M Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false); 
 	this.item1WithChangedName = new MasterGroceryItem('M New Item 1', '2.5', 'lbs', 'M Item 1 Notes after update', 'Grocery Section', '0', false);  
@@ -320,20 +339,20 @@ function testCurrentListData()
 	this.shoppingListItem5_NotAddedToMaster = new CurrentGroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);	
 	
 	this.shoppingListItem6 = new CurrentGroceryItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', true, true);
-	this.groceryItemInProduceSection_updated = new CurrentGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
+	this.groceryItemInProduceSection_updated = new CurrentGroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false, false);	
 	this.shoppingListItem7 = new CurrentGroceryItem('Item 7', '1', 'package', 'Located in  non-existing section that should be added', 'New Section Added When Shopping List Was Created', '0', false);
 }
 
 function ShoppingListData()
 {
-	this.shoppingListItem0 = new GroceryItem('Shopping Item Not Originally In Master List', '1.5', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', false);	
-	this.shoppingListItem1 = new GroceryItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', false);
-	this.shoppingListItem2 = new GroceryItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', false);	
-	this.shoppingListItem3 = new GroceryItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', false);	
-	this.shoppingListItem4 = new GroceryItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', false);
+	this.shoppingListItem0 = new ShoppingCartItem('Shopping Item Not Originally In Master List', '1.5', 'lbs', 'Temp Item Notes', 'Grocery Section', '0', true, false);	
+	this.shoppingListItem1 = new ShoppingCartItem('Item 1', '1', 'package', 'Item 5 Notes', 'produce', '1', true, false);
+	this.shoppingListItem2 = new ShoppingCartItem('Item 2', '10', 'oz', 'Item 2 Notes with update', 'first item in aisle 5', '5', true, false);	
+	this.shoppingListItem3 = new ShoppingCartItem('Item 3', '9', 'oz', 'Should be in produce section', 'produce', '1', true, false);	
+	this.shoppingListItem4 = new ShoppingCartItem('Item 4', '2', 'boxes', 'Item 4 Notes', 'produce', '1', true, false);
 //	this.shoppingListItem5 = new GroceryItem('Item 5', '1', 'package', 'Item 5 Notes', 'produce', '1', false);	
-	this.shoppingListItem6 = new GroceryItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', false);
-	this.shoppingListItem7 = new GroceryItem('Item 7', '1', 'package', 'Located in  non-existing section that should be added', 'New Section Added When Shopping List Was Created', '0', false);
+	this.shoppingListItem6 = new ShoppingCartItem('Item 6', '0.5', 'oz', 'Section added when creating item in Prepare Shopping List', 'New Section Just Added', '3', true, false);
+	this.shoppingListItem7 = new ShoppingCartItem('Item 7', '1', 'package', 'Located in  non-existing section that should be added', 'New Section Added When Shopping List Was Created', '0', true, false);
 
 }
 

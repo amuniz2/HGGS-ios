@@ -37,7 +37,7 @@
 {
     _testStoreName = @"LoadGroceryStoreMasterListTest";
     HGGSGroceryStore* localStore = [[HGGSGroceryStoreManager sharedStoreManager] addStore:_testStoreName];
-    HGGSStoreList *masterList = [localStore getMasterList];
+    HGGSStoreList *masterList = [localStore getGroceryList];
     self.groceryItem1 = [[HGGSGroceryItem alloc] initWithDetails:@"everroast chicken" quantity:2 unit:@"lbs" section:@"Deli" notes:@"in 2 units" select:YES lastPurchasedOn:[NSDate date]];
     self.groceryItem2  = [[HGGSGroceryItem alloc] initWithDetails:@"chicken nuggets" quantity:1 unit:@"bag" section:@"frozen meats" notes:@"Tyson Honey Battered Chicken Breast Tender 25.5 Ounce" select:NO lastPurchasedOn:[NSDate date]];
     [masterList addItem:_groceryItem1];
